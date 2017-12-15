@@ -33,6 +33,7 @@
     padding: 10px;
     font-size: 1.4em;
     cursor: pointer;
+    user-select: none;
 }
 
 .sidebar .closeBtn button:hover {
@@ -55,19 +56,52 @@
     font-size: 1.2em;
 }
 
-.phenomenon-picker {
-    z-index: 400;
-    position: absolute;
+
+
+.UI_container {
+    pointer-events: none;
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    bottom: 15px;
-    left: 150px;
-    margin: -5px;
+    justify-content: end;
+    z-index: 405;
+    position: absolute;
+    margin: 5px 30px;
+    left: 0;
+    bottom: 0;
 }
 
+.UI_container > div {
+    pointer-events:all;
+    margin: 0px 5px;
+    flex-grow: 1;
+    align-self: flex-end;
+}
 
-.phenomenon-picker .dropdown, .phenomenon-picker .current {
+.phenomenon-picker {
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.phenomenon-picker .current {
+    z-index: 401;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136,170,170,0.8);
+    cursor: pointer;
+}
+
+.phenomenon-picker .current .arrow {
+    margin-left: 15px;
+    padding-left: 5px;
+    border-left: 1px solid #577;
+}
+
+.phenomenon-picker .dropdown {
     z-index: 401;
     flex-direction: column;
     list-style-type: none;
@@ -96,13 +130,11 @@
 
 .legend {
     z-index: 400;
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
     padding: 8px;
     border-radius: 8px;
     width: 60px;
     background-color: rgba(136,170,170,0.8);
+    user-select: none;
 }
 
 .legend .color-gradient {
@@ -151,4 +183,32 @@
     padding: 8px;
     border-radius: 8px;
     background-color: rgba(136,170,170,0.8);
+}
+
+.data-origin-picker {
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 8px;
+    user-select: none;
+
+    border-radius: 8px;
+    background-color: rgba(136,170,170,0.8);
+    cursor: pointer;
+}
+
+.data-origin-picker span {
+    margin: 5px;
+}
+
+.data-origin-picker button {
+    margin: 0;
+    padding: 8px;
+    user-select: none;
+
+    border-radius: 8px;
+    background-color: #ABC;
+    cursor: pointer;
+
 }

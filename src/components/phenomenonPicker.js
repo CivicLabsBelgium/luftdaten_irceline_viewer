@@ -35,12 +35,22 @@ class PhenomenonPicker extends Component {
           {
             this.state.phenomenaNames.map(
               (phenomenon, index) => {
-                return <li key={index} style={{display: ( this.state.phenomenaKeys[index] === this.props.phenomenon )? 'none':'flex' }} onClick={() => this.changePhenomenon( this.state.phenomenaKeys[index] )}>{phenomenon}</li>
+                return <li key={index} style={
+                  {display: ( this.state.phenomenaKeys[index] === this.props.phenomenon )? 'none':'flex' }
+                }
+                           onClick={() => this.changePhenomenon( this.state.phenomenaKeys[index] )}>{phenomenon}</li>
               }
             )
           }
         </ul>
-        <div className="current" onClick={this.toggle}>{this.props.phenomenonMeta[this.props.phenomenon].name}</div>
+        <div className="current" onClick={this.toggle}>
+          <span>
+            {this.props.phenomenonMeta[this.props.phenomenon].name}
+          </span>
+          <span className="arrow">
+            {(this.state.display === 'none') ? '\u25B2' : '\u25BC'}
+          </span>
+        </div>
       </div>
     )
   }

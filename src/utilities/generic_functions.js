@@ -48,3 +48,15 @@ export function createMarkerIconSVG (options) {
 
   )
 }
+
+export function colorToRgba(hexColor, alpha) {
+
+  const color = hexColor.substr(1)
+  let rgba = [
+    parseInt(color[0] + color[1], 16), // red
+    parseInt(color[2] + color[3], 16), // green
+    parseInt(color[4] + color[5], 16), // blue
+    alpha                              // alpha
+  ]
+  return 'rgba('+rgba.join(', ')+')'
+}

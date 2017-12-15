@@ -2,15 +2,11 @@ import React, { Component } from 'react'
 import Gradient from './gradient'
 import { connect } from 'react-redux'
 
-class Legend extends Component {
-
-  render () {
-
-    return (
-      <div title={this.props.phenomenonMeta[this.props.phenomenon].name} className="legend">
+const Legend = (props) =>
+      <div title={props.phenomenonMeta[props.phenomenon].name} className="legend">
         <div className="unit">
           {
-            this.props.phenomenonMeta[this.props.phenomenon].unit
+            props.phenomenonMeta[props.phenomenon].unit
           }
         </div>
 
@@ -18,10 +14,6 @@ class Legend extends Component {
           <Gradient/>
         </div>
       </div>
-    )
-  }
-}
-
 
 
 

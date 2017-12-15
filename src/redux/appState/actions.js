@@ -19,3 +19,11 @@ export function setTime (time) {
   }
 }
 
+
+export function setDataOrigin (dataOrigin) {
+  return {
+    type: 'APPSTATE_SET_DATA_ORIGIN',
+    dataOrigin
+  }
+}
+

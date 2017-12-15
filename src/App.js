@@ -6,13 +6,14 @@ import Sidebar from './components/sidebar'
 import Legend from './components/legend'
 import PhenomenonPicker from './components/phenomenonPicker'
 import UpdatedTime from './components/updatedTime'
+import DataOriginPicker from './components/dataOriginPicker'
 
 
 class App extends Component {
 
 
   componentDidMount () {
-    updateData()
+    updateData().then()
     setInterval(updateData, 6e4)
   }
 
@@ -21,8 +22,11 @@ class App extends Component {
       <div className="container">
         <Map />
         <UpdatedTime />
-        <PhenomenonPicker />
-        <Legend />
+        <div className="UI_container">
+          <Legend />
+          <DataOriginPicker />
+          <PhenomenonPicker />
+        </div>
         <Sidebar />
       </div>
 

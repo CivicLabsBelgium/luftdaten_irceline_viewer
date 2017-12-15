@@ -1,4 +1,8 @@
 const defaultState = {
+  dataOrigin: {
+    luftdaten: true,
+    irceline: true
+  },
   station: null,
   time: null,
   phenomenon: 'PM25',
@@ -12,7 +16,7 @@ const defaultState = {
         '#E65100',
         '#DD2C00',
         '#960084'],
-      max: 50, //max non-hazardous value
+      max: 25, //max non-hazardous value
       unit: 'g/m³',
       name: 'Particulate Matter < 2.5µm'
     },
@@ -80,6 +84,10 @@ export default function appState(state = defaultState, action) {
 
     case 'APPSTATE_SET_TIME':
       newState.time = action.time;
+      return newState
+
+    case 'APPSTATE_SET_DATA_ORIGIN':
+      newState.dataOrigin = action.dataOrigin;
       return newState
 
     default:

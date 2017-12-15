@@ -86,7 +86,6 @@ class Sidebar extends Component {
         }
       }
     )
-
     return {partsPerMillionSensor, tempAndHumSensor}
   }
 

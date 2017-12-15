@@ -34,20 +34,6 @@ export function blend_colors (color1, color2, percentage) {
     return color1
     // throw new Error('percentage must be between 0 and 1')
 
-  // output to canvas for proof
-  const cvs = document.createElement('canvas')
-  const ctx = cvs.getContext('2d')
-  cvs.width = 90
-  cvs.height = 25
-  document.body.appendChild(cvs)
-
-  // color1 on the left
-  ctx.fillStyle = color1
-  ctx.fillRect(0, 0, 30, 25)
-
-  // color2 on the right
-  ctx.fillStyle = color2
-  ctx.fillRect(60, 0, 30, 25)
 
   // 2: check to see if we need to convert 3 char hex to 6 char hex, else slice off hash
   //      the three character hex is just a representation of the 6 hex where each character is repeated
@@ -81,11 +67,6 @@ export function blend_colors (color1, color2, percentage) {
   // 5: convert to hex
   color3 = '#' + int_to_hex(color3[0]) + int_to_hex(color3[1]) + int_to_hex(color3[2])
 
-  // console.log(color3)
-
-  // color3 in the middle
-  ctx.fillStyle = color3
-  ctx.fillRect(30, 0, 30, 25)
 
   // return hex
   return color3

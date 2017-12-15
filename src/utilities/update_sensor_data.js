@@ -1,9 +1,9 @@
 import * as generic_functions from './generic_functions'
 import store from '../redux/store'
 import { addStations } from '../redux/stations/actions'
-import { addDate, setTime } from '../redux/appState/actions'
+import { setTime } from '../redux/appState/actions'
 
-const radius = 20;
+const radius = 100;
 
 export const updateData = async () => {
 
@@ -85,8 +85,8 @@ const parse_irceline_data = async (data) => {
       let sensorID = (pm10_response) ? pm10_response.id : pm25_response.id
       let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : pm25_response.parameters.procedure.label
       sensorName = sensorName.split(' - ')[1];
-      let PM10 = (pm10_response) ? pm10_response.lastValue.value : null
-      let PM25 = (pm25_response) ? pm25_response.lastValue.value : null
+      let PM10 = (pm10_response && pm10_response.lastValue.value>=0) ? pm10_response.lastValue.value : null
+      let PM25 = (pm25_response && pm25_response.lastValue.value>=0) ? pm25_response.lastValue.value : null
 
       return {
         id: station.properties.id,
