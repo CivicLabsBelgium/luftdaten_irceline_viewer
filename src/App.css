@@ -1,0 +1,154 @@
+#root .container {
+    display: flex;
+    position: relative;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+}
+
+.sidebar {
+    min-width: 300px;
+    width: 20vw;
+    padding: 20px;
+    background-color: #233;
+    color: #FFF;
+}
+
+.sidebar.hidden {
+    display: none;
+}
+
+.sidebar .closeBtn {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.sidebar .closeBtn button {
+    width: 100%;
+    background-color: #466;
+    border: 1px solid #322;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 1.4em;
+    cursor: pointer;
+}
+
+.sidebar .closeBtn button:hover {
+    background-color: #577;
+}
+
+.sidebar table {
+    background-color: #344;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.sidebar table td, .sidebar table th {
+    border: 1px solid #DDD;
+    padding: 8px;
+}
+
+.sidebar table th {
+    font-size: 1.2em;
+}
+
+.phenomenon-picker {
+    z-index: 400;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    bottom: 15px;
+    left: 150px;
+    margin: -5px;
+}
+
+
+.phenomenon-picker .dropdown, .phenomenon-picker .current {
+    z-index: 401;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 1px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136,170,170,0.8);
+    cursor: pointer;
+}
+
+.phenomenon-picker .dropdown li:hover, .phenomenon-picker .current:hover {
+    background-color: rgba(100,150,150,0.8);
+}
+
+.phenomenon-picker .dropdown li:active, .phenomenon-picker .current:active {
+    background-color: rgba(120,160,160,0.8);
+}
+
+.phenomenon-picker .dropdown li {
+    display: flex;
+    margin: 1px;
+    padding: 8px 4px;
+    border-radius: 4px;
+}
+
+
+.legend {
+    z-index: 400;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    padding: 8px;
+    border-radius: 8px;
+    width: 60px;
+    background-color: rgba(136,170,170,0.8);
+}
+
+.legend .color-gradient {
+    width: 18px;
+}
+
+.legend .limit-bar {
+    width: 18px;
+    height: 3px;
+    background-color: #F00;
+    position: absolute;
+    z-index: 2;
+}
+
+.legend .unit {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+}
+
+.legend .labelValue {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.legend .labelValue:after {
+    position: absolute;
+    left: 19px;
+    bottom: 10px;
+    content: "";
+    width: 10px;
+    height: 1px;
+    background-color: #000;
+}
+
+.updated-time {
+    z-index: 400;
+    position: absolute;
+    top: 15px;
+    left: 100px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136,170,170,0.8);
+}
