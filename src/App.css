@@ -1,6 +1,7 @@
 #root .container {
     display: flex;
     position: relative;
+    overflow: hidden;
 }
 
 #map {
@@ -67,6 +68,7 @@
     margin: 5px 30px;
     left: 0;
     bottom: 0;
+    height: 100%;
 }
 
 .UI_container > div {
@@ -74,6 +76,7 @@
     margin: 0px 5px;
     flex-grow: 1;
     align-self: flex-end;
+    white-space: nowrap;
 }
 
 .phenomenon-picker {
@@ -195,7 +198,6 @@
 
     border-radius: 8px;
     background-color: rgba(136,170,170,0.8);
-    cursor: pointer;
 }
 
 .data-origin-picker span {

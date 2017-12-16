@@ -21,8 +21,8 @@ class App extends Component {
     return (
       <div className="container">
         <Map />
-        <UpdatedTime />
         <div className="UI_container">
+          <UpdatedTime />
           <Legend />
           <DataOriginPicker />
           <PhenomenonPicker />

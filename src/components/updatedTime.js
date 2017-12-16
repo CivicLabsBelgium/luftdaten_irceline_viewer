@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 
 const UpdatedTime = ({time}) =>
-  <div className="updated-time" style={{display: (time !== null ) ? 'flex' : 'none' }}>Last updated{time}</div>
+  <div className="updated-time" style={{display: (time !== null ) ? 'flex' : 'none' }}>Last updated {time}</div>
 
 
 
