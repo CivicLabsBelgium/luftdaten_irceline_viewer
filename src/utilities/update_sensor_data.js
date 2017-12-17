@@ -93,7 +93,6 @@ const parse_irceline_data = async (data) => {
         latitude: station.geometry.coordinates[1],
         longitude: station.geometry.coordinates[0],
         origin: 'irceline',
-        type: 'PM',
         sensors: [{
           id: sensorID,
           manufacturer: null,

@@ -2,6 +2,7 @@
   "name": "interactieve_kaart",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://bitbucket.org/David1234567/interactieve-kaart",
   "dependencies": {
     "eslint": "^4.13.1",
     "react": "^16.2.0",

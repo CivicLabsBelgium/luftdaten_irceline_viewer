@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Gradient from './gradient'
 import { connect } from 'react-redux'
 

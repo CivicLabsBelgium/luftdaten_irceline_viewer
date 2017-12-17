@@ -4,10 +4,6 @@ import { setCurrentStation } from '../redux/appState/actions'
 
 class Sidebar extends Component {
 
-  constructor (props) {
-    super(props)
-    this.getSensorByType = this.getSensorByType.bind(this)
-  }
 
   partsPerMillionTable (partsPerMillionSensor) {
     if (!partsPerMillionSensor) {
@@ -67,7 +63,7 @@ class Sidebar extends Component {
     )
   }
 
-  getSensorByType () {
+  getSensorByType = () => {
 
     // let content = JSON.stringify(props.stations, null, 2);
 
