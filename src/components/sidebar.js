@@ -121,7 +121,7 @@ class Sidebar extends Component {
           </div>
 
           <div>
-            test
+            {this.props.station.longitude}
           </div>
           <InfoTable />
 

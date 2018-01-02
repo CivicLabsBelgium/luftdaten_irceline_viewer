@@ -4,8 +4,6 @@ import { setCurrentStation } from '../redux/appState/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { blend_colors } from '../utilities/colorBlender'
 
-const showBordersForDistinctDataSource = false
-
 class Map extends Component {
 
   markerLayers = {luftdaten: [], irceline: []}
@@ -54,16 +52,16 @@ class Map extends Component {
     this.markerLayers.luftdaten = []
     this.markerLayers.irceline = []
 
-    if(this.state.layerGroup)
-    this.state.layerGroup.clearLayers();
+    if (this.state.layerGroup)
+      this.state.layerGroup.clearLayers()
 
     let stations = this.props.stations
 
     for (let k in stations) {
 
       let hexagonMarkerOptions = {
-        borderColor: '#000',
-        size: 60,
+        borderColor: '#FFF',
+        size: 50,
         content: ''
       }
 
@@ -71,11 +69,11 @@ class Map extends Component {
 
       let hasSensorForCurrentPhenomenon = false
 
-      for(let i in station.sensors) {
+      for (let i in station.sensors) {
         const sensor = station.sensors[i]
         const phenomenon = this.props.appState.phenomenon
-        if(typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
-          hasSensorForCurrentPhenomenon = true;
+        if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
+          hasSensorForCurrentPhenomenon = true
           const currentValue = sensor[phenomenon]
           const phenomenonMeta = this.props.appState.phenomenonMeta[phenomenon]
           const valueExceedsIndex = phenomenonMeta.values.indexOf(
@@ -84,10 +82,10 @@ class Map extends Component {
                 return value >= currentValue
               }
             ) || phenomenonMeta.values[phenomenonMeta.values.length - 1]))
-          const valueLower = phenomenonMeta.values[valueExceedsIndex-1]
+          const valueLower = phenomenonMeta.values[valueExceedsIndex - 1]
           const valueUpper = phenomenonMeta.values[valueExceedsIndex] - valueLower
-          const valuePercent = (currentValue-valueLower) / valueUpper
-          const colorLower = phenomenonMeta.colors[valueExceedsIndex-1]
+          const valuePercent = (currentValue - valueLower) / valueUpper
+          const colorLower = phenomenonMeta.colors[valueExceedsIndex - 1]
           const colorUpper = phenomenonMeta.colors[valueExceedsIndex]
 
           const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
@@ -97,22 +95,8 @@ class Map extends Component {
         }
       }
 
-      //luftdaten border
-      if(station.origin === "luftdaten") {
-        hexagonMarkerOptions.borderColor = '#44E'
-      }
-
-      //irceline border
-      if(station.origin === "irceline") {
-        hexagonMarkerOptions.borderColor = '#4E4'
-      }
-
-      if(showBordersForDistinctDataSource === false) {
-        hexagonMarkerOptions.borderColor = hexagonMarkerOptions.color
-      }
-
       //selected border
-      if(this.props.appState.station && this.props.appState.station.id === station.id) {
+      if (this.props.appState.station && this.props.appState.station.id === station.id) {
         hexagonMarkerOptions.borderColor = '#000'
       }
 
@@ -121,15 +105,16 @@ class Map extends Component {
           window.L.divIcon({
             className: 'hexagonMarker',
             html: createMarkerIconSVG(hexagonMarkerOptions)
+            // iconAnchor: [0-hexagonMarkerOptions.size/2, 0-hexagonMarkerOptions.size/2]
           })
       }
 
       //add markers to layergroup
-      if(hasSensorForCurrentPhenomenon) {
+      if (hasSensorForCurrentPhenomenon) {
 
-        //TODO remove snapToGrid, implement hexgrid
-        //const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
-        const latlngSnappedToGrid = [station.latitude, station.longitude]
+        //TODO implement hexgrid
+        const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
+        const latlng = [station.latitude, station.longitude]
         const marker = window.L.marker(latlngSnappedToGrid, markerOptions)
           .addEventListener('click',
             () => {
@@ -146,7 +131,7 @@ class Map extends Component {
       }
     }
 
-    if(this.props.dataOrigin.luftdaten) {
+    if (this.props.dataOrigin.luftdaten) {
       this.markerLayers.luftdaten.forEach(
         (marker) => {
           marker.addTo(this.state.layerGroup)
@@ -154,15 +139,13 @@ class Map extends Component {
       )
     }
 
-
-    if(this.props.dataOrigin.irceline){
+    if (this.props.dataOrigin.irceline) {
       this.markerLayers.irceline.forEach(
         (marker) => {
           marker.addTo(this.state.layerGroup)
         }
       )
     }
-
 
   }
 
@@ -173,9 +156,6 @@ class Map extends Component {
     )
   }
 }
-
-
-
 
 const mapStateToProps = state => {
   return {
