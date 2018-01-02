@@ -3,7 +3,7 @@ import store from '../redux/store'
 import { addStations } from '../redux/stations/actions'
 import { setTime } from '../redux/appState/actions'
 
-const radius = 100;
+const radius = 20;
 
 export const updateData = async () => {
 
@@ -42,7 +42,7 @@ export const updateData = async () => {
   let irceline_pm10_promise = await parse_irceline_data(irceline_pm10_json)
   let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
 
-  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise)
+  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise) //TODO catch error if API is down
 
   irceline_stations = irceline_stations.reduce(
     (accumulator, station) => {

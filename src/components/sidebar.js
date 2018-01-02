@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentStation } from '../redux/appState/actions'
+import InfoTable from './infoTable'
 
 class Sidebar extends Component {
 
-
+/*
   partsPerMillionTable (partsPerMillionSensor) {
     if (!partsPerMillionSensor) {
       return null
@@ -105,7 +106,31 @@ class Sidebar extends Component {
           {this.tempAndHumTable(sensorsByType.tempAndHumSensor)}
         </div>
       )
+  }*/
+
+  render () {
+
+
+    return (!this.props.station) ? (
+        null
+      )
+      : (
+        <div className="sidebar">
+          <div className="closeBtn">
+            <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
+          </div>
+
+          <div>
+            test
+          </div>
+          <InfoTable />
+
+        </div>
+      )
   }
+
+
+
 }
 
 const sidebarStateToProps = state => {

@@ -39,17 +39,17 @@ export function createMarkerIconSVG (options) {
   const ReactDOMServer = require('react-dom/server')
   return (
     ReactDOMServer.renderToStaticMarkup(
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.3 83.58" height={options.size} width={options.size}>
-        <polygon fill={options.color}
-                 points="1.73 41.96 24.79 1.68 71.21 1.5 94.56 41.62 71.51 81.9 25.09 82.07 1.73 41.96"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" height={options.size} width={options.size}>
         <path stroke={options.borderColor} strokeWidth="1" fill={options.borderColor}
-              d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
+              d="m0.794361,40.000002l16.802418,-39.275629l44.806445,0l16.802413,39.275629l-16.802413,39.275629l-44.806445,0l-16.802418,-39.275629z"/>
+        <polygon fill={options.color}
+                 d="m1.48022,39.877484l16.505781,-38.610012l44.015413,0l16.505776,38.610012l-16.505776,38.610012l-44.015413,0l-16.505781,-38.610012z"/>
       </svg>)
 
   )
 }
 
-export function colorToRgba(hexColor, alpha) {
+export function colorToRgba (hexColor, alpha) {
 
   const color = hexColor.substr(1)
   let rgba = [
@@ -58,5 +58,39 @@ export function colorToRgba(hexColor, alpha) {
     parseInt(color[4] + color[5], 16), // blue
     alpha                              // alpha
   ]
-  return 'rgba('+rgba.join(', ')+')'
+  return 'rgba(' + rgba.join(', ') + ')'
+}
+
+
+//TODO remove and implement hexgrid library
+export function snapToGrid (latlng, map, size) {
+
+  const latlngInPxCoords = map.latLngToLayerPoint(latlng)
+
+  let latSnappedPxCoords = Math.floor(latlngInPxCoords.x - latlngInPxCoords.x % (size*1.5))
+  let lngSnappedPxCoords = Math.floor(latlngInPxCoords.y - latlngInPxCoords.y % (size * 0.5))
+
+
+  if (lngSnappedPxCoords % (size)) {
+    latSnappedPxCoords += size * 0.145
+
+  }
+  if (latSnappedPxCoords % (size*0.5)) {
+    latSnappedPxCoords += size*0.6
+  }
+
+  // latSnappedPxCoords+= size*0.5
+
+  latSnappedPxCoords = Math.floor(latSnappedPxCoords)
+  lngSnappedPxCoords = Math.floor(lngSnappedPxCoords)
+
+
+  console.log(
+    latlngInPxCoords.y,
+    lngSnappedPxCoords
+  )
+
+  latlng = map.layerPointToLatLng([latSnappedPxCoords, lngSnappedPxCoords])
+
+  return latlng
 }

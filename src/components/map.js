@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentStation } from '../redux/appState/actions'
-import { createMarkerIconSVG, colorToRgba } from '../utilities/generic_functions'
+import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { blend_colors } from '../utilities/colorBlender'
 
 const showBordersForDistinctDataSource = false
@@ -22,8 +22,8 @@ class Map extends Component {
   componentDidMount () {
     const map = window.L.map('map', {
       center: [50.843, 4.368],
-      zoom: 13,
-      minZoom: 1,
+      zoom: 12,
+      minZoom: 4,
       // restrict panning and zooming to belgium
       // maxBounds: [
       //   [51.666742, 2.123954],
@@ -33,7 +33,7 @@ class Map extends Component {
     })
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
-
+    map.addEventListener('zoomend', () => this.render())
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map stations &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -63,7 +63,7 @@ class Map extends Component {
 
       let hexagonMarkerOptions = {
         borderColor: '#000',
-        size: 50,
+        size: 60,
         content: ''
       }
 
@@ -127,18 +127,22 @@ class Map extends Component {
       //add markers to layergroup
       if(hasSensorForCurrentPhenomenon) {
 
-        const marker = window.L.marker([station.latitude, station.longitude], markerOptions)
+        //TODO remove snapToGrid, implement hexgrid
+        //const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
+        const latlngSnappedToGrid = [station.latitude, station.longitude]
+        const marker = window.L.marker(latlngSnappedToGrid, markerOptions)
           .addEventListener('click',
             () => {
               this.props.onChangeCurrentStation(station)
-              const latLngs = marker.getLatLng()
+
+              //center zoom on marker
+              const latLng = marker.getLatLng()
               const zoom = this.state.map.getZoom()
-              this.state.map.setView( latLngs, zoom )
+              this.state.map.setView(latLng, zoom)
             }
           )
-        // .addTo(this.state.map)
 
-        this.markerLayers[ station.origin ].push( marker )
+        this.markerLayers[station.origin].push(marker)
       }
     }
 
@@ -158,6 +162,7 @@ class Map extends Component {
         }
       )
     }
+
 
   }
 
