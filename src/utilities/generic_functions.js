@@ -38,7 +38,8 @@ export function array_unique (value, index, self) {
 export function createMarkerIconSVG (options) {
   const ReactDOMServer = require('react-dom/server')
   const border = (options.hexagonIsSelected === false) ? null : <path stroke="#000" fill="#000"
-                                                                     d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
+                                                                      d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
+
   return (
     ReactDOMServer.renderToStaticMarkup(
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.3 83.58" height={options.size} width={options.size}>
@@ -73,7 +74,7 @@ export function snapToGrid (latlng, map, size) {
   let latSnappedPxCoords = (latlngInPxCoords.x - latlngInPxCoords.x % (size * xOffset)) // X
   let lngSnappedPxCoords = (latlngInPxCoords.y - latlngInPxCoords.y % (size * yOffset)) // Y
 
-  if (latSnappedPxCoords % (size * xOffset * 2) == 0) {
+  if (latSnappedPxCoords % (size * xOffset * 2) === 0) {
     lngSnappedPxCoords += (size * yOffset) / 2
   }
 

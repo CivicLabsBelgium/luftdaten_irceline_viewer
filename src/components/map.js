@@ -67,7 +67,6 @@ class Map extends Component {
       this.state.layerGroup.clearLayers()
 
     let stations = this.props.stations
-    let markers = []
 
     for (let k in stations) {
 
@@ -86,23 +85,6 @@ class Map extends Component {
         const phenomenon = this.props.appState.phenomenon
         if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
           hasSensorForCurrentPhenomenon = true
-          const currentValue = sensor[phenomenon]
-          const phenomenonMeta = this.props.appState.phenomenonMeta[phenomenon]
-          const valueExceedsIndex = phenomenonMeta.values.indexOf(
-            (phenomenonMeta.values.find(
-              (value) => {
-                return value >= currentValue
-              }
-            ) || phenomenonMeta.values[phenomenonMeta.values.length - 1]))
-          const valueLower = phenomenonMeta.values[valueExceedsIndex - 1]
-          const valueUpper = phenomenonMeta.values[valueExceedsIndex] - valueLower
-          const valuePercent = (currentValue - valueLower) / valueUpper
-          const colorLower = phenomenonMeta.colors[valueExceedsIndex - 1]
-          const colorUpper = phenomenonMeta.colors[valueExceedsIndex]
-
-          const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
-          hexagonMarkerOptions.color = colorToRgba(colorBlend, 0.4)
-
           break
         }
       }
@@ -126,10 +108,9 @@ class Map extends Component {
       if (hasSensorForCurrentPhenomenon) {
 
         const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
-        const marker = window.L.marker(latlngSnappedToGrid, markerOptions)
+        const bundledStations = window.L.marker(latlngSnappedToGrid, markerOptions)
 
-        this.markerLayers[station.origin].push(marker)
-        this.markerLayers['all'].push(marker)
+        this.markerLayers['all'].push(bundledStations)
       }
     }
 
@@ -138,14 +119,14 @@ class Map extends Component {
     this.markerLayers.all = this.markerLayers.all.reduce(
       (accumulator, currentMarker) => {
 
-        if(accumulator.length == 0)
+        if(accumulator.length === 0)
           return [currentMarker]
 
         const found = accumulator.findIndex(
-          (bundledMarker) => bundledMarker._latlng.lat == currentMarker._latlng.lat &&
-              bundledMarker._latlng.lng == currentMarker._latlng.lng
+          (bundledMarker) => bundledMarker._latlng.lat === currentMarker._latlng.lat &&
+              bundledMarker._latlng.lng === currentMarker._latlng.lng
         )
-        if(found != -1) {
+        if(found !== -1) {
           accumulator[found].options.stations.push(currentMarker.options.stations[0])
         } else {
           accumulator.push(currentMarker)
@@ -157,6 +138,52 @@ class Map extends Component {
 
     this.markerLayers.all.forEach(
       (marker) => {
+        /// CALCULATE AVERAGE VALUE OF SELECTED PHENOMENON FOR EACH MARKER
+
+        let sumValues = 0
+        let countValues = 0
+
+        marker.options.stations.forEach(
+          station => {
+            station.sensors.forEach(
+              sensor => {
+
+                const currentValue = sensor[this.props.appState.phenomenon]
+                if( typeof currentValue !== "undefined") {
+                  countValues++
+                  sumValues += parseFloat(currentValue)
+                }
+              }
+            )
+          }
+        )
+        console.log(sumValues, countValues)
+        const meanValue = (sumValues / countValues)
+        console.log(meanValue, this.props.appState.phenomenon)
+
+
+        //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
+
+        const phenomenonMeta = this.props.appState.phenomenonMeta[this.props.appState.phenomenon]
+        const valueExceedsIndex = phenomenonMeta.values.indexOf(
+          (phenomenonMeta.values.find(
+            (value) => {
+              return value >= meanValue
+            }
+          ) || phenomenonMeta.values[phenomenonMeta.values.length - 1]))
+        const valueLower = phenomenonMeta.values[valueExceedsIndex - 1]
+        const valueUpper = phenomenonMeta.values[valueExceedsIndex] - valueLower
+        const valuePercent = (meanValue - valueLower) / valueUpper
+        const colorLower = phenomenonMeta.colors[valueExceedsIndex - 1]
+        const colorUpper = phenomenonMeta.colors[valueExceedsIndex]
+        const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
+
+        //TODO create marker here
+        marker.options.color = colorToRgba(colorBlend, 0.4)
+        console.log(marker)
+
+
+        // ADD BUNDLED MARKERS TO MAP
         marker.addEventListener('click',
           () => {
             this.props.onChangeCurrentStation(marker.options.stations)
@@ -210,8 +237,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChangeCurrentStation: sensor => {
-      dispatch(setCurrentStation(sensor))
+    onChangeCurrentStation: station => {
+      dispatch(setCurrentStation(station))
     }
   }
 }

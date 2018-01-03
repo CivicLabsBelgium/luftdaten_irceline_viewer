@@ -1,4 +1,4 @@
-#root .container {
+#root > .container {
     display: flex;
     position: relative;
     overflow: hidden;
@@ -10,11 +10,16 @@
 }
 
 .sidebar {
-    min-width: 300px;
-    width: 20vw;
-    padding: 20px;
+    height: 100vh;
+    max-height: 100vh;
+    width: 600px;
     background-color: #233;
     color: #FFF;
+    overflow-y: scroll;
+}
+
+.sidebar .container {
+    padding: 20px;
 }
 
 .sidebar.hidden {

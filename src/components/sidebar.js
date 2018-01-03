@@ -64,86 +64,49 @@ class Sidebar extends Component {
       )
     }
 
-    getSensorByType = () => {
-
-      // let content = JSON.stringify(props.stations, null, 2);
-
-      if (!this.props.station) {
-        return null
-      }
-
-      let partsPerMillionSensor = null
-      let tempAndHumSensor = null
-      this.props.station.sensors.forEach(
-        (sensor) => {
-          if (sensor.PM10 || sensor.PM25) {
-            partsPerMillionSensor = sensor
-          } else if (sensor.temperature || sensor.humidity) {
-            tempAndHumSensor = sensor
-          }
-        }
-      )
-      return {partsPerMillionSensor, tempAndHumSensor}
-    }
-
-    render () {
-
-      const sensorsByType = this.getSensorByType()
-
-      return (!this.props.station) ? (
-          null
-        )
-        : (
-          <div className="sidebar">
-            <div className="closeBtn">
-              <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
-            </div>
-
-            <div>
-              Station #{this.props.station.id}
-            </div>
-            {this.partsPerMillionTable(sensorsByType.partsPerMillionSensor)}
-            {this.tempAndHumTable(sensorsByType.tempAndHumSensor)}
-          </div>
-        )
-    }*/
 
   /*****************/
 
-  getPartsPerMillionList () {
-    let partsPerMillionList
-    console.log(this.props.station)
+  getSensorList () {
+    let sensorList = {
+      partsPerMillion: [],
+      tempAndHum: []
+    }
+    this.props.station.map(
+      station => {
+        station.sensors.map(
+          sensor => {
+            sensor.stationID = station.id
+            sensor.origin = station.origin
+            if (sensor.PM10 || sensor.PM25) {
+              sensorList.partsPerMillion.push(sensor)
+            } else if (sensor.temperature || sensor.humidity) {
+              sensorList.tempAndHum.push(sensor)
+            }
+          }
+        )
+      }
+    )
 
-
-    return null
-  }
-
-  getTempAndHumList () {
-    let partsPerMillionList
-
-    return null
+    return sensorList
   }
 
   render () {
-    if(!this.props.station)
+    if (!this.props.station)
       return null
-
-    const partsPerMillionTable = this.getPartsPerMillionList()
-    const tempAndHumTable = this.getTempAndHumList()
+    const sensors = this.getSensorList()
 
     return (
-        <div className="sidebar">
+      <div className="sidebar">
+        <div className="container">
           <div className="closeBtn">
             <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
           </div>
-
-          <div>
-            {this.props.station.length}
-          </div>
-          <InfoTable/>
-
+          <InfoTable type="partsPerMillion" data={sensors.partsPerMillion}/>
+          <InfoTable type="tempAndHum" data={sensors.tempAndHum}/>
         </div>
-      )
+      </div>
+    )
   }
 
 }
