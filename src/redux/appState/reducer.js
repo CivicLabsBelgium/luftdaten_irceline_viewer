@@ -1,7 +1,7 @@
 const defaultState = {
   dataOrigin: {
-    luftdaten: true,
-    irceline: true
+    luftdaten: false,
+    irceline: false
   },
   station: null,
   time: null,

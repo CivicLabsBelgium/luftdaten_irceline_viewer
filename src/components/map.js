@@ -6,7 +6,7 @@ import { blend_colors } from '../utilities/colorBlender'
 
 class Map extends Component {
 
-  markerLayers = {luftdaten: [], irceline: []}
+  markerLayers = {luftdaten: [], irceline: [], all: []}
 
   constructor (props) {
     super(props)
@@ -49,25 +49,37 @@ class Map extends Component {
   }
 
   showMarkers () {
+
+    // TODO center view on selected hexagon when render/showmarkers is called by zoomend event
+    // if (this.props.appState.station) {
+    //   //center zoom on marker
+    //   const latLng = [0,0]
+    //   const zoom = this.state.map.getZoom()
+    //   this.state.map.setView(latLng, zoom)
+    // }
+
+
     this.markerLayers.luftdaten = []
     this.markerLayers.irceline = []
+    this.markerLayers.all = []
 
     if (this.state.layerGroup)
       this.state.layerGroup.clearLayers()
 
     let stations = this.props.stations
+    let markers = []
 
     for (let k in stations) {
 
       let hexagonMarkerOptions = {
-        borderColor: '#FFF',
-        size: 50,
-        content: ''
+        hexagonIsSelected: false,
+        size: 50
       }
 
       const station = stations[k]
 
       let hasSensorForCurrentPhenomenon = false
+
 
       for (let i in station.sensors) {
         const sensor = station.sensors[i]
@@ -97,7 +109,7 @@ class Map extends Component {
 
       //selected border
       if (this.props.appState.station && this.props.appState.station.id === station.id) {
-        hexagonMarkerOptions.borderColor = '#000'
+        hexagonMarkerOptions.hexagonIsSelected = true
       }
 
       let markerOptions = {
@@ -106,30 +118,61 @@ class Map extends Component {
             className: 'hexagonMarker',
             html: createMarkerIconSVG(hexagonMarkerOptions)
             // iconAnchor: [0-hexagonMarkerOptions.size/2, 0-hexagonMarkerOptions.size/2]
-          })
+          }),
+        stations: [station]
       }
 
       //add markers to layergroup
       if (hasSensorForCurrentPhenomenon) {
 
-        //TODO implement hexgrid
         const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
-        const latlng = [station.latitude, station.longitude]
         const marker = window.L.marker(latlngSnappedToGrid, markerOptions)
-          .addEventListener('click',
-            () => {
-              this.props.onChangeCurrentStation(station)
-
-              //center zoom on marker
-              const latLng = marker.getLatLng()
-              const zoom = this.state.map.getZoom()
-              this.state.map.setView(latLng, zoom)
-            }
-          )
 
         this.markerLayers[station.origin].push(marker)
+        this.markerLayers['all'].push(marker)
       }
     }
+
+
+    //REDUCES AND BUNDLES MARKERS
+    this.markerLayers.all = this.markerLayers.all.reduce(
+      (accumulator, currentMarker) => {
+
+        if(accumulator.length == 0)
+          return [currentMarker]
+
+        const found = accumulator.findIndex(
+          (bundledMarker) => bundledMarker._latlng.lat == currentMarker._latlng.lat &&
+              bundledMarker._latlng.lng == currentMarker._latlng.lng
+        )
+        if(found != -1) {
+          accumulator[found].options.stations.push(currentMarker.options.stations[0])
+        } else {
+          accumulator.push(currentMarker)
+        }
+        return accumulator
+      }, []
+    )
+
+
+    this.markerLayers.all.forEach(
+      (marker) => {
+        marker.addEventListener('click',
+          () => {
+            this.props.onChangeCurrentStation(marker.options.stations)
+
+
+            //center zoom on marker
+            const latLng = marker.getLatLng()
+            const zoom = this.state.map.getZoom()
+            this.state.map.setView(latLng, zoom)
+          }
+        )
+        marker.addTo(this.state.layerGroup)
+      }
+    )
+
+
 
     if (this.props.dataOrigin.luftdaten) {
       this.markerLayers.luftdaten.forEach(

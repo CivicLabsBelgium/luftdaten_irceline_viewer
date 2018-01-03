@@ -37,14 +37,13 @@ export function array_unique (value, index, self) {
 
 export function createMarkerIconSVG (options) {
   const ReactDOMServer = require('react-dom/server')
-  console.log(options.borderColor)
-  const border = (options.borderColor !== "#000") ? null : <path stroke="#000" strokeWidth="1" fill="#000"
-                       d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
+  const border = (options.hexagonIsSelected === false) ? null : <path stroke="#000" fill="#000"
+                                                                     d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
   return (
     ReactDOMServer.renderToStaticMarkup(
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.3 83.58" height={options.size} width={options.size}>
         <polygon fill={options.color}
-          points="1.73 41.96 24.79 1.68 71.21 1.5 94.56 41.62 71.51 81.9 25.09 82.07 1.73 41.96"/>
+                 points="1.73 41.96 24.79 1.68 71.21 1.5 94.56 41.62 71.51 81.9 25.09 82.07 1.73 41.96"/>
         {border}
       </svg>)
 
@@ -63,7 +62,6 @@ export function colorToRgba (hexColor, alpha) {
   return 'rgba(' + rgba.join(', ') + ')'
 }
 
-
 //TODO cleaner grid with no gaps and overlaps
 export function snapToGrid (latlng, map, size) {
 
@@ -72,10 +70,10 @@ export function snapToGrid (latlng, map, size) {
 
   const latlngInPxCoords = map.latLngToLayerPoint(latlng)
 
-  let latSnappedPxCoords = ( latlngInPxCoords.x - latlngInPxCoords.x % (size * xOffset)) // X
-  let lngSnappedPxCoords = ( latlngInPxCoords.y - latlngInPxCoords.y % (size * yOffset)) // Y
+  let latSnappedPxCoords = (latlngInPxCoords.x - latlngInPxCoords.x % (size * xOffset)) // X
+  let lngSnappedPxCoords = (latlngInPxCoords.y - latlngInPxCoords.y % (size * yOffset)) // Y
 
-  if(latSnappedPxCoords % (size * xOffset * 2) == 0) {
+  if (latSnappedPxCoords % (size * xOffset * 2) == 0) {
     lngSnappedPxCoords += (size * yOffset) / 2
   }
 
