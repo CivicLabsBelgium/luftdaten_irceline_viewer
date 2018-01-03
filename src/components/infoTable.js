@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 
 const InfoTable = props => {
 
-  // const headers = (props.station.type === "PM") ? 'yes' : props.length
 
   if (props.data.length === 0)
     return null
@@ -27,7 +26,6 @@ const InfoTable = props => {
         col2Value = sensor.humidity
         col2Unit = <span>&nbsp;&#37;</span>
       }
-      console.log(sensor)
 
       if (col1Value) {
         sumCol1 += parseFloat(col1Value)
@@ -47,7 +45,7 @@ const InfoTable = props => {
 
       return (
         <tr key={sensor.id}>
-          <td>{sensor.id}</td>
+          <td>{sensor.id} (station {sensor.stationID})</td>
           <td>{col1Value}</td>
           <td>{col2Value}</td>
         </tr>
@@ -61,9 +59,6 @@ const InfoTable = props => {
   let meanCol2 = (sumCol2/countCol2).toFixed(2)
   if(isNaN(meanCol2))
     meanCol2 = '-'
-
-
-  console.log('result', sensorList)
 
   if (props.type === 'partsPerMillion')
     return (
@@ -109,35 +104,6 @@ const InfoTable = props => {
         </tbody>
       </table>
     )
-  /*
-
-  tempAndHumTable (tempAndHumSensor) {
-    if (!tempAndHumSensor) {
-      return null
-    }
-    return (
-      <table>
-        <tbody>
-        <tr>
-          <th>Sensor ID</th>
-          <th style={ {textDecoration: this.props.phenomenon === 'temperature' ? 'underline':'none' } }>temperature</th>
-          <th style={ {textDecoration: this.props.phenomenon === 'humidity' ? 'underline':'none' } }>humidity</th>
-        </tr>
-        <tr>
-          <th>{tempAndHumSensor.id}</th>
-          <td>{tempAndHumSensor.temperature || '?'}°C</td>
-          <td>{tempAndHumSensor.humidity || '?'}&nbsp;&#37;</td>
-        </tr>
-        <tr>
-          <td colSpan="3">
-            <div>{tempAndHumSensor.manufacturer}, {tempAndHumSensor.name}</div>
-            <div>data by: {this.props.station.origin}</div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    )
-  }*/
 }
 
 const infoTableStateToProps = state => {

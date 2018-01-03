@@ -1,0 +1,14 @@
+GET GET%20/sos/api/v1/timeseries?expanded=true&station=1117&phenomenon=5&force_latest_values=true%20HTTP/1.1%20Host:%20geo.irceline.be%20Connection:%20keep-alive%20Origin:%20http://localhost:3000%20User-Agent:%20Mozilla/5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_12_6)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/63.0.3239.108%20Safari/537.36%20Accept:%20*/*%20Referer:%20http://localhost:3000/%20Accept-Encoding:%20gzip,%20deflate%20Accept-Language:%20nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7%20/resources
+Accept: */*
+Cache-Control: no-cache
+GET /sos/api/v1/timeseries?expanded=true&station=1117&phenomenon=5&force_latest_values=true HTTP/1.1 Host: geo.irceline.be Connection: keep-alive Origin: http://localhost:3000 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36 Accept: */* Referer: http://localhost:3000/ Accept-Encoding: gzip, deflate Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7:
+
+###
+
+GET http://localhost:8080/resources
+Accept: */*
+Cache-Control: no-cache
+GET /sos/api/v1/timeseries?expanded=true&station=1117&phenomenon=5&force_latest_values=true HTTP/1.1 Host: geo.irceline.be Connection: keep-alive Origin: http://localhost:3000 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36 Accept: */* Referer: http://localhost:3000/ Accept-Encoding: gzip, deflate Accept-Language: nl-NL,nl;q=0.9,en-US;q=0.8,en;q=0.7:
+
+###
+

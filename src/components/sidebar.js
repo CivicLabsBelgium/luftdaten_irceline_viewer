@@ -4,68 +4,7 @@ import { setCurrentStation } from '../redux/appState/actions'
 import InfoTable from './infoTable'
 
 class Sidebar extends Component {
-  /*
 
-    partsPerMillionTable (partsPerMillionSensor) {
-      if (!partsPerMillionSensor) {
-        return null
-      }
-      return (
-        <table>
-          <tbody>
-          <tr>
-            <th>Sensor ID</th>
-            <th style={ {textDecoration: this.props.phenomenon === 'PM10' ? 'underline':'none' } }>PM10</th>
-            <th style={ {textDecoration: this.props.phenomenon === 'PM25' ? 'underline':'none' } }>PM2.5</th>
-          </tr>
-          <tr>
-            <th>
-              {partsPerMillionSensor.id}
-            </th>
-            <td>{partsPerMillionSensor.PM10 || '?'}&nbsp;µg/m<sup>3</sup></td>
-            <td>{partsPerMillionSensor.PM25 || '?'}&nbsp;µg/m<sup>3</sup></td>
-          </tr>
-          <tr>
-            <td colSpan="3">
-              <div>{partsPerMillionSensor.manufacturer} {partsPerMillionSensor.name}</div>
-              <div>data by: {this.props.station.origin}</div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      )
-    }
-
-    tempAndHumTable (tempAndHumSensor) {
-      if (!tempAndHumSensor) {
-        return null
-      }
-      return (
-        <table>
-          <tbody>
-          <tr>
-            <th>Sensor ID</th>
-            <th style={ {textDecoration: this.props.phenomenon === 'temperature' ? 'underline':'none' } }>temperature</th>
-            <th style={ {textDecoration: this.props.phenomenon === 'humidity' ? 'underline':'none' } }>humidity</th>
-          </tr>
-          <tr>
-            <th>{tempAndHumSensor.id}</th>
-            <td>{tempAndHumSensor.temperature || '?'}°C</td>
-            <td>{tempAndHumSensor.humidity || '?'}&nbsp;&#37;</td>
-          </tr>
-          <tr>
-            <td colSpan="3">
-              <div>{tempAndHumSensor.manufacturer}, {tempAndHumSensor.name}</div>
-              <div>data by: {this.props.station.origin}</div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      )
-    }
-
-
-  /*****************/
 
   getSensorList () {
     let sensorList = {
@@ -83,8 +22,10 @@ class Sidebar extends Component {
             } else if (sensor.temperature || sensor.humidity) {
               sensorList.tempAndHum.push(sensor)
             }
+            return null
           }
         )
+        return null
       }
     )
 

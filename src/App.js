@@ -14,7 +14,7 @@ class App extends Component {
 
   componentDidMount () {
     updateData().then()
-    setInterval(updateData, 6e4)
+    // setInterval(updateData, 6e4)
   }
 
   render () {

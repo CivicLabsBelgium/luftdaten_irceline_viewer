@@ -50,14 +50,7 @@ class Map extends Component {
 
   showMarkers () {
 
-    // TODO center view on selected hexagon when render/showmarkers is called by zoomend event
-    // if (this.props.appState.station) {
-    //   //center zoom on marker
-    //   const latLng = [0,0]
-    //   const zoom = this.state.map.getZoom()
-    //   this.state.map.setView(latLng, zoom)
-    // }
-
+    const hexSize = 50
 
     this.markerLayers.luftdaten = []
     this.markerLayers.irceline = []
@@ -70,15 +63,9 @@ class Map extends Component {
 
     for (let k in stations) {
 
-      let hexagonMarkerOptions = {
-        hexagonIsSelected: false,
-        size: 50
-      }
-
       const station = stations[k]
 
       let hasSensorForCurrentPhenomenon = false
-
 
       for (let i in station.sensors) {
         const sensor = station.sensors[i]
@@ -89,52 +76,36 @@ class Map extends Component {
         }
       }
 
-      //selected border
-      if (this.props.appState.station && this.props.appState.station.id === station.id) {
-        hexagonMarkerOptions.hexagonIsSelected = true
-      }
-
-      let markerOptions = {
-        icon:
-          window.L.divIcon({
-            className: 'hexagonMarker',
-            html: createMarkerIconSVG(hexagonMarkerOptions)
-            // iconAnchor: [0-hexagonMarkerOptions.size/2, 0-hexagonMarkerOptions.size/2]
-          }),
-        stations: [station]
-      }
-
-      //add markers to layergroup
+      //TODO FIX THIS
+      // add markers to layergroup
       if (hasSensorForCurrentPhenomenon) {
 
-        const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexagonMarkerOptions.size)
-        const bundledStations = window.L.marker(latlngSnappedToGrid, markerOptions)
+        const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexSize)
+        const bundledStations = {
+          stations: [station],
+          latlng: latlngSnappedToGrid
+        }
 
         this.markerLayers['all'].push(bundledStations)
       }
     }
 
-
     //REDUCES AND BUNDLES MARKERS
     this.markerLayers.all = this.markerLayers.all.reduce(
       (accumulator, currentMarker) => {
 
-        if(accumulator.length === 0)
-          return [currentMarker]
-
         const found = accumulator.findIndex(
-          (bundledMarker) => bundledMarker._latlng.lat === currentMarker._latlng.lat &&
-              bundledMarker._latlng.lng === currentMarker._latlng.lng
+          (bundledStations) => bundledStations.latlng.lat === currentMarker.latlng.lat &&
+            bundledStations.latlng.lng === currentMarker.latlng.lng
         )
-        if(found !== -1) {
-          accumulator[found].options.stations.push(currentMarker.options.stations[0])
+        if (found !== -1) {
+          accumulator[found].stations.push(currentMarker.stations[0])
         } else {
           accumulator.push(currentMarker)
         }
         return accumulator
       }, []
     )
-
 
     this.markerLayers.all.forEach(
       (marker) => {
@@ -143,13 +114,13 @@ class Map extends Component {
         let sumValues = 0
         let countValues = 0
 
-        marker.options.stations.forEach(
+        marker.stations.forEach(
           station => {
             station.sensors.forEach(
               sensor => {
 
                 const currentValue = sensor[this.props.appState.phenomenon]
-                if( typeof currentValue !== "undefined") {
+                if (typeof currentValue !== 'undefined') {
                   countValues++
                   sumValues += parseFloat(currentValue)
                 }
@@ -157,10 +128,7 @@ class Map extends Component {
             )
           }
         )
-        console.log(sumValues, countValues)
         const meanValue = (sumValues / countValues)
-        console.log(meanValue, this.props.appState.phenomenon)
-
 
         //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
 
@@ -178,16 +146,39 @@ class Map extends Component {
         const colorUpper = phenomenonMeta.colors[valueExceedsIndex]
         const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
 
-        //TODO create marker here
-        marker.options.color = colorToRgba(colorBlend, 0.4)
-        console.log(marker)
+        let hexagonIconOptions = {
+          hexagonIsSelected: false,
+          size: hexSize,
+          color: colorToRgba(colorBlend, 0.6)
+        }
 
+        //selected border on any marker containing selected station
+        if (this.props.appState.station && marker.stations.find(
+            station => {
+              return this.props.appState.station.find(
+                selectedStation => (selectedStation.id === station.id)
+              )
+            }
+          )) {
+          hexagonIconOptions.hexagonIsSelected = true
+        }
+
+        let markerOptions = {
+          icon:
+            window.L.divIcon({
+              className: 'hexagonMarker',
+              html: createMarkerIconSVG(hexagonIconOptions)
+              // iconAnchor: [0-hexagonIconOptions.size/2, 0-hexagonIconOptions.size/2]
+            }),
+          stations: marker.stations
+        }
+
+        marker = window.L.marker(marker.latlng, markerOptions)
 
         // ADD BUNDLED MARKERS TO MAP
         marker.addEventListener('click',
           () => {
             this.props.onChangeCurrentStation(marker.options.stations)
-
 
             //center zoom on marker
             const latLng = marker.getLatLng()
@@ -198,8 +189,6 @@ class Map extends Component {
         marker.addTo(this.state.layerGroup)
       }
     )
-
-
 
     if (this.props.dataOrigin.luftdaten) {
       this.markerLayers.luftdaten.forEach(

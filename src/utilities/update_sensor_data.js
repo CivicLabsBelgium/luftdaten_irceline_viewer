@@ -34,15 +34,19 @@ export const updateData = async () => {
 
   let luftdaten_all_url = 'https://api.luftdaten.info/v1/filter/area=50.8531,4.3550,'+radius
 
-  let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url)
-  let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url)
+  //let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url)
+  //let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url)
   let luftdaten_all_json = await generic_functions.fetch_json(luftdaten_all_url)
   let luftdaten_stations = parse_luftdaten_data(luftdaten_all_json)
 
-  let irceline_pm10_promise = await parse_irceline_data(irceline_pm10_json)
-  let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
+  //let irceline_pm10_promise = await parse_irceline_data(irceline_pm10_json)
+  //let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
 
-  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise) //TODO catch error if API is down
+  //let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise) //TODO catch error if API is down
+
+
+  //TODO fix irceline requests, delete below line
+  let irceline_stations = []
 
   irceline_stations = irceline_stations.reduce(
     (accumulator, station) => {
