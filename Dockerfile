@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package.json .
 
-RUN npm install serve
+RUN npm install
 
 COPY . .
 

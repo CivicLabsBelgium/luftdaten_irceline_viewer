@@ -1,7 +1,7 @@
 const defaultState = {
   dataOrigin: {
-    luftdaten: false,
-    irceline: false
+    luftdaten: true,
+    irceline: true
   },
   sensor: null,
   stationList: null,
@@ -72,27 +72,28 @@ const defaultState = {
   }
 }
 
-export default function appState(state = defaultState, action) {
+export default function appState (state = defaultState, action) {
   const newState = Object.assign({}, state)
   switch (action.type) {
     case 'APPSTATE_SET_CURRENT_STATIONLIST':
-      newState.stationList = (newState.stationList === action.stationList)? null : action.stationList;
+      newState.stationList = (newState.stationList === action.stationList) ? null : action.stationList
+      newState.sensor = null
       return newState
 
     case 'APPSTATE_SET_CURRENT_SENSOR':
-      newState.sensor = (newState.sensor === action.sensor)? null : action.sensor;
+      newState.sensor = (newState.sensor === action.sensor) ? null : action.sensor
       return newState
 
     case 'APPSTATE_SET_PHENOMENON':
-      newState.phenomenon = action.phenomenon;
+      newState.phenomenon = action.phenomenon
       return newState
 
     case 'APPSTATE_SET_TIME':
-      newState.time = action.time;
+      newState.time = action.time
       return newState
 
     case 'APPSTATE_SET_DATA_ORIGIN':
-      newState.dataOrigin = action.dataOrigin;
+      newState.dataOrigin = action.dataOrigin
       return newState
 
     default:

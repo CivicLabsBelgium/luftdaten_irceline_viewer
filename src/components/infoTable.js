@@ -139,8 +139,7 @@ const InfoTable = props => {
 }
 
 const centerMapView = (map, coords) => {
-  const zoom = map.map.getZoom()
-  map.map.setView(coords, zoom)
+  map.map.setView(coords, 14)
 }
 
 const mapStateToProps = state => {
