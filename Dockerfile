@@ -2,9 +2,11 @@ FROM node:boron
 
 WORKDIR /usr/src/app
 
+COPY package.json .
+
 RUN npm install serve
 
-COPY build build/
+COPY . .
 
 EXPOSE 5000
 
