@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentStation } from '../redux/appState/actions'
+import { setCurrentStationList } from '../redux/appState/actions'
+import { setMap } from '../redux/map/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { blend_colors } from '../utilities/colorBlender'
 
@@ -46,14 +47,13 @@ class Map extends Component {
       map: map,
       layerGroup: layerGroup
     })
+
+    this.props.onSetMap(map)
   }
 
   showMarkers () {
 
     const hexSize = 50
-
-    this.markerLayers.luftdaten = []
-    this.markerLayers.irceline = []
     this.markerLayers.all = []
 
     if (this.state.layerGroup)
@@ -64,6 +64,9 @@ class Map extends Component {
     for (let k in stations) {
 
       const station = stations[k]
+
+      if(this.props.appState.dataOrigin[station.origin] === false)
+        continue;
 
       let hasSensorForCurrentPhenomenon = false
 
@@ -76,8 +79,7 @@ class Map extends Component {
         }
       }
 
-      //TODO FIX THIS
-      // add markers to layergroup
+
       if (hasSensorForCurrentPhenomenon) {
 
         const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexSize)
@@ -152,10 +154,10 @@ class Map extends Component {
           color: colorToRgba(colorBlend, 0.6)
         }
 
-        //selected border on any marker containing selected station
-        if (this.props.appState.station && marker.stations.find(
+        //selected border on any marker containing selected stationList
+        if (this.props.appState.stationList && marker.stations.find(
             station => {
-              return this.props.appState.station.find(
+              return this.props.appState.stationList.find(
                 selectedStation => (selectedStation.id === station.id)
               )
             }
@@ -181,31 +183,19 @@ class Map extends Component {
             this.props.onChangeCurrentStation(marker.options.stations)
 
             //center zoom on marker
-            const latLng = marker.getLatLng()
-            const zoom = this.state.map.getZoom()
-            this.state.map.setView(latLng, zoom)
+            const coords = marker.getLatLng()
+            this.centerOnCoords(coords)
           }
         )
         marker.addTo(this.state.layerGroup)
       }
     )
 
-    if (this.props.dataOrigin.luftdaten) {
-      this.markerLayers.luftdaten.forEach(
-        (marker) => {
-          marker.addTo(this.state.layerGroup)
-        }
-      )
-    }
+  }
 
-    if (this.props.dataOrigin.irceline) {
-      this.markerLayers.irceline.forEach(
-        (marker) => {
-          marker.addTo(this.state.layerGroup)
-        }
-      )
-    }
-
+  centerOnCoords (coords) {
+    const zoom = this.state.map.getZoom()
+    this.state.map.setView(coords, zoom)
   }
 
   render () {
@@ -216,18 +206,22 @@ class Map extends Component {
   }
 }
 
+
 const mapStateToProps = state => {
   return {
     appState: state.appState,
     stations: state.stations,
-    dataOrigin: state.appState.dataOrigin
+    map: state.map
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onChangeCurrentStation: station => {
-      dispatch(setCurrentStation(station))
+      dispatch(setCurrentStationList(station))
+    },
+    onSetMap: map => {
+      dispatch(setMap(map))
     }
   }
 }

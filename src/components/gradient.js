@@ -59,11 +59,11 @@ class Gradient extends Component {
   }
 }
 
-const gradientStateToProps = state => {
+const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     phenomenonMeta: state.appState.phenomenonMeta
   }
 }
 
-export default connect(gradientStateToProps)(Gradient)
+export default connect(mapStateToProps)(Gradient)

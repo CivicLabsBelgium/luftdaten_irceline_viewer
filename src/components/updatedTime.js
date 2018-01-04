@@ -8,11 +8,11 @@ const UpdatedTime = ({time}) =>
 
 
 
-const updatedTimeStateToProps = state => {
+const mapStateToProps = state => {
   return {
     time: state.appState.time
   }
 }
 
 
-export default connect(updatedTimeStateToProps)(UpdatedTime)
+export default connect(mapStateToProps)(UpdatedTime)

@@ -3,7 +3,8 @@ const defaultState = {
     luftdaten: false,
     irceline: false
   },
-  station: null,
+  sensor: null,
+  stationList: null,
   time: null,
   phenomenon: 'PM25',
   phenomenonMeta: {
@@ -74,8 +75,12 @@ const defaultState = {
 export default function appState(state = defaultState, action) {
   const newState = Object.assign({}, state)
   switch (action.type) {
-    case 'APPSTATE_SET_CURRENT_STATION':
-      newState.station = (newState.station === action.station)? null : action.station;
+    case 'APPSTATE_SET_CURRENT_STATIONLIST':
+      newState.stationList = (newState.stationList === action.stationList)? null : action.stationList;
+      return newState
+
+    case 'APPSTATE_SET_CURRENT_SENSOR':
+      newState.sensor = (newState.sensor === action.sensor)? null : action.sensor;
       return newState
 
     case 'APPSTATE_SET_PHENOMENON':

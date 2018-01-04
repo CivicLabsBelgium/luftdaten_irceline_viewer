@@ -18,11 +18,11 @@ const Legend = (props) =>
 
 
 
-const legendStateToProps = state => {
+const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     phenomenonMeta: state.appState.phenomenonMeta
   }
 }
 
-export default connect(legendStateToProps)(Legend)
+export default connect(mapStateToProps)(Legend)

@@ -1,7 +1,14 @@
-export function setCurrentStation (station) {
+export function setCurrentStationList (stationList) {
   return {
-    type: 'APPSTATE_SET_CURRENT_STATION',
-    station
+    type: 'APPSTATE_SET_CURRENT_STATIONLIST',
+    stationList
+  }
+}
+
+export function setCurrentSensor (sensor) {
+  return {
+    type: 'APPSTATE_SET_CURRENT_SENSOR',
+    sensor
   }
 }
 

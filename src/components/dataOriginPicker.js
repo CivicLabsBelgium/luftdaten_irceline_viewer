@@ -21,13 +21,13 @@ class DataOriginPicker extends Component {
   }
 }
 
-const dataOriginPickerStateToProps = state => {
+const mapStateToProps = state => {
   return {
     dataOrigin: state.appState.dataOrigin
   }
 }
 
-const dataOriginPickerDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     onChangeDataOrigin: (dataOrigin) => {
       dispatch(setDataOrigin(dataOrigin))
@@ -35,4 +35,4 @@ const dataOriginPickerDispatchToProps = dispatch => {
   }
 }
 
-export default connect(dataOriginPickerStateToProps, dataOriginPickerDispatchToProps)(DataOriginPicker)
+export default connect(mapStateToProps, mapDispatchToProps)(DataOriginPicker)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentStation } from '../redux/appState/actions'
+import { setCurrentStationList } from '../redux/appState/actions'
 import InfoTable from './infoTable'
 
 class Sidebar extends Component {
@@ -11,12 +11,14 @@ class Sidebar extends Component {
       partsPerMillion: [],
       tempAndHum: []
     }
-    this.props.station.map(
+    this.props.stationList.map(
       station => {
         station.sensors.map(
           sensor => {
             sensor.stationID = station.id
             sensor.origin = station.origin
+            sensor.lat = station.latitude
+            sensor.lng = station.longitude
             if (sensor.PM10 || sensor.PM25) {
               sensorList.partsPerMillion.push(sensor)
             } else if (sensor.temperature || sensor.humidity) {
@@ -33,7 +35,7 @@ class Sidebar extends Component {
   }
 
   render () {
-    if (!this.props.station)
+    if (!this.props.stationList)
       return null
     const sensors = this.getSensorList()
 
@@ -52,19 +54,19 @@ class Sidebar extends Component {
 
 }
 
-const sidebarStateToProps = state => {
+const mapStateToProps = state => {
   return {
-    station: state.appState.station,
+    stationList: state.appState.stationList,
     phenomenon: state.appState.phenomenon
   }
 }
 
-const sidebarDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     onChangeCurrentStation: () => {
-      dispatch(setCurrentStation(null))
+      dispatch(setCurrentStationList(null))
     }
   }
 }
 
-export default connect(sidebarStateToProps, sidebarDispatchToProps)(Sidebar)
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
