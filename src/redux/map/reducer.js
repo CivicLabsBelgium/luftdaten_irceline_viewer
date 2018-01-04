@@ -2,7 +2,7 @@ const defaultState = {
   map: null
 }
 
-export default function appState(state = defaultState, action) {
+export default function map(state = defaultState, action) {
   const newState = Object.assign({}, state)
   switch (action.type) {
     case 'MAP_SET_MAP':
