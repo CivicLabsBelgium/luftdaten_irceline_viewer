@@ -33,7 +33,7 @@ class Map extends Component {
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
     map.addEventListener('zoomend', () => {
-      this.render()
+      this.showMarkers(this.props)
     })
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -52,7 +52,7 @@ class Map extends Component {
 
   }
 
-  showMarkers () {
+  showMarkers (nextProps) {
 
     const hexSize = 50
     this.markerLayers.all = []
@@ -60,20 +60,20 @@ class Map extends Component {
     if (this.state.layerGroup)
       this.state.layerGroup.clearLayers()
 
-    let stations = this.props.stations
+    let stations = nextProps.stations
 
     for (let k in stations) {
 
       const station = stations[k]
 
-      if(this.props.appState.dataOrigin[station.origin] === false)
+      if(nextProps.appState.dataOrigin[station.origin] === false)
         continue;
 
       let hasSensorForCurrentPhenomenon = false
 
       for (let i in station.sensors) {
         const sensor = station.sensors[i]
-        const phenomenon = this.props.appState.phenomenon
+        const phenomenon = nextProps.appState.phenomenon
         if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
           hasSensorForCurrentPhenomenon = true
           break
@@ -122,7 +122,7 @@ class Map extends Component {
             station.sensors.forEach(
               sensor => {
 
-                const currentValue = sensor[this.props.appState.phenomenon]
+                const currentValue = sensor[nextProps.appState.phenomenon]
                 if (typeof currentValue !== 'undefined') {
                   countValues++
                   sumValues += parseFloat(currentValue)
@@ -135,7 +135,7 @@ class Map extends Component {
 
         //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
 
-        const phenomenonMeta = this.props.appState.phenomenonMeta[this.props.appState.phenomenon]
+        const phenomenonMeta = nextProps.appState.phenomenonMeta[nextProps.appState.phenomenon]
         const valueExceedsIndex = phenomenonMeta.values.indexOf(
           (phenomenonMeta.values.find(
             (value) => {
@@ -156,9 +156,9 @@ class Map extends Component {
         }
 
         //selected border on any marker containing selected stationList
-        if (this.props.appState.stationList && marker.stations.find(
+        if (nextProps.appState.stationList && marker.stations.find(
             station => {
-              return this.props.appState.stationList.find(
+              return nextProps.appState.stationList.find(
                 selectedStation => (selectedStation.id === station.id)
               )
             }
@@ -181,7 +181,7 @@ class Map extends Component {
         // ADD BUNDLED MARKERS TO MAP
         marker.addEventListener('click',
           () => {
-            this.props.onChangeCurrentStation(marker.options.stations)
+            nextProps.onChangeCurrentStation(marker.options.stations)
 
             //center zoom on marker
             const coords = marker.getLatLng()
@@ -198,11 +198,18 @@ class Map extends Component {
     this.state.map.setView(coords, zoom)
   }
 
-  render () {
-    if(this.props.appState.mapCoords !== null)
-      this.centerOnCoords(this.props.appState.mapCoords, 14)
+  componentWillReceiveProps (nextProps) {
+    if(this.props.appState.mapCoords !== nextProps.appState.mapCoords)
+      this.centerOnCoords(nextProps.appState.mapCoords, 14)
 
-    this.showMarkers()
+    this.showMarkers(nextProps)
+  }
+
+  shouldComponentUpdate() {
+    return false
+  }
+
+  render () {
     return (
       <div id="map"/>
     )

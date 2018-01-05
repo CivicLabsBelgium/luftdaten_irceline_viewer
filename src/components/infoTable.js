@@ -15,9 +15,8 @@ const InfoTable = props => {
   const sensorList = props.data.map(
     sensor => {
 
-      if(props.origin[sensor.origin] === false)
+      if (props.origin[sensor.origin] === false)
         return null
-
 
       let col1Value, col1Unit, col2Value, col2Unit
       if (sensor.PM10 || sensor.PM25) {
@@ -48,13 +47,12 @@ const InfoTable = props => {
       else
         col2Value = '-'
 
-
       console.log()
       return (
-        <React.Fragment key={sensor.id} >
+        <React.Fragment key={sensor.id}>
           <tr className={
             (props.sensor === sensor.id) ? 'sensor selected' : 'sensor'
-          }  onClick={() => props.onChangeCurrentSensor(sensor.id)}>
+          } onClick={() => props.onChangeCurrentSensor(sensor.id)}>
             <td>{sensor.id}</td>
             <td>{col1Value}</td>
             <td>{col2Value}</td>
@@ -71,18 +69,17 @@ const InfoTable = props => {
               </tr>
               <tr className="selected">
                 <td>Source</td>
-                <td colSpan="2"><a target="_blank" href={(sensor.origin === "irceline")? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten')? 'http://luftdaten.info/' : '#'}>{sensor.origin}</a></td>
+                <td colSpan="2"><a target="_blank"
+                                   href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : '#'}>{sensor.origin}</a>
+                </td>
               </tr>
               <tr className="selected">
                 <td>Location</td>
-                <td colSpan="2">lat: {sensor.lat},<br/> long: {sensor.lng} <button onClick={
-                  () => {
-                    props.onSetMapCoords( [sensor.lat, sensor.lng])
-                    setTimeout( ()=> props.onSetMapCoords( null ), 10) //TODO Find a better solution
-                  }
-                }>&#8689;</button></td>
+                <td colSpan="2">lat: {sensor.lat},<br/> long: {sensor.lng}
+                  <button onClick={() => { props.onSetMapCoords([sensor.lat, sensor.lng]) }}>&#8689;</button>
+                </td>
               </tr>
-              </React.Fragment> : null
+            </React.Fragment> : null
           }
 
         </React.Fragment>
@@ -142,7 +139,6 @@ const InfoTable = props => {
       </table>
     )
 }
-
 
 const mapStateToProps = state => {
   return {

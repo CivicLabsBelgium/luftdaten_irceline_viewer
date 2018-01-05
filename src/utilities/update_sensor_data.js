@@ -3,7 +3,7 @@ import store from '../redux/store'
 import { addStations } from '../redux/stations/actions'
 import { setTime } from '../redux/appState/actions'
 
-const radius = 20;
+const radius = 150;
 
 export const updateData = async () => {
 
@@ -98,7 +98,7 @@ const parse_irceline_data = async (data) => {
         longitude: station.geometry.coordinates[0],
         origin: 'irceline',
         sensors: [{
-          id: sensorID,
+          id: 'I-'+sensorID,
           manufacturer: null,
           name: sensorName,
           PM10: PM10,
@@ -129,8 +129,6 @@ const parse_luftdaten_data = (data) => {
         id: station.location.id,
         latitude: station.location.latitude,
         longitude: station.location.longitude,
-        // manufacturer: stationList.sensor.sensor_type.manufacturer,
-        // name: stationList.sensor.sensor_type.name,
         origin: 'luftdaten',
         sensors: []
       }
@@ -150,7 +148,7 @@ const parse_luftdaten_data = (data) => {
           let currentSensor = parsed_station.sensors
             .find(
               (sensor) => {
-                return sensor.id === currentStation.sensor.id
+                return sensor.id === 'L-'+currentStation.sensor.id
               }
             )
           if (currentSensor) {
@@ -161,9 +159,10 @@ const parse_luftdaten_data = (data) => {
             )
           } else {
             currentSensor = {
-              id: currentStation.sensor.id,
+              id: 'L-'+currentStation.sensor.id,
               manufacturer: currentStation.sensor.sensor_type.manufacturer,
               name: currentStation.sensor.sensor_type.name,
+              stationID: 'L-'+station.location.id
             }
           }
 
