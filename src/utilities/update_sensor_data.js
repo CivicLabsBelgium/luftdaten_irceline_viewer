@@ -103,7 +103,7 @@ const parse_irceline_data = async (data) => {
 
       let sensorID = (pm10_response) ? pm10_response.id : (pm25_response) ? pm25_response.id : (temp_response) ? temp_response.id : null
       let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : (pm25_response) ? pm25_response.parameters.procedure.label : (temp_response) ? temp_response.parameters.procedure.label : null
-      sensorName = sensorName.split(' - ')[1];
+      sensorName = sensorName.split(' - ')[1].split(';')[0];
       let PM10 = (pm10_response && pm10_response.lastValue.value>=0) ? pm10_response.lastValue.value : null
       let PM25 = (pm25_response && pm25_response.lastValue.value>=0) ? pm25_response.lastValue.value : null
       let temp = (temp_response && temp_response.lastValue.value>=0) ? temp_response.lastValue.value : null
