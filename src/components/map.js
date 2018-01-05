@@ -72,22 +72,15 @@ class Map extends Component {
 
       let hasSensorForCurrentPhenomenon = false
 
-      if (nextProps.appState.stationList !== null && nextProps.appState.stationList.find(
-          (s) => {
-            return s.id === station.id
-          }
-        ))
-        hasSensorForCurrentPhenomenon = true
-      else
-        for (let i in station.sensors) {
-          const sensor = station.sensors[i]
-          const phenomenon = nextProps.appState.phenomenon
+      for (let i in station.sensors) {
+        const sensor = station.sensors[i]
+        const phenomenon = nextProps.appState.phenomenon
 
-          if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
-            hasSensorForCurrentPhenomenon = true
-            break
-          }
+        if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
+          hasSensorForCurrentPhenomenon = true
+          break
         }
+      }
 
       if (hasSensorForCurrentPhenomenon) {
 
@@ -210,6 +203,37 @@ class Map extends Component {
     if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
 
+
+    //TODO unselect stations that have no sensors for selected data source
+    //unselect stations that have no sensors for currently selected phenomenon
+    if (this.props.appState.phenomenon !== nextProps.appState.phenomenon) {
+      let reduced_stationList = (nextProps.appState.stationList === null) ? [] : nextProps.appState.stationList.reduce(
+        (accumulator, station) => {
+
+          const hasSensor = station.sensors.find(
+            (sensor) => {
+              return sensor[nextProps.appState.phenomenon]
+            }
+          ) !== undefined
+
+          if(hasSensor)
+            accumulator.push(station)
+
+          return accumulator
+        }, []
+      )
+
+      console.log(reduced_stationList.length)
+
+      if(reduced_stationList.length === 0)
+        reduced_stationList = null
+
+      if(nextProps.appState.stationList !== reduced_stationList)
+        this.props.onChangeCurrentStation(reduced_stationList)
+
+      console.log(nextProps.appState.stationList, reduced_stationList)
+    }
+
     this.showMarkers(nextProps)
   }
 
@@ -234,8 +258,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChangeCurrentStation: station => {
-      dispatch(setCurrentStationList(station))
+    onChangeCurrentStation: stationList => {
+      dispatch(setCurrentStationList(stationList))
     },
     onSetMapCoords: coords => {
       dispatch(setMapCoords(coords))
