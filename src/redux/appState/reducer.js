@@ -3,6 +3,7 @@ const defaultState = {
     luftdaten: true,
     irceline: true
   },
+  mapCoords: null,
   sensor: null,
   stationList: null,
   time: null,
@@ -82,6 +83,10 @@ export default function appState (state = defaultState, action) {
 
     case 'APPSTATE_SET_CURRENT_SENSOR':
       newState.sensor = (newState.sensor === action.sensor) ? null : action.sensor
+      return newState
+
+    case 'APPSTATE_SET_MAP_COORDS':
+      newState.mapCoords = action.coords
       return newState
 
     case 'APPSTATE_SET_PHENOMENON':

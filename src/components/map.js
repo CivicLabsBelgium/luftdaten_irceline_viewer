@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentStationList } from '../redux/appState/actions'
-import { setMap } from '../redux/map/actions'
+import { setCurrentStationList, setMapCoords } from '../redux/appState/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { blend_colors } from '../utilities/colorBlender'
 
@@ -16,6 +15,7 @@ class Map extends Component {
       layerGroup: null
     }
     this.showMarkers = this.showMarkers.bind(this)
+
   }
 
   componentDidMount () {
@@ -24,15 +24,17 @@ class Map extends Component {
       zoom: 12,
       minZoom: 4,
       // restrict panning and zooming to belgium
-      // maxBounds: [
-      //   [51.666742, 2.123954],
-      //   [49.209022, 6.975232]
-      // ],
+      maxBounds: [
+        [51.666742, 2.123954],
+        [49.209022, 6.975232]
+      ],
       scrollWheelZoom: 'center'
     })
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
-    map.addEventListener('zoomend', () => this.render())
+    map.addEventListener('zoomend', () => {
+      this.render()
+    })
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map stations &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
@@ -48,7 +50,6 @@ class Map extends Component {
       layerGroup: layerGroup
     })
 
-    this.props.onSetMap(map)
   }
 
   showMarkers () {
@@ -193,12 +194,14 @@ class Map extends Component {
 
   }
 
-  centerOnCoords (coords) {
-    const zoom = this.state.map.getZoom()
+  centerOnCoords (coords, zoom = this.state.map.getZoom()) {
     this.state.map.setView(coords, zoom)
   }
 
   render () {
+    if(this.props.appState.mapCoords !== null)
+      this.centerOnCoords(this.props.appState.mapCoords, 14)
+
     this.showMarkers()
     return (
       <div id="map"/>
@@ -211,8 +214,8 @@ const mapStateToProps = state => {
   return {
     appState: state.appState,
     stations: state.stations,
-    map: state.map
   }
+
 }
 
 const mapDispatchToProps = dispatch => {
@@ -220,8 +223,8 @@ const mapDispatchToProps = dispatch => {
     onChangeCurrentStation: station => {
       dispatch(setCurrentStationList(station))
     },
-    onSetMap: map => {
-      dispatch(setMap(map))
+    onSetMapCoords: coords => {
+      dispatch(setMapCoords(coords))
     }
   }
 }

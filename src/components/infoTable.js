@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setCurrentSensor } from '../redux/appState/actions'
+import { setCurrentSensor, setMapCoords } from '../redux/appState/actions'
 
 const InfoTable = props => {
 
@@ -75,7 +75,12 @@ const InfoTable = props => {
               </tr>
               <tr className="selected">
                 <td>Location</td>
-                <td colSpan="2">lat: {sensor.lat},<br/> long: {sensor.lng} <button onClick={ () => centerMapView(props.map, [sensor.lat, sensor.lng])}>&#8689;</button></td>
+                <td colSpan="2">lat: {sensor.lat},<br/> long: {sensor.lng} <button onClick={
+                  () => {
+                    props.onSetMapCoords( [sensor.lat, sensor.lng])
+                    setTimeout( ()=> props.onSetMapCoords( null ), 10) //TODO Find a better solution
+                  }
+                }>&#8689;</button></td>
               </tr>
               </React.Fragment> : null
           }
@@ -138,15 +143,11 @@ const InfoTable = props => {
     )
 }
 
-const centerMapView = (map, coords) => {
-  map.map.setView(coords, 14)
-}
 
 const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     sensor: state.appState.sensor,
-    map: state.map,
     origin: state.appState.dataOrigin
   }
 }
@@ -155,6 +156,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onChangeCurrentSensor: sensor => {
       dispatch(setCurrentSensor(sensor))
+    },
+    onSetMapCoords: coords => {
+      dispatch(setMapCoords(coords))
     }
   }
 }

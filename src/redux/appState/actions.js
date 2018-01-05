@@ -12,6 +12,13 @@ export function setCurrentSensor (sensor) {
   }
 }
 
+export function setMapCoords (coords) {
+  return {
+    type: 'APPSTATE_SET_MAP_COORDS',
+    coords
+  }
+}
+
 export function setPhenomenon (phenomenon) {
   return {
     type: 'APPSTATE_SET_PHENOMENON',
