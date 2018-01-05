@@ -19,7 +19,6 @@ export const updateData = async () => {
     }\
     &phenomenon=5'.replace(/\s{2,}/, '')
     )
-
   let irceline_pm25_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
     encodeURI(
       '{\
@@ -32,21 +31,32 @@ export const updateData = async () => {
   &phenomenon=6001'.replace(/\s{2,}/, '')
     )
 
+  let irceline_temp_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
+    encodeURI(
+      '{\
+  "center": {\
+    "type": "Point",\
+    "coordinates": [4.3550,50.8531]\
+  },\
+    "radius": '+radius+'\
+  }\
+  &phenomenon=62101'.replace(/\s{2,}/, '')
+    )
+
   let luftdaten_all_url = 'https://api.luftdaten.info/v1/filter/area=50.8531,4.3550,'+radius
 
   let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url)
   let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url)
+  let irceline_temp_json = await generic_functions.fetch_json(irceline_temp_url)
   let luftdaten_all_json = await generic_functions.fetch_json(luftdaten_all_url)
   let luftdaten_stations = parse_luftdaten_data(luftdaten_all_json)
 
   let irceline_pm10_promise = await parse_irceline_data(irceline_pm10_json)
   let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
+  let irceline_temp_promise = await parse_irceline_data(irceline_temp_json)
 
-  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise) //TODO catch error if API is down
 
-
-  //TODO fix irceline requests, delete below line
-  // let irceline_stations = []
+  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise).concat(irceline_temp_promise) //TODO catch error if API is down
 
   irceline_stations = irceline_stations.reduce(
     (accumulator, station) => {
@@ -81,31 +91,58 @@ const parse_irceline_data = async (data) => {
 
       let pm10_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=5&force_latest_values=true'
       let pm25_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=6001&force_latest_values=true'
+      let temp_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=62101&force_latest_values=true'
+
       let pm10_request = await generic_functions.fetch_json(pm10_request_url)
       let pm10_response = pm10_request[0]
       let pm25_request = await generic_functions.fetch_json(pm25_request_url)
       let pm25_response = pm25_request[0]
+      let temp_request = await generic_functions.fetch_json(temp_request_url)
+      let temp_response = temp_request[0]
 
-      let sensorID = (pm10_response) ? pm10_response.id : pm25_response.id
-      let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : pm25_response.parameters.procedure.label
+
+      let sensorID = (pm10_response) ? pm10_response.id : (pm25_response) ? pm25_response.id : (temp_response) ? temp_response.id : null
+      let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : (pm25_response) ? pm25_response.parameters.procedure.label : (temp_response) ? temp_response.parameters.procedure.label : null
       sensorName = sensorName.split(' - ')[1];
       let PM10 = (pm10_response && pm10_response.lastValue.value>=0) ? pm10_response.lastValue.value : null
       let PM25 = (pm25_response && pm25_response.lastValue.value>=0) ? pm25_response.lastValue.value : null
+      let temp = (temp_response && temp_response.lastValue.value>=0) ? temp_response.lastValue.value : null
+
+
+
+      /// Splitting sensor into PM or temperature sensor
+      let PM_object = (pm10_response || pm25_response) ? {
+        id: 'I-'+sensorID+'p',
+        manufacturer: null,
+        name: sensorName,
+        PM10: PM10,
+        PM25: PM25,
+        stationID: 'I-'+station.properties.id
+      }: null
+
+      let temp_object = (temp_response) ? {
+        id: 'I-'+sensorID+'t',
+        manufacturer: null,
+        name: sensorName,
+        temperature: temp,
+        stationID: 'I-'+station.properties.id
+      }: null
+
+      let sensors = [
+        PM_object,
+        temp_object
+      ].filter(
+        (sensor) => {
+          return sensor !== null
+        }
+      )
 
       return {
         id: 'I-'+station.properties.id,
         latitude: station.geometry.coordinates[1],
         longitude: station.geometry.coordinates[0],
         origin: 'irceline',
-        sensors: [{
-          id: 'I-'+sensorID,
-          manufacturer: null,
-          name: sensorName,
-          PM10: PM10,
-          PM25: PM25,
-          stationID: 'I-'+station.properties.id
-        }]
-
+        sensors: sensors
       }
 
     }

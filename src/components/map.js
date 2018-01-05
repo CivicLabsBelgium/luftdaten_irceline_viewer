@@ -66,20 +66,28 @@ class Map extends Component {
 
       const station = stations[k]
 
-      if(nextProps.appState.dataOrigin[station.origin] === false)
-        continue;
+      //station origin deselected by user
+      if (nextProps.appState.dataOrigin[station.origin] === false)
+        continue
 
       let hasSensorForCurrentPhenomenon = false
 
-      for (let i in station.sensors) {
-        const sensor = station.sensors[i]
-        const phenomenon = nextProps.appState.phenomenon
-        if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
-          hasSensorForCurrentPhenomenon = true
-          break
-        }
-      }
+      if (nextProps.appState.stationList !== null && nextProps.appState.stationList.find(
+          (s) => {
+            return s.id === station.id
+          }
+        ))
+        hasSensorForCurrentPhenomenon = true
+      else
+        for (let i in station.sensors) {
+          const sensor = station.sensors[i]
+          const phenomenon = nextProps.appState.phenomenon
 
+          if (typeof sensor[phenomenon] !== 'undefined' && sensor[phenomenon] !== null) {
+            hasSensorForCurrentPhenomenon = true
+            break
+          }
+        }
 
       if (hasSensorForCurrentPhenomenon) {
 
@@ -199,13 +207,13 @@ class Map extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if(this.props.appState.mapCoords !== nextProps.appState.mapCoords)
+    if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
 
     this.showMarkers(nextProps)
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate () {
     return false
   }
 
@@ -215,7 +223,6 @@ class Map extends Component {
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {

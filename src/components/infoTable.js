@@ -15,6 +15,7 @@ const InfoTable = props => {
   const sensorList = props.data.map(
     sensor => {
 
+      //TODO Keep or not?
       if (props.origin[sensor.origin] === false)
         return null
 
