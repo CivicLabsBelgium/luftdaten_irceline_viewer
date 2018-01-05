@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 class Gradient extends Component {
-
   render () {
     const nodeSize = 50
     const currentPhenomenonMeta = this.props.phenomenonMeta[this.props.phenomenon]
-    const height = (currentPhenomenonMeta.values.length-1) * nodeSize + 1
+    const height = (currentPhenomenonMeta.values.length - 1) * nodeSize + 1
 
     const gradient = ['linear-gradient(to top'].concat(
       currentPhenomenonMeta.colors.map((color, index) => color + ' ' + (index * nodeSize) + 'px')
@@ -24,15 +23,14 @@ class Gradient extends Component {
         }
       ) || currentPhenomenonMeta.values[currentPhenomenonMeta.values.length - 1]))
 
-    const limitBarPos = (limitBarExceedsIndex === 0)? 0 : (
-        (nodeSize*limitBarExceedsIndex) -
-        (nodeSize / (currentPhenomenonMeta.values[limitBarExceedsIndex] - currentPhenomenonMeta.values[limitBarExceedsIndex-1]))
-        * (currentPhenomenonMeta.values[limitBarExceedsIndex] - currentPhenomenonMeta.max)
+    const limitBarPos = (limitBarExceedsIndex === 0) ? 0 : (
+      (nodeSize * limitBarExceedsIndex) -
+      (nodeSize / (currentPhenomenonMeta.values[limitBarExceedsIndex] - currentPhenomenonMeta.values[limitBarExceedsIndex - 1])) *
+      (currentPhenomenonMeta.values[limitBarExceedsIndex] - currentPhenomenonMeta.max)
     )
 
-
     const limitBarStyle = {
-      bottom: limitBarPos-1 + 'px'
+      bottom: limitBarPos - 1 + 'px'
     }
 
     return (
@@ -46,7 +44,7 @@ class Gradient extends Component {
                 const labelBottom = (index * nodeSize - 10) + 'px'
 
                 const labelStyle = {
-                  bottom: labelBottom,
+                  bottom: labelBottom
                 }
 
                 return <div key={index} className="labelValue" style={labelStyle}>{label}</div>
