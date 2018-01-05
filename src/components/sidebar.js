@@ -15,7 +15,6 @@ class Sidebar extends Component {
       station => {
         station.sensors.map(
           sensor => {
-            sensor.stationID = station.id
             sensor.origin = station.origin
             sensor.lat = station.latitude
             sensor.lng = station.longitude

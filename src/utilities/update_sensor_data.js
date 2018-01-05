@@ -93,7 +93,7 @@ const parse_irceline_data = async (data) => {
       let PM25 = (pm25_response && pm25_response.lastValue.value>=0) ? pm25_response.lastValue.value : null
 
       return {
-        id: station.properties.id,
+        id: 'I-'+station.properties.id,
         latitude: station.geometry.coordinates[1],
         longitude: station.geometry.coordinates[0],
         origin: 'irceline',
@@ -102,7 +102,8 @@ const parse_irceline_data = async (data) => {
           manufacturer: null,
           name: sensorName,
           PM10: PM10,
-          PM25: PM25
+          PM25: PM25,
+          stationID: 'I-'+station.properties.id
         }]
 
       }
