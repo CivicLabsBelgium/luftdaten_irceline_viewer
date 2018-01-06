@@ -5,7 +5,6 @@ import InfoTable from './infoTable'
 
 class Sidebar extends Component {
 
-
   getSensorList () {
     let sensorList = {
       partsPerMillion: [],
@@ -37,12 +36,15 @@ class Sidebar extends Component {
     if (!this.props.stationList)
       return null
     const sensors = this.getSensorList()
+    const count = sensors.partsPerMillion.length + sensors.tempAndHum.length
 
     return (
       <div className="sidebar">
         <div className="container">
           <div className="closeBtn">
             <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
+            <br/>
+            <span>({count} selected sensor{(count > 1) ? 's' : null})</span>
           </div>
           <InfoTable type="partsPerMillion" data={sensors.partsPerMillion}/>
           <InfoTable type="tempAndHum" data={sensors.tempAndHum}/>
