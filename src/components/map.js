@@ -203,16 +203,14 @@ class Map extends Component {
     if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
 
-
-    //TODO unselect stations that have no sensors for selected data source
-    //unselect stations that have no sensors for currently selected phenomenon
-    if (this.props.appState.phenomenon !== nextProps.appState.phenomenon) {
+    //unselect stations that have no sensors for currently selected phenomenon OR selected data origin
+    if (this.props.appState.phenomenon !== nextProps.appState.phenomenon || this.props.appState.dataOrigin !== nextProps.appState.dataOrigin) {
       let reduced_stationList = (nextProps.appState.stationList === null) ? [] : nextProps.appState.stationList.reduce(
         (accumulator, station) => {
 
           const hasSensor = station.sensors.find(
             (sensor) => {
-              return sensor[nextProps.appState.phenomenon]
+              return sensor[nextProps.appState.phenomenon] && nextProps.appState.dataOrigin[sensor.origin]
             }
           ) !== undefined
 
@@ -223,15 +221,11 @@ class Map extends Component {
         }, []
       )
 
-      console.log(reduced_stationList.length)
-
       if(reduced_stationList.length === 0)
         reduced_stationList = null
 
       if(nextProps.appState.stationList !== reduced_stationList)
         this.props.onChangeCurrentStation(reduced_stationList)
-
-      console.log(nextProps.appState.stationList, reduced_stationList)
     }
 
     this.showMarkers(nextProps)
