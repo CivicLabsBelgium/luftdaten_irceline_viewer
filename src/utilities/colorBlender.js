@@ -14,7 +14,6 @@
     @returns: string    => the third color, hex, represenatation of the blend between color1 and color2 at the given percentage
 */
 
-
 export function blend_colors (color1, color2, percentage) {
   // check input
   color1 = color1 || '#000000'
@@ -28,12 +27,11 @@ export function blend_colors (color1, color2, percentage) {
 
   if (color2.length !== 4 && color2.length !== 7)
     return color1
-    // throw new Error('colors must be provided as hexes')
+  // throw new Error('colors must be provided as hexes')
 
   if (percentage > 1 || percentage < 0)
     return color1
-    // throw new Error('percentage must be between 0 and 1')
-
+  // throw new Error('percentage must be between 0 and 1')
 
   // 2: check to see if we need to convert 3 char hex to 6 char hex, else slice off hash
   //      the three character hex is just a representation of the 6 hex where each character is repeated
@@ -66,7 +64,6 @@ export function blend_colors (color1, color2, percentage) {
 
   // 5: convert to hex
   color3 = '#' + int_to_hex(color3[0]) + int_to_hex(color3[1]) + int_to_hex(color3[2])
-
 
   // return hex
   return color3

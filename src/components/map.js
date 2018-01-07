@@ -6,7 +6,7 @@ import { blend_colors } from '../utilities/colorBlender'
 
 class Map extends Component {
 
-  markerLayers = {luftdaten: [], irceline: [], all: []}
+  markerLayer = []
 
   constructor (props) {
     super(props)
@@ -55,7 +55,7 @@ class Map extends Component {
   showMarkers (nextProps) {
 
     const hexSize = 50
-    this.markerLayers.all = []
+    this.markerLayer = []
 
     if (this.state.layerGroup)
       this.state.layerGroup.clearLayers()
@@ -90,12 +90,12 @@ class Map extends Component {
           latlng: latlngSnappedToGrid
         }
 
-        this.markerLayers['all'].push(bundledStations)
+        this.markerLayer.push(bundledStations)
       }
     }
 
     //REDUCES AND BUNDLES MARKERS
-    this.markerLayers.all = this.markerLayers.all.reduce(
+    this.markerLayer = this.markerLayer.reduce(
       (accumulator, currentMarker) => {
 
         const found = accumulator.findIndex(
@@ -111,7 +111,7 @@ class Map extends Component {
       }, []
     )
 
-    this.markerLayers.all.forEach(
+    this.markerLayer.forEach(
       (marker) => {
         /// CALCULATE AVERAGE VALUE OF SELECTED PHENOMENON FOR EACH MARKER
 
