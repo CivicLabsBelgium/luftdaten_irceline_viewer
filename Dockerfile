@@ -6,9 +6,9 @@ COPY package.json .
 
 RUN npm install
 
-CMD [ "node_modules/.bin/react-scripts", "build" ]
+COPY . .
 
-COPY ./build ./build
+CMD [ "node_modules/.bin/react-scripts", "build" ]
 
 EXPOSE 5000
 
