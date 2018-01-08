@@ -8,7 +8,7 @@ RUN npm install
 
 CMD [ "node_modules/.bin/build", "build" ]
 
-COPY . .
+COPY build ./build
 
 EXPOSE 5000
 
