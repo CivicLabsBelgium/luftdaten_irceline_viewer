@@ -6,9 +6,9 @@ COPY package.json .
 
 RUN npm install
 
-RUN npm run build
+CMD [ "node_modules/.bin/build", "build" ]
 
-COPY build ./build
+COPY . .
 
 EXPOSE 5000
 
