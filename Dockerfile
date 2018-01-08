@@ -6,7 +6,7 @@ COPY package.json .
 
 RUN npm install
 
-CMD [ "node_modules/.bin/build", "build" ]
+CMD [ "node_modules/.bin/react-scripts", "build" ]
 
 COPY build ./build
 
