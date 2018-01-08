@@ -8,7 +8,7 @@ RUN npm install
 
 CMD [ "node_modules/.bin/react-scripts", "build" ]
 
-COPY build ./build
+COPY ./build ./build
 
 EXPOSE 5000
 
