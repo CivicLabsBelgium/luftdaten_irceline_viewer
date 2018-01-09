@@ -25,8 +25,8 @@ class Map extends Component {
       minZoom: 6,
       // restrict panning and zooming to belgium
       maxBounds: [
-        [56.12, -8.59],
-        [46.16, 12.76]
+        [60, -20],
+        [40, 25]
       ],
       scrollWheelZoom: 'center'
     })
