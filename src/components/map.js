@@ -137,17 +137,17 @@ class Map extends Component {
         //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
 
         const phenomenonMeta = nextProps.appState.phenomenonMeta[nextProps.appState.phenomenon]
-        const valueExceedsIndex = phenomenonMeta.values.indexOf(
-          (phenomenonMeta.values.find(
-            (value) => {
-              return value >= meanValue
+        const valueExceedsIndex = phenomenonMeta.data.indexOf(
+          (phenomenonMeta.data.find(
+            (data) => {
+              return data.value >= meanValue
             }
-          ) || phenomenonMeta.values[phenomenonMeta.values.length - 1]))
-        const valueLower = phenomenonMeta.values[valueExceedsIndex - 1]
-        const valueUpper = phenomenonMeta.values[valueExceedsIndex] - valueLower
+          ) || phenomenonMeta.data[phenomenonMeta.data.length - 1].value))
+        const valueLower = phenomenonMeta.data[valueExceedsIndex - 1].value
+        const valueUpper = phenomenonMeta.data[valueExceedsIndex].value - valueLower
         const valuePercent = (meanValue - valueLower) / valueUpper
-        const colorLower = phenomenonMeta.colors[valueExceedsIndex - 1]
-        const colorUpper = phenomenonMeta.colors[valueExceedsIndex]
+        const colorLower = phenomenonMeta.data[valueExceedsIndex - 1].color
+        const colorUpper = phenomenonMeta.data[valueExceedsIndex].color
         const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
 
         let hexagonIconOptions = {
