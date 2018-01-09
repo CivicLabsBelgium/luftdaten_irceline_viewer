@@ -10,20 +10,20 @@ const defaultState = {
   }
 }
 
-export default function stations (state = defaultState, action) {
+export default function stationUpdates (state = defaultState, action) {
 
   const newState = Object.assign({}, state)
 
   switch (action.type) {
-    case 'STATIONS_SET_STATIONS':
+    case 'STATIONUPDATES_SET_STATIONS':
       newState.stations = action.stations
       return newState
 
-    case 'STATIONS_SET_REACHABLE':
+    case 'STATIONUPDATES_SET_REACHABLE':
       newState.isReachable[action.source] = action.status
       return newState
 
-    case 'STATIONS_SET_UPDATING':
+    case 'STATIONUPDATES_SET_UPDATING':
       newState.isUpdating[action.source] = action.status
       return newState
 

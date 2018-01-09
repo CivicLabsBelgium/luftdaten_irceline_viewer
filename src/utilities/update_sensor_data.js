@@ -1,6 +1,6 @@
 import * as generic_functions from './generic_functions'
 import store from '../redux/store'
-import { addStations, setReachable, setUpdating } from '../redux/stations/actions'
+import { addStations, setReachable, setUpdating } from '../redux/stationUpdates/actions'
 import { setTime } from '../redux/appState/actions'
 
 const radius = 150

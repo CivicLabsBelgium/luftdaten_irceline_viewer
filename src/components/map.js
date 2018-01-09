@@ -245,7 +245,7 @@ class Map extends Component {
 const mapStateToProps = state => {
   return {
     appState: state.appState,
-    stations: state.stations.stations,
+    stations: state.stationUpdates.stations,
   }
 
 }

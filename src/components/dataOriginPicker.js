@@ -51,10 +51,10 @@ class DataOriginPicker extends Component {
 const mapStateToProps = state => {
   return {
     dataOrigin: state.appState.dataOrigin,
-    luftdatenIsReachable: state.stations.isReachable.luftdaten,
-    ircelineIsReachable: state.stations.isReachable.irceline,
-    luftdatenIsUpdating: state.stations.isUpdating.luftdaten,
-    ircelineIsUpdating: state.stations.isUpdating.irceline,
+    luftdatenIsReachable: state.stationUpdates.isReachable.luftdaten,
+    ircelineIsReachable: state.stationUpdates.isReachable.irceline,
+    luftdatenIsUpdating: state.stationUpdates.isUpdating.luftdaten,
+    ircelineIsUpdating: state.stationUpdates.isUpdating.irceline,
   }
 }
 

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import appState from './appState/reducer'
-import stations from './stations/reducer'
+import stationUpdates from './stationUpdates/reducer'
 
 const appReducer = combineReducers({
   appState,
-  stations
+  stationUpdates
 })
 
 export default appReducer
