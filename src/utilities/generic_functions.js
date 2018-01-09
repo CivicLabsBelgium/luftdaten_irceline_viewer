@@ -1,6 +1,8 @@
 import React from 'react'
+import store from '../redux/store'
+import { setReachable } from '../redux/stations/actions'
 
-export function fetch_json (url) {
+export function fetch_json (url, source) {
   return new Promise((resolve, reject) => {
       fetch(url).then(
         data => data.json().then((json) => {
@@ -8,7 +10,14 @@ export function fetch_json (url) {
           },
         ).catch(() => {
           reject('no valid response')
+          store.dispatch(setReachable(false, source))
         })
+      ).catch(
+        () => {
+          console.log('API data not available for ' + source)
+
+          store.dispatch(setReachable(false, source))
+        }
       )
     }
   )

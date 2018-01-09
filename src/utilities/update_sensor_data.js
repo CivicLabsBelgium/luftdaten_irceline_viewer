@@ -1,11 +1,41 @@
 import * as generic_functions from './generic_functions'
 import store from '../redux/store'
-import { addStations } from '../redux/stations/actions'
+import { addStations, setReachable, setUpdating } from '../redux/stations/actions'
 import { setTime } from '../redux/appState/actions'
 
 const radius = 150
+const stationsBoth = {
+  luftdaten: [],
+  irceline: []
+}
 
-export const updateData = async () => {
+export const updateLuftdaten = async() => {
+  stationsBoth.luftdaten = []
+  store.dispatch(setReachable(true, 'luftdaten'))
+  store.dispatch(setTime(null))
+  store.dispatch(setUpdating(true, 'luftdaten'))
+
+
+  let luftdaten_all_url = 'https://api.luftdaten.info/v1/filter/area=50.8531,4.3550,' + radius
+  let luftdaten_all_json = await generic_functions.fetch_json(luftdaten_all_url, 'luftdaten')
+  let luftdaten_stations = parse_luftdaten_data(luftdaten_all_json)
+
+
+
+  const time = new Date().toLocaleTimeString()
+  store.dispatch(setTime(time))
+  store.dispatch(setUpdating(false, 'luftdaten'))
+
+  stationsBoth.luftdaten = luftdaten_stations
+  combineData()
+
+}
+
+export const updateIrceline = async() => {
+  stationsBoth.irceline = []
+  store.dispatch(setReachable(true, 'irceline'))
+  store.dispatch(setTime(null))
+  store.dispatch(setUpdating(true, 'irceline'))
 
   /// Irceline fetch
   let irceline_pm10_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
@@ -43,22 +73,16 @@ export const updateData = async () => {
   &phenomenon=62101'.replace(/\s{2,}/, '')
     )
 
-  let luftdaten_all_url = 'https://api.luftdaten.info/v1/filter/area=50.8531,4.3550,' + radius
 
-  let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url)
-  let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url)
-  let irceline_temp_json = await generic_functions.fetch_json(irceline_temp_url)
-  let luftdaten_all_json = await generic_functions.fetch_json(luftdaten_all_url)
-  let luftdaten_stations = parse_luftdaten_data(luftdaten_all_json)
+  let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url, 'irceline')
+  let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url, 'irceline')
+  let irceline_temp_json = await generic_functions.fetch_json(irceline_temp_url, 'irceline')
 
   let irceline_pm10_promise = await parse_irceline_data(irceline_pm10_json)
   let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
   let irceline_temp_promise = await parse_irceline_data(irceline_temp_json)
 
-  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise).concat(irceline_temp_promise) //TODO catch error if API is down
-
-  //   let irceline_stations = []
-  // console.log('irceline api disabled in update_sensor_data.js')
+  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise).concat(irceline_temp_promise)
 
   irceline_stations = irceline_stations.reduce(
     (accumulator, station) => {
@@ -77,11 +101,21 @@ export const updateData = async () => {
     }, []
   )
 
-  let stations = luftdaten_stations.concat(irceline_stations)
-  const time = new Date().toLocaleTimeString()
 
-  store.dispatch(addStations(stations))
+  const time = new Date().toLocaleTimeString()
   store.dispatch(setTime(time))
+  store.dispatch(setUpdating(false, 'irceline'))
+
+  stationsBoth.irceline = irceline_stations
+  combineData()
+}
+
+
+export const combineData = () => {
+
+
+  let stations = stationsBoth.luftdaten.concat(stationsBoth.irceline)
+  store.dispatch(addStations(stations))
 
 }
 

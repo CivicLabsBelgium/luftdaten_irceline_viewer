@@ -240,6 +240,12 @@
     background-color: rgba(136, 170, 170, 0.8);
 }
 
+.data-origin-picker .unreachable {
+    background-color: #c8c7c9;
+    color: #a09fa1;
+    pointer-events: none;
+}
+
 .data-origin-picker span {
     margin: 5px;
 }
