@@ -2,14 +2,24 @@ FROM node:boron
 
 WORKDIR /usr/src/app
 
+EXPOSE 5000
+
+RUN ls
+
 COPY package.json .
+
+COPY public ./public
+
+RUN ls
 
 RUN npm install
 
-COPY . .
+COPY src ./src
 
-CMD [ "node_modules/.bin/react-scripts", "build" ]
+RUN ls
 
-EXPOSE 5000
+RUN npm run build
+
+RUN ls
 
 CMD [ "node_modules/.bin/serve", "-s", "build" ]
