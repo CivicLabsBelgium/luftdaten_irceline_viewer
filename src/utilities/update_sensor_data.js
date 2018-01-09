@@ -11,6 +11,10 @@ const stationsBoth = {
 
 export const updateLuftdaten = async() => {
   stationsBoth.luftdaten = []
+
+  if(store.getState().appState.dataOrigin.luftdaten === false)
+    return
+
   store.dispatch(setReachable(true, 'luftdaten'))
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'luftdaten'))
@@ -33,6 +37,11 @@ export const updateLuftdaten = async() => {
 
 export const updateIrceline = async() => {
   stationsBoth.irceline = []
+
+
+  if(store.getState().appState.dataOrigin.luftdaten === false)
+    return
+
   store.dispatch(setReachable(true, 'irceline'))
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'irceline'))
