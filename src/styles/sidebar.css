@@ -9,10 +9,15 @@
     background: linear-gradient(90deg, rgba(178, 188, 170, 0), rgba(114, 131, 113, 0.95) 2.5%, rgba(92, 107, 96, 0.95) 90%);
     color: #FFF;
     overflow-y: scroll;
+    pointer-events: none;
 }
 
 .sidebar .container {
     padding: 20px;
+}
+
+.sidebar .container > * {
+    pointer-events: all;
 }
 
 .sidebar.hidden {
