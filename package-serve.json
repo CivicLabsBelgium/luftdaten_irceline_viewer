@@ -1,0 +1,9 @@
+{
+  "name": "interactieve_kaart",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/",
+  "dependencies": {
+    "serve": "^6.4.3"
+  }
+}
