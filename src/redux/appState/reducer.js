@@ -38,15 +38,11 @@ const defaultState = {
     temperature: {
       data: [
         {color: '#9FF', value: -10},
-        {color: '#9F9', value: -5},
         {color: '#9F6', value: 0},
-        {color: '#9F3', value: 5},
         {color: '#9F0', value: 10},
-        {color: '#9C0', value: 15},
         {color: '#990', value: 20},
-        {color: '#960', value: 25},
         {color: '#900', value: 30},
-        {color: '#C00', value: 35}
+        {color: '#C00', value: 40}
       ],
       max: 30, //max non-hazardous value
       unit: '°C',
