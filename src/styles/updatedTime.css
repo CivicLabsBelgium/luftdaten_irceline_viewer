@@ -1,0 +1,9 @@
+.updated-time {
+    z-index: 400;
+    position: absolute;
+    top: 15px;
+    left: 100px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136, 170, 170, 0.8);
+}

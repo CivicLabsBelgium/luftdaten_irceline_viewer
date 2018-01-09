@@ -1,0 +1,46 @@
+.legend {
+    z-index: 400;
+    padding: 8px;
+    border-radius: 8px;
+    width: 60px;
+    background-color: rgba(136, 170, 170, 0.8);
+    user-select: none;
+}
+
+.legend .color-gradient {
+    width: 18px;
+}
+
+.legend .limit-bar {
+    width: 18px;
+    height: 3px;
+    background-color: #F00;
+    position: absolute;
+    z-index: 2;
+}
+
+.legend .unit {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+}
+
+.legend .labelValue {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0;
+    width: 100%;
+}
+
+.legend .labelValue:after {
+    position: absolute;
+    left: 19px;
+    bottom: 10px;
+    content: "";
+    width: 10px;
+    height: 1px;
+    background-color: #000;
+}

@@ -1,0 +1,90 @@
+.sidebar {
+    height: 100vh;
+    max-height: 100vh;
+    width: 600px;
+    background-color: #233;
+    color: #FFF;
+    overflow-y: scroll;
+}
+
+.sidebar .container {
+    padding: 20px;
+}
+
+.sidebar.hidden {
+    display: none;
+}
+
+.sidebar .closeBtn {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.sidebar .closeBtn button {
+    width: 100%;
+    background-color: #466;
+    border: 1px solid #322;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 1.4em;
+    cursor: pointer;
+    user-select: none;
+}
+
+.sidebar .closeBtn button:hover {
+    background-color: #577;
+}
+
+.sidebar table {
+    background-color: #344;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.sidebar table td, .sidebar table th {
+    border: 1px solid #5e6f46;
+    padding: 8px;
+}
+
+.sidebar table tr.headers {
+    background-color: #5e6962;
+}
+
+.sidebar table tr.mean {
+    background-color: #728576;
+}
+
+.sidebar table tr.sensor {
+    background-color: #7b8c71;
+}
+
+.sidebar table tr.sensor.selected {
+    background-color: #880;
+}
+
+.sidebar table tr.selected {
+    background-color: #52673c;
+}
+
+.sidebar table tr.selected button {
+    font-size: 1.2em;
+    cursor: pointer;
+    user-select: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.sidebar table tr.sensor:hover {
+    cursor: pointer;
+    background-color: #446666;
+}
+
+.sidebar table th {
+    font-size: 1.2em;
+}
+
+.sidebar a {
+    color: #AA0;
+}

@@ -1,0 +1,25 @@
+#root > .container {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.UI_container {
+    pointer-events: none;
+    display: flex;
+    justify-content: end;
+    z-index: 405;
+    position: absolute;
+    margin: 5px 30px;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+}
+
+.UI_container > div {
+    pointer-events: all;
+    margin: 0px 5px;
+    flex-grow: 1;
+    align-self: flex-end;
+    white-space: nowrap;
+}

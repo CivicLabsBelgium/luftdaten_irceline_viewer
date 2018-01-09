@@ -1,0 +1,31 @@
+.data-origin-picker {
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 8px;
+    user-select: none;
+
+    border-radius: 8px;
+    background-color: rgba(136, 170, 170, 0.8);
+}
+
+.data-origin-picker .unreachable {
+    background-color: #c8c7c9;
+    color: #a09fa1;
+    pointer-events: none;
+}
+
+.data-origin-picker span {
+    margin: 5px;
+}
+
+.data-origin-picker button {
+    margin: 0;
+    padding: 8px;
+    user-select: none;
+
+    border-radius: 8px;
+    background-color: #ABC;
+    cursor: pointer;
+}

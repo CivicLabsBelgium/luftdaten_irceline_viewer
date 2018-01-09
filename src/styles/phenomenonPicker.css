@@ -1,0 +1,50 @@
+.phenomenon-picker {
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.phenomenon-picker .current {
+    z-index: 401;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136, 170, 170, 0.8);
+    cursor: pointer;
+}
+
+.phenomenon-picker .current .arrow {
+    margin-left: 15px;
+    padding-left: 5px;
+    border-left: 1px solid #577;
+}
+
+.phenomenon-picker .dropdown {
+    z-index: 401;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 1px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(136, 170, 170, 0.8);
+    cursor: pointer;
+}
+
+.phenomenon-picker .dropdown li:hover, .phenomenon-picker .current:hover {
+    background-color: rgba(100, 150, 150, 0.8);
+}
+
+.phenomenon-picker .dropdown li:active, .phenomenon-picker .current:active {
+    background-color: rgba(120, 160, 160, 0.8);
+}
+
+.phenomenon-picker .dropdown li {
+    display: flex;
+    margin: 1px;
+    padding: 8px 4px;
+    border-radius: 4px;
+}
