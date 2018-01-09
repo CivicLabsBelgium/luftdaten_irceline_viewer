@@ -28,7 +28,7 @@
     width: 100%;
     background-color: #88aaaa;
     color: #FFF;
-    border: 1px solid #6c9696;
+    border: 1px solid #536f64;
     border-radius: 10px;
     padding: 10px;
     font-size: 1.4em;
@@ -46,7 +46,7 @@
     table-layout: fixed;
     width: 100%;
     margin: 20px 0;
-    border: 1px solid #6c9696;
+    border: 1px solid #536f64;
     border-radius: 10px;
     overflow: hidden;
 }
