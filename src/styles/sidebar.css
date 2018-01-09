@@ -1,8 +1,12 @@
 .sidebar {
+    z-index: 1001;
+    position: absolute;
+    top: 0;
+    right: 0;
     height: 100vh;
     max-height: 100vh;
     width: 600px;
-    background-color: #233;
+    background: linear-gradient(90deg, rgba(178, 188, 170, 0), rgba(114, 131, 113, 0.95) 2.5%, rgba(92, 107, 96, 0.95) 90%);
     color: #FFF;
     overflow-y: scroll;
 }
@@ -22,9 +26,10 @@
 
 .sidebar .closeBtn button {
     width: 100%;
-    background-color: #466;
-    border: 1px solid #322;
-    border-radius: 3px;
+    background-color: #88aaaa;
+    color: #FFF;
+    border: 1px solid #6c9696;
+    border-radius: 10px;
     padding: 10px;
     font-size: 1.4em;
     cursor: pointer;
@@ -32,39 +37,50 @@
 }
 
 .sidebar .closeBtn button:hover {
-    background-color: #577;
+    background-color: #628d8d;
 }
 
 .sidebar table {
-    background-color: #344;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
     width: 100%;
     margin: 20px 0;
+    border: 1px solid #6c9696;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .sidebar table td, .sidebar table th {
-    border: 1px solid #5e6f46;
     padding: 8px;
 }
 
 .sidebar table tr.headers {
-    background-color: #5e6962;
+    background-color: #88aaaa;
+}
+
+.sidebar table tr.headers th {
+    border-bottom: #696d6e 1px solid;
 }
 
 .sidebar table tr.mean {
-    background-color: #728576;
+    background-color: #648579;
 }
 
 .sidebar table tr.sensor {
-    background-color: #7b8c71;
+    background-color: #8da082;
 }
 
 .sidebar table tr.sensor.selected {
-    background-color: #880;
+    background-color: #58796d;
 }
 
 .sidebar table tr.selected {
-    background-color: #52673c;
+    background-color: #7c8a72;
+}
+
+.sidebar table tr.selected:first-child td, .sidebar table tr.selected:last-child {
+    border-bottom: #696d6e 1px solid;
 }
 
 .sidebar table tr.selected button {

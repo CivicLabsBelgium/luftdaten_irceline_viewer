@@ -76,8 +76,8 @@ const InfoTable = props => {
               </tr>
               <tr className="selected">
                 <td>Location</td>
-                <td colSpan="2">lat: {sensor.lat},<br/> long: {sensor.lng}
-                  <button onClick={() => { props.onSetMapCoords([sensor.lat, sensor.lng]) }}>&#8689;</button>
+                <td colSpan="2">
+                  <a href="#" onClick={ () => {props.onSetMapCoords([sensor.lat, sensor.lng]) }}>lat: {sensor.lat},<br/> long: {sensor.lng}</a>
                 </td>
               </tr>
             </React.Fragment> : null
