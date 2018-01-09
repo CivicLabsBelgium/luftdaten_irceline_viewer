@@ -1,6 +1,6 @@
 import React from 'react'
 import store from '../redux/store'
-import { setReachable } from '../redux/stations/actions'
+import { setReachable } from '../redux/stationUpdates/actions'
 
 export function fetch_json (url, source) {
   return new Promise((resolve, reject) => {
