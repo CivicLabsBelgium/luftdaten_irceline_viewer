@@ -22,7 +22,7 @@ class Map extends Component {
     const map = window.L.map('map', {
       center: [50.843, 4.368],
       zoom: 12,
-      minZoom: 4,
+      minZoom: 6,
       // restrict panning and zooming to belgium
       maxBounds: [
         [56.12, -8.59],
