@@ -3,20 +3,17 @@ import Gradient from './gradient'
 import { connect } from 'react-redux'
 
 const Legend = (props) =>
-      <div title={props.phenomenonMeta[props.phenomenon].name} className="legend">
-        <div className="unit">
-          {
-            props.phenomenonMeta[props.phenomenon].unit
-          }
-        </div>
+  <div title={props.phenomenonMeta[props.phenomenon].name} className="legend">
+    <div className="unit">
+      {
+        props.phenomenonMeta[props.phenomenon].unit
+      }
+    </div>
 
-        <div style={{position: 'relative'}}>
-          <Gradient/>
-        </div>
-      </div>
-
-
-
+    <div style={{position: 'relative'}}>
+      <Gradient/>
+    </div>
+  </div>
 
 const mapStateToProps = state => {
   return {

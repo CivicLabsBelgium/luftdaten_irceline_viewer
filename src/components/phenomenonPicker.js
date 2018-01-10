@@ -56,7 +56,7 @@ class PhenomenonPicker extends Component {
   }
 }
 
-const mapPickerStateToProps = state => {
+const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     phenomenonMeta: state.appState.phenomenonMeta
@@ -71,4 +71,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapPickerStateToProps, mapDispatchToProps)(PhenomenonPicker)
+export default connect(mapStateToProps, mapDispatchToProps)(PhenomenonPicker)
