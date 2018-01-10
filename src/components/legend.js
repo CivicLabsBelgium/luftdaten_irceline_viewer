@@ -2,11 +2,12 @@ import React from 'react'
 import Gradient from './gradient'
 import { connect } from 'react-redux'
 
-const Legend = (props) =>
-  <div title={props.phenomenonMeta[props.phenomenon].name} className="legend">
+//destructured props parameter
+const Legend = ({phenomenonMeta, phenomenon}) =>
+  <div title={phenomenonMeta[phenomenon].name} className="legend">
     <div className="unit">
       {
-        props.phenomenonMeta[props.phenomenon].unit
+        phenomenonMeta[phenomenon].unit
       }
     </div>
 

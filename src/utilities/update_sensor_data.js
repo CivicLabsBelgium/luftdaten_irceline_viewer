@@ -46,6 +46,16 @@ export const updateIrceline = async() => {
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'irceline'))
 
+
+  //TODO JSON.stringify
+  // const t =    {
+  //   center: {
+  //     type: "Point",
+  //     coordinates: [4.3550,50.8531]
+  //   },
+  //     radius
+  //   }
+
   /// Irceline fetch
   let irceline_pm10_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
     encodeURI(
@@ -91,7 +101,8 @@ export const updateIrceline = async() => {
   let irceline_pm25_promise = await parse_irceline_data(irceline_pm25_json)
   let irceline_temp_promise = await parse_irceline_data(irceline_temp_json)
 
-  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise).concat(irceline_temp_promise)
+  //TODO spread operator
+  let irceline_stations = await irceline_pm10_promise.concat(irceline_pm25_promise, irceline_temp_promise)
 
   irceline_stations = irceline_stations.reduce(
     (accumulator, station) => {

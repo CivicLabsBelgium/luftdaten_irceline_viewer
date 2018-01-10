@@ -48,7 +48,6 @@ const InfoTable = props => {
       else
         col2Value = '-'
 
-      console.log()
       return (
         <React.Fragment key={sensor.id}>
           <tr className={
@@ -77,7 +76,9 @@ const InfoTable = props => {
               <tr className="selected">
                 <td>Location</td>
                 <td colSpan="2">
-                  <a href="#" onClick={ () => {props.onSetMapCoords([sensor.lat, sensor.lng]) }}>lat: {sensor.lat},<br/> long: {sensor.lng}</a>
+                  <a href="#"
+                     onClick={() => {props.onSetMapCoords([sensor.lat, sensor.lng]) }}>lat: {sensor.lat},<br/> long: {sensor.lng}
+                  </a>
                 </td>
               </tr>
             </React.Fragment> : null
@@ -94,6 +95,8 @@ const InfoTable = props => {
   let meanCol2 = (sumCol2 / countCol2).toFixed(2)
   if (isNaN(meanCol2))
     meanCol2 = '-'
+
+  // TODO shorten
 
   if (props.type === 'partsPerMillion')
     return (

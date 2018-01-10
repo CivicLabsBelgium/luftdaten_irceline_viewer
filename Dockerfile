@@ -13,11 +13,11 @@ COPY package.json .
 #copy public dir from project to image
 COPY public ./public
 
-#copy src dir from project to image
-COPY src ./src
-
 #install node_modules based on package.json
 RUN npm install
+
+#copy src dir from project to image
+COPY src ./src
 
 #run npm script to create a build directory in this docker image
 RUN npm run build
@@ -35,8 +35,5 @@ COPY package-serve.json ./package.json
 #this json config contains only the minimum dependencies to support npm serve
 RUN npm install
 
-#discard package.json after node_modules has been created
-RUN rm ./package.json
-
 #the only thing left in this image are a build directory and a slimmed down node_modules to npm serve this build
-CMD [ "node_modules/.bin/serve", "-s", "build" ]
+CMD [ "npm", "start" ]

@@ -10,6 +10,7 @@ class Sidebar extends Component {
       partsPerMillion: [],
       tempAndHum: []
     }
+    //TODO refactor to foreach
     this.props.stationList.map(
       station => {
         station.sensors.map(

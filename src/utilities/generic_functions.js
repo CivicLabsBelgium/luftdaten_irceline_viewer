@@ -2,6 +2,8 @@ import React from 'react'
 import store from '../redux/store'
 import { setReachable } from '../redux/stationUpdates/actions'
 
+
+//TODO refactor?
 export function fetch_json (url, source) {
   return new Promise((resolve, reject) => {
       fetch(url).then(
@@ -14,8 +16,6 @@ export function fetch_json (url, source) {
         })
       ).catch(
         () => {
-          console.log('API data not available for ' + source)
-
           store.dispatch(setReachable(false, source))
         }
       )
@@ -33,21 +33,13 @@ export function sort_raw_data_by_timestamp (rawData1, rawData2) {
   return rawData1.timestamp > rawData2.timestamp
 }
 
-/**
- * usage: array.filter( generic_functions.array_unique )
- * @param value
- * @param index
- * @param self
- * @returns {boolean}
- */
-export function array_unique (value, index, self) {
-  return self.indexOf(value) === index
-}
 
 export function createMarkerIconSVG (options) {
   const ReactDOMServer = require('react-dom/server')
   const border = (options.hexagonIsSelected === false) ? null : <path stroke="#000" fill="#000"
                                                                       d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>
+
+  //TODO test return normal string
 
   return (
     ReactDOMServer.renderToStaticMarkup(

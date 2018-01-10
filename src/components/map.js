@@ -46,7 +46,7 @@ class Map extends Component {
     const layerGroup = window.L.layerGroup([]).addTo(map)
 
     this.setState({
-      map: map,
+      map: map, //TODO refactor this.map
       layerGroup: layerGroup
     })
 
@@ -99,10 +99,10 @@ class Map extends Component {
       (accumulator, currentMarker) => {
 
         const found = accumulator.findIndex(
-          (bundledStations) => bundledStations.latlng.lat === currentMarker.latlng.lat &&
+          bundledStations => bundledStations.latlng.lat === currentMarker.latlng.lat &&
             bundledStations.latlng.lng === currentMarker.latlng.lng
         )
-        if (found !== -1) {
+        if (found !== -1) { // if (~found)
           accumulator[found].stations.push(currentMarker.stations[0])
         } else {
           accumulator.push(currentMarker)
@@ -112,7 +112,7 @@ class Map extends Component {
     )
 
     this.markerLayer.forEach(
-      (marker) => {
+      marker => {
         /// CALCULATE AVERAGE VALUE OF SELECTED PHENOMENON FOR EACH MARKER
 
         let sumValues = 0
@@ -135,6 +135,8 @@ class Map extends Component {
         const meanValue = (sumValues / countValues)
 
         //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
+
+        //TODO move phenomenonmeta to separate file
 
         const phenomenonMeta = nextProps.appState.phenomenonMeta[nextProps.appState.phenomenon]
         const valueExceedsIndex = phenomenonMeta.data.indexOf(
