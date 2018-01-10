@@ -45,7 +45,7 @@ class Sidebar extends Component {
             <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
             <br/>
           </div>
-          <span>({count} selected sensor{(count > 1) ? 's' : null})</span>
+          <span># selected sensors: {count}</span>
           <InfoTable type="partsPerMillion" data={sensors.partsPerMillion}/>
           <InfoTable type="tempAndHum" data={sensors.tempAndHum}/>
         </div>
