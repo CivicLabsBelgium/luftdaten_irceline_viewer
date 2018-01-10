@@ -6,7 +6,7 @@
     height: 100vh;
     max-height: 100vh;
     width: 600px;
-    background: linear-gradient(90deg, rgba(178, 188, 170, 0), rgba(114, 131, 113, 0.95) 2.5%, rgba(92, 107, 96, 0.95) 90%);
+    background: linear-gradient(90deg, rgba(178, 188, 170, 0), rgba(136, 170, 170, 0.9) 2.5%, rgba(117, 151, 151, 0.9) 90%);
     color: #FFF;
     overflow-y: scroll;
 }
@@ -26,9 +26,9 @@
 
 .sidebar .closeBtn button {
     width: 100%;
-    background-color: #88aaaa;
-    color: #FFF;
-    border: 1px solid #536f64;
+    background-color: #ABC;
+    color: #000;
+    border: 1px solid #5c626e;
     border-radius: 10px;
     padding: 10px;
     font-size: 1.4em;
@@ -37,7 +37,7 @@
 }
 
 .sidebar .closeBtn button:hover {
-    background-color: #628d8d;
+    background-color: #909eaf;
 }
 
 .sidebar table {
@@ -56,7 +56,7 @@
 }
 
 .sidebar table tr.headers {
-    background-color: #88aaaa;
+    background-color: #446666;
 }
 
 .sidebar table tr.headers th {
@@ -69,6 +69,10 @@
 
 .sidebar table tr.sensor {
     background-color: #8da082;
+}
+
+.sidebar table tr.sensor:nth-child(odd) {
+    background-color: #95a98a;
 }
 
 .sidebar table tr.sensor.selected {
@@ -102,5 +106,5 @@
 }
 
 .sidebar a {
-    color: #AA0;
+    color: #3d564c;
 }

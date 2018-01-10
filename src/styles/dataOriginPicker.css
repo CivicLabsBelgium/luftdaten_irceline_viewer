@@ -24,8 +24,14 @@
     margin: 0;
     padding: 8px;
     user-select: none;
+    display: flex;
 
+    border-color: #5c626e;
     border-radius: 8px;
     background-color: #ABC;
     cursor: pointer;
+}
+
+.data-origin-picker button:hover {
+    background-color: #909eaf;
 }
