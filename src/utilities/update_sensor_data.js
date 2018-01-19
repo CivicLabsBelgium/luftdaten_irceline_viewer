@@ -126,6 +126,8 @@ export const updateIrceline = async() => {
   store.dispatch(setTime(time))
   store.dispatch(setUpdating(false, 'irceline'))
 
+  if(irceline_stations.length === 0)
+    store.dispatch(setReachable(false, 'irceline'))
   stationsBoth.irceline = irceline_stations
   combineData()
 }
@@ -147,15 +149,31 @@ const parse_irceline_data = async (data) => {
       let pm25_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=6001&force_latest_values=true'
       let temp_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=62101&force_latest_values=true'
 
-      let pm10_request = await generic_functions.fetch_json(pm10_request_url)
-      let pm10_response = pm10_request[0]
-      let pm25_request = await generic_functions.fetch_json(pm25_request_url)
-      let pm25_response = pm25_request[0]
-      let temp_request = await generic_functions.fetch_json(temp_request_url)
-      let temp_response = temp_request[0]
+      let irceline_data = await (async () => {
+        let  pm10_request, pm25_request, temp_request
+        try {
+          pm10_request = await generic_functions.fetch_json(pm10_request_url) || []
+          pm25_request = await generic_functions.fetch_json(pm25_request_url) || []
+          temp_request = await generic_functions.fetch_json(temp_request_url) || []
+        } catch (e) {
+          console.log('invalid irceline data', e)
+        }
+        let pm10_response = pm10_request[0] || false
+        let pm25_response = pm25_request[0] || false
+        let temp_response = temp_request[0] || false
+        return [pm10_response, pm25_response, temp_response]
+      })().then( data => data )
+
+      let pm10_response = irceline_data[0]
+      let pm25_response = irceline_data[1]
+      let temp_response = irceline_data[2]
 
       let sensorID = (pm10_response) ? pm10_response.id : (pm25_response) ? pm25_response.id : (temp_response) ? temp_response.id : null
       let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : (pm25_response) ? pm25_response.parameters.procedure.label : (temp_response) ? temp_response.parameters.procedure.label : null
+
+      if(sensorID === null || sensorName === null)
+        return false
+
       sensorName = sensorName.split(' - ')[1].split(';')[0]
       let PM10 = (pm10_response && pm10_response.lastValue.value >= 0) ? pm10_response.lastValue.value : null
       let PM25 = (pm25_response && pm25_response.lastValue.value >= 0) ? pm25_response.lastValue.value : null
@@ -188,6 +206,9 @@ const parse_irceline_data = async (data) => {
         }
       )
 
+      console.log(sensors)
+
+
       return {
         id: 'I-' + station.properties.id,
         latitude: station.geometry.coordinates[1],
@@ -198,7 +219,13 @@ const parse_irceline_data = async (data) => {
 
     }
   )
+
+  //reduce data array to collection of valid data_sets, filter out invalid API returns
   data_array = await Promise.all(data_array)
+  data_array = data_array.reduce(
+    (valid_data, data_set) => data_set ? valid_data.concat(data_set) : valid_data,
+    []
+  )
   return data_array
 }
 
