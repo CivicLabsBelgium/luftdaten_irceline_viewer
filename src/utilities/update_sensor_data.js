@@ -9,22 +9,19 @@ const stationsBoth = {
   irceline: []
 }
 
-export const updateLuftdaten = async() => {
+export const updateLuftdaten = async () => {
   stationsBoth.luftdaten = []
 
-  if(store.getState().appState.dataOrigin.luftdaten === false)
+  if (store.getState().appState.dataOrigin.luftdaten === false)
     return
 
   store.dispatch(setReachable(true, 'luftdaten'))
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'luftdaten'))
 
-
   let luftdaten_all_url = 'https://api.luftdaten.info/v1/filter/area=50.8531,4.3550,' + radius
   let luftdaten_all_json = await generic_functions.fetch_json(luftdaten_all_url, 'luftdaten')
   let luftdaten_stations = parse_luftdaten_data(luftdaten_all_json)
-
-
 
   const time = new Date().toLocaleTimeString()
   store.dispatch(setTime(time))
@@ -35,17 +32,15 @@ export const updateLuftdaten = async() => {
 
 }
 
-export const updateIrceline = async() => {
+export const updateIrceline = async () => {
   stationsBoth.irceline = []
 
-
-  if(store.getState().appState.dataOrigin.luftdaten === false)
+  if (store.getState().appState.dataOrigin.luftdaten === false)
     return
 
   store.dispatch(setReachable(true, 'irceline'))
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'irceline'))
-
 
   //TODO JSON.stringify
   // const t =    {
@@ -92,7 +87,6 @@ export const updateIrceline = async() => {
   &phenomenon=62101'.replace(/\s{2,}/, '')
     )
 
-
   let irceline_pm10_json = await generic_functions.fetch_json(irceline_pm10_url, 'irceline')
   let irceline_pm25_json = await generic_functions.fetch_json(irceline_pm25_url, 'irceline')
   let irceline_temp_json = await generic_functions.fetch_json(irceline_temp_url, 'irceline')
@@ -121,20 +115,17 @@ export const updateIrceline = async() => {
     }, []
   )
 
-
   const time = new Date().toLocaleTimeString()
   store.dispatch(setTime(time))
   store.dispatch(setUpdating(false, 'irceline'))
 
-  if(irceline_stations.length === 0)
+  if (irceline_stations.length === 0)
     store.dispatch(setReachable(false, 'irceline'))
   stationsBoth.irceline = irceline_stations
   combineData()
 }
 
-
 export const combineData = () => {
-
 
   let stations = stationsBoth.luftdaten.concat(stationsBoth.irceline)
   store.dispatch(addStations(stations))
@@ -150,7 +141,7 @@ const parse_irceline_data = async (data) => {
       let temp_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=62101&force_latest_values=true'
 
       let irceline_data = await (async () => {
-        let  pm10_request, pm25_request, temp_request
+        let pm10_request, pm25_request, temp_request
         try {
           pm10_request = await generic_functions.fetch_json(pm10_request_url) || []
           pm25_request = await generic_functions.fetch_json(pm25_request_url) || []
@@ -162,7 +153,7 @@ const parse_irceline_data = async (data) => {
         let pm25_response = pm25_request[0] || false
         let temp_response = temp_request[0] || false
         return [pm10_response, pm25_response, temp_response]
-      })().then( data => data )
+      })().then(data => data)
 
       let pm10_response = irceline_data[0]
       let pm25_response = irceline_data[1]
@@ -171,7 +162,7 @@ const parse_irceline_data = async (data) => {
       let sensorID = (pm10_response) ? pm10_response.id : (pm25_response) ? pm25_response.id : (temp_response) ? temp_response.id : null
       let sensorName = (pm10_response) ? pm10_response.parameters.procedure.label : (pm25_response) ? pm25_response.parameters.procedure.label : (temp_response) ? temp_response.parameters.procedure.label : null
 
-      if(sensorID === null || sensorName === null)
+      if (sensorID === null || sensorName === null)
         return false
 
       sensorName = sensorName.split(' - ')[1].split(';')[0]
@@ -205,9 +196,6 @@ const parse_irceline_data = async (data) => {
           return sensor !== null
         }
       )
-
-      console.log(sensors)
-
 
       return {
         id: 'I-' + station.properties.id,

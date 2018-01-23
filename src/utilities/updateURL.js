@@ -1,5 +1,4 @@
 export function setParams (params) {
-  const hash = window.location.hash.split('#/?')[1] || ''
 
   const newParams = getParams()
   if (params.lat)
@@ -9,7 +8,7 @@ export function setParams (params) {
   if (params.zoom)
     newParams.zoom = params.zoom
 
-  const querystring = Object.keys(newParams).reduce(
+  window.location.hash = Object.keys(newParams).reduce(
     (string, param) => {
       const separator = (string !== '/?') ? '&' : ''
       if (param && newParams[param])
@@ -19,8 +18,6 @@ export function setParams (params) {
     },
     '/?'
   )
-  window.location.hash = querystring
-
 }
 
 export function getParams () {
