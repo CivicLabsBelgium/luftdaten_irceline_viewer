@@ -1,18 +1,19 @@
 export function setParams (params) {
 
-  const newParams = getParams()
-  if (params.lat)
-    newParams.lat = params.lat
-  if (params.lng)
-    newParams.lng = params.lng
-  if (params.zoom)
-    newParams.zoom = params.zoom
+  if (typeof params.id !== 'undefined') {
+    delete params.lat
+    delete params.lng
+  } else {
+    delete params.id
+  }
 
-  window.location.hash = Object.keys(newParams).reduce(
+  console.log(params)
+
+  window.location.hash = Object.keys(params).reduce(
     (string, param) => {
       const separator = (string !== '/?') ? '&' : ''
-      if (param && newParams[param])
-        return string.concat(separator + param + '=' + newParams[param])
+      if (param && params[param])
+        return string.concat(separator + param + '=' + params[param])
       else
         return string
     },
@@ -25,6 +26,8 @@ export function getParams () {
   return hash.split('&').reduce(
     (params, currentPair) => {
       const pair = currentPair.split('=')
+      if (pair.length !== 2)
+        return params
       let newParams = params
       newParams[pair[0]] = pair[1]
       return newParams

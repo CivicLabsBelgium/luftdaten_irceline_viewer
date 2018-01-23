@@ -8,6 +8,7 @@ import { blend_colors } from '../utilities/colorBlender'
 class Map extends Component {
 
   markerLayer = []
+  isZooming = false
 
   constructor (props) {
     super(props)
@@ -19,11 +20,11 @@ class Map extends Component {
   }
 
   componentDidMount () {
-    const initialParams = getParams() || {}
+    const initialParams = getParams() || {}
 
     const map = window.L.map('map', {
       center: [initialParams.lat || 50.843, initialParams.lng || 4.368],
-      zoom: initialParams.zoom || 12,
+      zoom: initialParams.zoom || 12,
       minZoom: 6,
       // restrict panning and zooming to belgium
       maxBounds: [
@@ -34,17 +35,36 @@ class Map extends Component {
     })
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
+    map.addEventListener('zoomstart', () => {
+        this.isZooming = true
+      }
+    )
     map.addEventListener('zoomend', () => {
-      this.showMarkers(this.props)
-      let params = getParams()
-      params.zoom = map.getZoom()
-      setParams(params)
-    })
+        console.log('### zoom event')
+        this.showMarkers(this.props)
+        let params = getParams()
+        console.log('old', params)
+        params.zoom = map.getZoom()
+        setParams(params)
+        console.log('new', params)
+        console.log('###')
+      }
+    )
     map.addEventListener('moveend', () => {
-      let params = getParams()
-      params.lat = map.getCenter().lat
-      params.lng = map.getCenter().lng
-      setParams(params)
+      if (!this.isZooming) {
+        console.log('### move event')
+        let params = getParams()
+        console.log('old', params)
+        if (typeof params.id !== 'undefined')
+          delete params.id
+        params.lat = map.getCenter().lat
+        params.lng = map.getCenter().lng
+        params.zoom = map.getZoom()
+        console.log('new', params)
+        setParams(params)
+        console.log('###')
+      }
+      this.isZooming = false
     })
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -128,10 +148,45 @@ class Map extends Component {
         let sumValues = 0
         let countValues = 0
 
+        //zoom in on the station with the same ID provided in the querystring
+        const params = getParams()
+        let foundParamsID = false
+
+        //group and render all sensors from all stations
         marker.stations.forEach(
           station => {
             station.sensors.forEach(
               sensor => {
+
+                if(!foundParamsID && params.id && params.id === sensor.stationID) {
+                  foundParamsID = true
+                  const params = getParams()
+                  delete params.lat
+                  delete params.lng
+
+                  this.centerOnCoords({
+                    lat: station.latitude,
+                    lng: station.longitude
+                  }, 14)
+
+                  console.log(params)
+                  console.log('looking for ' + params.id, sensor.stationID)
+
+                }
+
+                // //ID found
+                // if(!foundParamsID && sensor.stationID === params.id) {
+                //   this.centerOnCoords({
+                //     lat: station.latitude,
+                //     lng: station.longitude
+                //   })
+                //   delete params.lat
+                //   delete params.lng
+                //   params.id = sensor.stationID
+                //   console.log(params)
+                //   setParams(params)
+                //   foundParamsID = true
+                // }
 
                 const currentValue = sensor[nextProps.appState.phenomenon]
                 if (typeof currentValue !== 'undefined') {
@@ -227,17 +282,17 @@ class Map extends Component {
             }
           ) !== undefined
 
-          if(hasSensor)
+          if (hasSensor)
             accumulator.push(station)
 
           return accumulator
         }, []
       )
 
-      if(reduced_stationList.length === 0)
+      if (reduced_stationList.length === 0)
         reduced_stationList = null
 
-      if(nextProps.appState.stationList !== reduced_stationList)
+      if (nextProps.appState.stationList !== reduced_stationList)
         this.props.onChangeCurrentStation(reduced_stationList)
     }
 
