@@ -14,11 +14,12 @@ import PhenomenonPicker from './components/phenomenonPicker'
 import UpdatedTime from './components/updatedTime'
 import DataOriginPicker from './components/dataOriginPicker'
 
-
 class App extends Component {
 
 
   componentDidMount () {
+    //TODO read values from location hash and set geolocation, zoom and other states according to this hash
+
 
     // Update luftdaten every minute
     updateLuftdaten().then()

@@ -41,15 +41,7 @@ export function createMarkerIconSVG (options) {
 
   //TODO test return normal string
 
-  return (
-    ReactDOMServer.renderToStaticMarkup(
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.3 83.58" height={options.size} width={options.size}>
-        <polygon fill={options.color}
-                 points="1.73 41.96 24.79 1.68 71.21 1.5 94.56 41.62 71.51 81.9 25.09 82.07 1.73 41.96"/>
-        {border}
-      </svg>)
-
-  )
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96.3 83.58" height="'+options.size+ '" width="'+options.size+'"> <polygon fill="'+options.color+'" points="1.73 41.96 24.79 1.68 71.21 1.5 94.56 41.62 71.51 81.9 25.09 82.07 1.73 41.96"/> '+border+' </svg>'
 }
 
 export function colorToRgba (hexColor, alpha) {

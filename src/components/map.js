@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentStationList, setMapCoords } from '../redux/appState/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
+import { setParams, getParams } from '../utilities/updateURL'
 import { blend_colors } from '../utilities/colorBlender'
 
 class Map extends Component {
@@ -15,13 +16,14 @@ class Map extends Component {
       layerGroup: null
     }
     this.showMarkers = this.showMarkers.bind(this)
-
   }
 
   componentDidMount () {
+    const initialParams = getParams() || {}
+
     const map = window.L.map('map', {
-      center: [50.843, 4.368],
-      zoom: 12,
+      center: [initialParams.lat || 50.843, initialParams.lng || 4.368],
+      zoom: initialParams.zoom || 12,
       minZoom: 6,
       // restrict panning and zooming to belgium
       maxBounds: [
@@ -34,6 +36,15 @@ class Map extends Component {
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
     map.addEventListener('zoomend', () => {
       this.showMarkers(this.props)
+      let params = getParams()
+      params.zoom = map.getZoom()
+      setParams(params)
+    })
+    map.addEventListener('moveend', () => {
+      let params = getParams()
+      params.lat = map.getCenter().lat
+      params.lng = map.getCenter().lng
+      setParams(params)
     })
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -49,7 +60,6 @@ class Map extends Component {
       map: map, //TODO refactor this.map
       layerGroup: layerGroup
     })
-
   }
 
   showMarkers (nextProps) {
@@ -202,6 +212,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+
     if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
 
