@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentStationList, setMapCoords } from '../redux/appState/actions'
+import { setCurrentSensor, setCurrentStationList, setID, setMapCoords } from '../redux/appState/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { setParams, getParams } from '../utilities/updateURL'
 import { blend_colors } from '../utilities/colorBlender'
@@ -9,6 +9,8 @@ class Map extends Component {
 
   markerLayer = []
   isZooming = false
+  isMoving = false
+  centeredOnSensorFromURL = false
 
   constructor (props) {
     super(props)
@@ -20,7 +22,11 @@ class Map extends Component {
   }
 
   componentDidMount () {
+    //get shared url parameters
     const initialParams = getParams() || {}
+    if (initialParams.id) {
+      initialParams.zoom = 14
+    }
 
     const map = window.L.map('map', {
       center: [initialParams.lat || 50.843, initialParams.lng || 4.368],
@@ -40,8 +46,8 @@ class Map extends Component {
       }
     )
     map.addEventListener('zoomend', () => {
-        console.log('### zoom event')
         this.showMarkers(this.props)
+        console.log('### zoom event: ' + map.getZoom())
         let params = getParams()
         console.log('old', params)
         params.zoom = map.getZoom()
@@ -51,11 +57,11 @@ class Map extends Component {
       }
     )
     map.addEventListener('moveend', () => {
-      if (!this.isZooming) {
+      if (!this.isZooming && !this.isMoving) {
         console.log('### move event')
         let params = getParams()
         console.log('old', params)
-        if (typeof params.id !== 'undefined')
+        if (params.id)
           delete params.id
         params.lat = map.getCenter().lat
         params.lng = map.getCenter().lng
@@ -65,6 +71,7 @@ class Map extends Component {
         console.log('###')
       }
       this.isZooming = false
+      this.isMoving = false
     })
 
     window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -148,45 +155,36 @@ class Map extends Component {
         let sumValues = 0
         let countValues = 0
 
-        //zoom in on the station with the same ID provided in the querystring
-        const params = getParams()
-        let foundParamsID = false
-
         //group and render all sensors from all stations
         marker.stations.forEach(
           station => {
             station.sensors.forEach(
               sensor => {
 
-                if(!foundParamsID && params.id && params.id === sensor.stationID) {
-                  foundParamsID = true
-                  const params = getParams()
+
+                //gets a shared sensor id from the url, selects this sensor and its station, and centers the map on it
+                const params = getParams()
+                if (params.id && params.id === sensor.id && !this.centeredOnSensorFromURL) {
+                  console.log('url parameter id matches sensor ' + sensor.id)
+
+                  this.isMoving = true
+                  setParams(params)
+                  this.centerOnCoords(
+                    {
+                      lat: station.latitude,
+                      lng: station.longitude
+                    },
+                    14
+                  )
                   delete params.lat
                   delete params.lng
-
-                  this.centerOnCoords({
-                    lat: station.latitude,
-                    lng: station.longitude
-                  }, 14)
-
-                  console.log(params)
-                  console.log('looking for ' + params.id, sensor.stationID)
-
+                  delete params.zoom
+                  if (!this.centeredOnSensorFromURL && (this.props.appState.stationList === null || this.props.appState.stationList.length > 1 || (this.props.appState.stationList.length === 1 && this.props.appState.stationList[0].id !== params.id))) {
+                    this.centeredOnSensorFromURL = true
+                    this.props.onChangeCurrentStation([station])
+                    this.props.onChangeCurrentSensor(sensor.id)
+                  }
                 }
-
-                // //ID found
-                // if(!foundParamsID && sensor.stationID === params.id) {
-                //   this.centerOnCoords({
-                //     lat: station.latitude,
-                //     lng: station.longitude
-                //   })
-                //   delete params.lat
-                //   delete params.lng
-                //   params.id = sensor.stationID
-                //   console.log(params)
-                //   setParams(params)
-                //   foundParamsID = true
-                // }
 
                 const currentValue = sensor[nextProps.appState.phenomenon]
                 if (typeof currentValue !== 'undefined') {
@@ -259,7 +257,6 @@ class Map extends Component {
         marker.addTo(this.state.layerGroup)
       }
     )
-
   }
 
   centerOnCoords (coords, zoom = this.state.map.getZoom()) {
@@ -267,6 +264,17 @@ class Map extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+
+    //TODO fix this mess
+    if(nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
+      console.log('setting ID')
+      setParams({
+        id: nextProps.appState.id
+      })
+      this.centeredOnSensorFromURL = false
+      this.props.onSetID(null)
+    }
+
 
     if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
@@ -313,7 +321,7 @@ class Map extends Component {
 const mapStateToProps = state => {
   return {
     appState: state.appState,
-    stations: state.stationUpdates.stations,
+    stations: state.stationUpdates.stations
   }
 
 }
@@ -323,8 +331,14 @@ const mapDispatchToProps = dispatch => {
     onChangeCurrentStation: stationList => {
       dispatch(setCurrentStationList(stationList))
     },
+    onChangeCurrentSensor: sensor => {
+      dispatch(setCurrentSensor(sensor))
+    },
     onSetMapCoords: coords => {
       dispatch(setMapCoords(coords))
+    },
+    onSetID: id => {
+      dispatch(setID(id))
     }
   }
 }

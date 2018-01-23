@@ -71,6 +71,7 @@ export default function appState (state = defaultState, action) {
     case 'APPSTATE_SET_CURRENT_STATIONLIST':
       newState.stationList = (newState.stationList === action.stationList) ? null : action.stationList
       newState.sensor = null
+      newState.id = null
       return newState
 
     case 'APPSTATE_SET_CURRENT_SENSOR':
@@ -79,6 +80,10 @@ export default function appState (state = defaultState, action) {
 
     case 'APPSTATE_SET_MAP_COORDS':
       newState.mapCoords = action.coords
+      return newState
+
+    case 'APPSTATE_SET_ID':
+      newState.id = action.id
       return newState
 
     case 'APPSTATE_SET_PHENOMENON':

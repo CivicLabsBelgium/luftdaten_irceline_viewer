@@ -1,11 +1,10 @@
 export function setParams (params) {
 
-  if (typeof params.id !== 'undefined') {
+  if (params.id) {
     delete params.lat
     delete params.lng
-  } else {
-    delete params.id
-  }
+    delete params.zoom
+  } else
 
   console.log(params)
 

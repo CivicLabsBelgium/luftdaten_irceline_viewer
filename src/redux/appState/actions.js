@@ -19,6 +19,13 @@ export function setMapCoords (coords) {
   }
 }
 
+export function setID (id) {
+  return {
+    type: 'APPSTATE_SET_ID',
+    id
+  }
+}
+
 export function setPhenomenon (phenomenon) {
   return {
     type: 'APPSTATE_SET_PHENOMENON',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setCurrentSensor, setMapCoords } from '../redux/appState/actions'
+import { setCurrentSensor, setMapCoords, setID } from '../redux/appState/actions'
 
 const InfoTable = props => {
 
@@ -76,9 +76,9 @@ const InfoTable = props => {
               <tr className="selected">
                 <td>Location</td>
                 <td colSpan="2">
-                  <a href="#"
-                     onClick={() => {props.onSetMapCoords([sensor.lat, sensor.lng]) }}>lat: {sensor.lat},<br/> long: {sensor.lng}
-                  </a>
+                  <button
+                     onClick={() => {props.onSetID(sensor.id)}}>lat: {sensor.lat},<br/> long: {sensor.lng}
+                  </button>
                 </td>
               </tr>
             </React.Fragment> : null
@@ -157,8 +157,12 @@ const mapDispatchToProps = dispatch => {
     onChangeCurrentSensor: sensor => {
       dispatch(setCurrentSensor(sensor))
     },
-    onSetMapCoords: coords => {
-      dispatch(setMapCoords(coords))
+    //TODO remove if unecessary
+    // onSetMapCoords: coords => {
+    //   dispatch(setMapCoords(coords))
+    // },
+    onSetID: id => {
+      dispatch(setID(id))
     }
   }
 }
