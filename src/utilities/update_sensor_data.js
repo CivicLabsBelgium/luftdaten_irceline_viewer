@@ -52,7 +52,7 @@ export const updateIrceline = async () => {
   //   }
 
   /// Irceline fetch
-  let irceline_pm10_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
+  let irceline_pm10_url = 'https://geo.irceline.be/sos/api/v1/stations?near=' +
     encodeURI(
       '{\
     "center": {\
@@ -63,7 +63,7 @@ export const updateIrceline = async () => {
     }\
     &phenomenon=5'.replace(/\s{2,}/, '')
     )
-  let irceline_pm25_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
+  let irceline_pm25_url = 'https://geo.irceline.be/sos/api/v1/stations?near=' +
     encodeURI(
       '{\
   "center": {\
@@ -75,7 +75,7 @@ export const updateIrceline = async () => {
   &phenomenon=6001'.replace(/\s{2,}/, '')
     )
 
-  let irceline_temp_url = 'http://geo.irceline.be/sos/api/v1/stations?near=' +
+  let irceline_temp_url = 'https://geo.irceline.be/sos/api/v1/stations?near=' +
     encodeURI(
       '{\
   "center": {\
@@ -136,9 +136,9 @@ const parse_irceline_data = async (data) => {
   let data_array = data.map(
     async (station) => {
 
-      let pm10_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=5&force_latest_values=true'
-      let pm25_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=6001&force_latest_values=true'
-      let temp_request_url = 'http://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=62101&force_latest_values=true'
+      let pm10_request_url = 'https://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=5&force_latest_values=true'
+      let pm25_request_url = 'https://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=6001&force_latest_values=true'
+      let temp_request_url = 'https://geo.irceline.be/sos/api/v1/timeseries?expanded=true&station=' + station.properties.id + '&phenomenon=62101&force_latest_values=true'
 
       let irceline_data = await (async () => {
         let pm10_request, pm25_request, temp_request
