@@ -20,7 +20,7 @@ const defaultState = {
         {color: '#960084', value: 500}
       ],
       max: 25, //max non-hazardous value
-      unit: 'g/m³',
+      unit: 'µg/m³',
       name: 'Particulate Matter < 2.5µm'
     },
     PM10: {
@@ -33,7 +33,7 @@ const defaultState = {
         {color: '#960084', value: 500}
       ],
       max: 50, //max non-hazardous value
-      unit: 'g/m³',
+      unit: 'µg/m³',
       name: 'Particulate Matter < 10µm'
     },
     temperature: {
