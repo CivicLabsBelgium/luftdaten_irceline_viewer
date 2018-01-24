@@ -88,15 +88,6 @@
     border-bottom: #696d6e 1px solid;
 }
 
-.sidebar table tr.selected button {
-    font-size: 1.2em;
-    cursor: pointer;
-    user-select: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-
 .sidebar table tr.sensor:hover {
     cursor: pointer;
     background-color: #446666;
@@ -106,6 +97,12 @@
     font-size: 1.2em;
 }
 
-.sidebar a {
+.sidebar a, .sidebar span.a {
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    font-size: 1em;
     color: #3d564c;
 }

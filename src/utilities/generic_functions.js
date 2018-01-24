@@ -35,7 +35,6 @@ export function sort_raw_data_by_timestamp (rawData1, rawData2) {
 
 
 export function createMarkerIconSVG (options) {
-  const ReactDOMServer = require('react-dom/server')
   const border = (options.hexagonIsSelected === false) ? null : '<path stroke="#000" fill="#000" d="M70.35,3,92.83,41.62,70.64,80.4,26,80.57,3.46,42,25.66,3.17,70.35,3m1.72-3L23.92.18,0,42,24.23,83.58l48.15-.18L96.3,41.61,72.07,0Z"/>'
 
   //TODO test return normal string

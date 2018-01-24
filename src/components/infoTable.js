@@ -76,9 +76,7 @@ const InfoTable = props => {
               <tr className="selected">
                 <td>Location</td>
                 <td colSpan="2">
-                  <button
-                     onClick={() => {props.onSetID(sensor.id)}}>lat: {sensor.lat},<br/> long: {sensor.lng}
-                  </button>
+                  <span className="a" onClick={() => {props.onSetID(sensor.id)}}>lat: {sensor.lat},<br/> long: {sensor.lng}</span>
                 </td>
               </tr>
             </React.Fragment> : null
