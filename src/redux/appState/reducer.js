@@ -4,6 +4,7 @@ const defaultState = {
     irceline: true
   },
   mapCoords: null,
+  id: 'init',
   sensor: null,
   stationList: null,
   time: null,
@@ -71,7 +72,10 @@ export default function appState (state = defaultState, action) {
     case 'APPSTATE_SET_CURRENT_STATIONLIST':
       newState.stationList = (newState.stationList === action.stationList) ? null : action.stationList
       newState.sensor = null
-      newState.id = null
+      if (action.stationList === null) {
+        console.log(action.stationList)
+        newState.id = null
+      }
       return newState
 
     case 'APPSTATE_SET_CURRENT_SENSOR':

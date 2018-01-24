@@ -164,7 +164,7 @@ class Map extends Component {
 
                 //gets a shared sensor id from the url, selects this sensor and its station, and centers the map on it
                 const params = getParams()
-                if (params.id && params.id === sensor.id && !this.centeredOnSensorFromURL) {
+                if (params.id && params.id === sensor.id && !this.centeredOnSensorFromURL && (nextProps.appState.stationList !== [station])) {
                   console.log('url parameter id matches sensor ' + sensor.id)
 
                   this.isMoving = true
@@ -265,6 +265,13 @@ class Map extends Component {
 
   componentWillReceiveProps (nextProps) {
 
+    if(this.props.appState.id !== nextProps.appState.id && nextProps.appState.id === null) {
+      const params = getParams()
+      delete params.id
+      setParams(params)
+    }
+
+
     //TODO fix this mess
     if(nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
       console.log('setting ID')
@@ -272,7 +279,7 @@ class Map extends Component {
         id: nextProps.appState.id
       })
       this.centeredOnSensorFromURL = false
-      this.props.onSetID(null)
+      // this.props.onSetID(null)
     }
 
 
