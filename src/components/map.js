@@ -208,7 +208,7 @@ class Map extends Component {
               return data.value >= meanValue
             }
           ) || phenomenonMeta.data[phenomenonMeta.data.length - 1].value))
-        const valueLower = phenomenonMeta.data[valueExceedsIndex - 1].value
+        const valueLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].value
         const valueUpper = phenomenonMeta.data[valueExceedsIndex].value - valueLower
         const valuePercent = (meanValue - valueLower) / valueUpper
         const colorLower = phenomenonMeta.data[valueExceedsIndex - 1].color
