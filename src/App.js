@@ -13,9 +13,15 @@ import Legend from './components/legend'
 import PhenomenonPicker from './components/phenomenonPicker'
 import UpdatedTime from './components/updatedTime'
 import DataOriginPicker from './components/dataOriginPicker'
+import * as polyfill from './utilities/polyfills'
 
 class App extends Component {
 
+  constructor(props) {
+    super(props)
+    polyfill.arrayFindPolyfill()
+    polyfill.findIndexPolyfill()
+  }
 
   componentDidMount () {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
