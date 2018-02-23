@@ -209,10 +209,10 @@ class Map extends Component {
             }
           ) || phenomenonMeta.data[phenomenonMeta.data.length - 1].value))
         const valueLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].value
-        const valueUpper = phenomenonMeta.data[valueExceedsIndex].value - valueLower
+        const valueUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].value - valueLower
         const valuePercent = (meanValue - valueLower) / valueUpper
-        const colorLower = phenomenonMeta.data[valueExceedsIndex - 1].color
-        const colorUpper = phenomenonMeta.data[valueExceedsIndex].color
+        const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
+        const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
         const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
 
         let hexagonIconOptions = {
