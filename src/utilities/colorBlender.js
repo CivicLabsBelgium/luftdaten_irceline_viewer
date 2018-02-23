@@ -14,7 +14,7 @@
     @returns: string    => the third color, hex, represenatation of the blend between color1 and color2 at the given percentage
 */
 
-export function blend_colors (color1, color2, percentage) {
+export function blendColors (color1, color2, percentage) {
   // check input
   color1 = color1 || '#000000'
   color2 = color2 || '#ffffff'

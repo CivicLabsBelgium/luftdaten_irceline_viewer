@@ -1,26 +1,22 @@
-import React from 'react'
 import store from '../redux/store'
 import { setReachable } from '../redux/stationUpdates/actions'
 
-
 //TODO refactor?
-export function fetch_json (url, source) {
+export function fetchJson (url, source) {
   return new Promise((resolve, reject) => {
-      fetch(url).then(
-        data => data.json().then((json) => {
-            resolve(json)
-          },
-        ).catch(() => {
-          reject('no valid response')
-          store.dispatch(setReachable(false, source))
-        })
-      ).catch(
-        () => {
-          store.dispatch(setReachable(false, source))
-        }
-      )
-    }
-  )
+    fetch(url).then(
+      data => data.json().then((json) => {
+        resolve(json)
+      }).catch(() => {
+        reject('no valid response')
+        store.dispatch(setReachable(false, source))
+      })
+    ).catch(
+      () => {
+        store.dispatch(setReachable(false, source))
+      }
+    )
+  })
 }
 
 /**
@@ -29,7 +25,7 @@ export function fetch_json (url, source) {
  * @param rawData2
  * @returns {boolean}
  */
-export function sort_raw_data_by_timestamp (rawData1, rawData2) {
+export function sortRawDataByTimestamp (rawData1, rawData2) {
   return rawData1.timestamp > rawData2.timestamp
 }
 

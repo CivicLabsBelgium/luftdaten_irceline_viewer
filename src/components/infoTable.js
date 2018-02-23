@@ -1,11 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setCurrentSensor, setMapCoords, setID } from '../redux/appState/actions'
+import { setCurrentSensor, setID } from '../redux/appState/actions'
 
 const InfoTable = props => {
-
-  if (props.data.length === 0)
-    return null
+  if (props.data.length === 0) return null
 
   let sumCol1 = 0
   let countCol1 = 0
@@ -14,10 +12,8 @@ const InfoTable = props => {
 
   const sensorList = props.data.map(
     sensor => {
-
       //TODO Keep or not?
-      if (props.origin[sensor.origin] === false)
-        return null
+      if (props.origin[sensor.origin] === false) return null
 
       let col1Value, col1Unit, col2Value, col2Unit
       if (sensor.PM10 || sensor.PM25) {
@@ -36,47 +32,48 @@ const InfoTable = props => {
         sumCol1 += parseFloat(col1Value)
         countCol1++
         col1Value = <span>{col1Value}{col1Unit}</span>
-      }
-      else
+      } else {
         col1Value = '-'
+      }
 
       if (col2Value) {
         sumCol2 += parseFloat(col2Value)
         countCol2++
         col2Value = <span>{col2Value}{col2Unit}</span>
-      }
-      else
+      } else {
         col2Value = '-'
+      }
 
       return (
         <React.Fragment key={sensor.id}>
           <tr className={
             (props.sensor === sensor.id) ? 'sensor selected' : 'sensor'
           } onClick={() => props.onChangeCurrentSensor(sensor.id)}>
-            <td>{sensor.id}</td>
+            <td>
+              <span className='a' onClick={() => { props.onSetID(sensor.id) }}>{sensor.id}</span>
+            </td>
             <td>{col1Value}</td>
             <td>{col2Value}</td>
           </tr>
           {
             (props.sensor === sensor.id) ? <React.Fragment>
-              <tr className="selected">
+              <tr className='selected'>
                 <td>Station ID</td>
-                <td colSpan="2">{sensor.stationID}</td>
+                <td colSpan='2'>{sensor.stationID}</td>
               </tr>
-              <tr className="selected">
+              <tr className='selected'>
                 <td>Name</td>
-                <td colSpan="2">{sensor.name}</td>
+                <td colSpan='2'>{sensor.name}</td>
               </tr>
-              <tr className="selected">
+              <tr className='selected'>
                 <td>Source</td>
-                <td colSpan="2"><a target="_blank"
-                                   href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : '#'}>{sensor.origin}</a>
+                <td colSpan='2'><a target='_blank' href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : ''}>{sensor.origin}</a>
                 </td>
               </tr>
-              <tr className="selected">
+              <tr className='selected'>
                 <td>Location</td>
-                <td colSpan="2">
-                  <span className="a" onClick={() => {props.onSetID(sensor.id)}}>lat: {sensor.lat},<br/> long: {sensor.lng}</span>
+                <td colSpan='2'>
+                  <span >lat: {sensor.lat},<br /> long: {sensor.lng}</span>
                 </td>
               </tr>
             </React.Fragment> : null
@@ -88,58 +85,58 @@ const InfoTable = props => {
   )
 
   let meanCol1 = (sumCol1 / countCol1).toFixed(2)
-  if (isNaN(meanCol1))
-    meanCol1 = '-'
+  if (isNaN(meanCol1)) meanCol1 = '-'
   let meanCol2 = (sumCol2 / countCol2).toFixed(2)
-  if (isNaN(meanCol2))
-    meanCol2 = '-'
+  if (isNaN(meanCol2)) meanCol2 = '-'
 
   // TODO shorten
 
-  if (props.type === 'partsPerMillion')
+  if (props.type === 'partsPerMillion') {
     return (
       <table>
         <tbody>
-        <tr className="headers">
-          <th>Sensor&nbsp;ID</th>
-          <th style={{textDecoration: props.phenomenon === 'PM10' ? 'underline' : 'none'}}>PM10</th>
-          <th style={{textDecoration: props.phenomenon === 'PM25' ? 'underline' : 'none'}}>PM2.5</th>
-        </tr>
-        {
-          (countCol1 <= 1 && countCol2 <= 1) ? null : (
-            <tr className="mean">
-              <th>Mean</th>
-              <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
-              <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
-            </tr>
-          )
-        }
-        {sensorList}
+          <tr className='headers'>
+            <th>Sensor&nbsp;ID</th>
+            <th style={{textDecoration: props.phenomenon === 'PM10' ? 'underline' : 'none'}}>PM10</th>
+            <th style={{textDecoration: props.phenomenon === 'PM25' ? 'underline' : 'none'}}>PM2.5</th>
+          </tr>
+          {
+            (countCol1 <= 1 && countCol2 <= 1) ? null : (
+              <tr className='mean'>
+                <th>Mean</th>
+                <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
+                <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
+              </tr>
+            )
+          }
+          {sensorList}
         </tbody>
       </table>
     )
-  if (props.type === 'tempAndHum')
+  }
+  if (props.type === 'tempAndHum') {
     return (
       <table>
         <tbody>
-        <tr className="headers">
-          <th>Sensor&nbsp;ID</th>
-          <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
-          <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
-        </tr>
-        {
-          (countCol1 <= 1 && countCol2 <= 1) ? null : (
-            <tr className="mean">
-              <th>Mean</th>
-              <td>{meanCol1}&nbsp;°C</td>
-              <td>{meanCol2}&nbsp;&#37;</td>
-            </tr>
-          )
-        }
-        {sensorList}
+          <tr className='headers'>
+            <th>Sensor&nbsp;ID</th>
+            <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
+            <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
+          </tr>
+          {
+            (countCol1 <= 1 && countCol2 <= 1) ? null : (
+              <tr className='mean'>
+                <th>Mean</th>
+                <td>{meanCol1}&nbsp;°C</td>
+                <td>{meanCol2}&nbsp;&#37;</td>
+              </tr>
+            )
+          }
+          {sensorList}
         </tbody>
       </table>
     )
+  }
 }
 
 const mapStateToProps = state => {

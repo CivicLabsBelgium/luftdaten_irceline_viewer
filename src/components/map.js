@@ -3,26 +3,24 @@ import { connect } from 'react-redux'
 import { setCurrentSensor, setCurrentStationList, setID, setMapCoords } from '../redux/appState/actions'
 import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
 import { setParams, getParams } from '../utilities/updateURL'
-import { blend_colors } from '../utilities/colorBlender'
+import { blendColors } from '../utilities/colorBlender'
 
 class Map extends Component {
-
-  markerLayer = []
-  isZooming = false
-  isMoving = false
-  centeredOnSensorFromURL = false
-
   constructor (props) {
     super(props)
     this.state = {
       map: null,
       layerGroup: null
     }
+    this.markerLayer = []
+    this.isZooming = false
+    this.isMoving = false
+    this.centeredOnSensorFromURL = false
     this.showMarkers = this.showMarkers.bind(this)
   }
 
   componentDidMount () {
-    //get shared url parameters
+    // get shared url parameters
     const initialParams = getParams() || {}
     if (initialParams.id) {
       initialParams.zoom = 14
@@ -47,28 +45,20 @@ class Map extends Component {
     )
     map.addEventListener('zoomend', () => {
         this.showMarkers(this.props)
-        console.log('### zoom event: ' + map.getZoom())
         let params = getParams()
-        console.log('old', params)
         params.zoom = map.getZoom()
         setParams(params)
-        console.log('new', params)
-        console.log('###')
       }
     )
     map.addEventListener('moveend', () => {
       if (!this.isZooming && !this.isMoving) {
-        console.log('### move event')
         let params = getParams()
-        console.log('old', params)
         if (params.id)
           delete params.id
         params.lat = map.getCenter().lat
         params.lng = map.getCenter().lng
         params.zoom = map.getZoom()
-        console.log('new', params)
         setParams(params)
-        console.log('###')
       }
       this.isZooming = false
       this.isMoving = false
@@ -165,7 +155,6 @@ class Map extends Component {
                 //gets a shared sensor id from the url, selects this sensor and its station, and centers the map on it
                 const params = getParams()
                 if (params.id && params.id === sensor.id && !this.centeredOnSensorFromURL && (nextProps.appState.stationList !== [station])) {
-                  console.log('url parameter id matches sensor ' + sensor.id)
 
                   this.isMoving = true
                   setParams(params)
@@ -213,7 +202,7 @@ class Map extends Component {
         const valuePercent = (meanValue - valueLower) / valueUpper
         const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
         const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
-        const colorBlend = blend_colors(colorLower, colorUpper, valuePercent)
+        const colorBlend = blendColors(colorLower, colorUpper, valuePercent)
 
         let hexagonIconOptions = {
           hexagonIsSelected: false,
