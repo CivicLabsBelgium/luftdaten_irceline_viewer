@@ -22,3 +22,8 @@ The color coded legend displays all the colors associated with the currently sel
 ## Contributing
 
 Users may contribute by making a new issue about bugs they find or features they think should be implemented in this app.
+
+### Development
+
+1. `npm install`
+2. `npm start`
