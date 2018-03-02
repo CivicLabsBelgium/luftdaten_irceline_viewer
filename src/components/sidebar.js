@@ -18,6 +18,7 @@ class Sidebar extends Component {
             sensor.origin = station.origin
             sensor.lat = station.latitude
             sensor.lng = station.longitude
+            sensor.alt = station.altitude
             if (sensor.PM10 || sensor.PM25) {
               sensorList.partsPerMillion.push(sensor)
             } else if (sensor.temperature || sensor.humidity) {

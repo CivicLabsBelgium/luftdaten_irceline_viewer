@@ -25,5 +25,7 @@ Users may contribute by making a new issue about bugs they find or features they
 
 ### Development
 
+copy src/config.js.dist to src/config.js , edit the copy for your needs
+
 1. `npm install`
 2. `npm start`
