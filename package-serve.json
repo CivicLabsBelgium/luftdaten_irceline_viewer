@@ -4,9 +4,8 @@
   "private": true,
   "homepage": "/",
   "dependencies": {
-    "serve": "^6.4.3"
-  },
-  "scripts": {
-    "start": "node_modules/.bin/serve -s build"
+    "express": "^4.16.2",
+    "require": "^2.4.20",
+    "child_process": "^1.0.2"
   }
 }

@@ -23,7 +23,22 @@ The color coded legend displays all the colors associated with the currently sel
 
 Users may contribute by making a new issue about bugs they find or features they think should be implemented in this app.
 
-### Development
+### building and running
 
-1. `npm install`
-2. `npm start`
+* With docker:
+    1. `cd` to the project directory
+    2. `docker build . -t luftdaten_irceline_viewer`
+    3. `docker run -p 80:80 -p 443:443 luftdaten_irceline_viewer`
+
+* Without docker:
+    1. `npm install`
+    2. `sudo node server.js`
+
+* SSL with self-signed (for localhost), or otherwise obtained certificates for https support:
+    1. put your .key and .crt files into the project's ssl/ directory before running the app, or building the docker container
+    
+* SSL with letsencrypt (a free certificate authority)
+    1. build the docker image
+    2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `true`
+    3. spin up the container as a service
+    4. to prevent losing your certificates on a redeploy, add a volume for the path `/etc/letsencrypt`
