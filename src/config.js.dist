@@ -1,0 +1,41 @@
+
+export const globalConfig  = {
+
+//	set start coordinates, zoom and bounds for map i.e. for Belgium:
+//	zoom: 12,
+//	minZoom: 6,
+//	maxZoom: 18,
+//	lat: 50.843,
+//	lng: 4.368,
+//	maxBounds: [
+//		[60, -20],
+//		[40, 25]
+//	],
+
+	zoom: 2,
+	minZoom: 2,
+	maxZoom: 18,
+	lat: 0,
+	lng: 0,
+	maxBounds: [],
+
+//	map config i.e. for MapBox Streets
+//	tilesURL: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+//	tilesAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+//	tilesID: 'mapbox.streets',
+//	tilesAccessToken: 'pk......',
+	
+	tilesURL: 'https://maps.luftdaten.info/tiles/{z}/{x}/{y}.png',
+	tilesAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
+	tilesID: '',
+	tilesAccessToken: '',
+
+
+//	luftdatenURL1: 'https://api.luftdaten.info/v1/filter/country=BE',
+//	luftdatenURL2: '',
+	luftdatenURL1: 'https://api.luftdaten.info/static/v2/data.dust.min.json',
+	luftdatenURL2: 'https://api.luftdaten.info/static/v2/data.temp.min.json',
+
+	showIrceline: false,
+
+}

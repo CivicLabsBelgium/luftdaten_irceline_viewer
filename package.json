@@ -2,7 +2,7 @@
   "name": "interactieve_kaart",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/",
+  "homepage": ".",
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

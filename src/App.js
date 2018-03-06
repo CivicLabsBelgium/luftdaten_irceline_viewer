@@ -1,3 +1,4 @@
+import { globalConfig } from './config'
 import React, { Component } from 'react'
 import './styles/App.css'
 import './styles/dataOriginPicker.css'
@@ -27,13 +28,15 @@ class App extends Component {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
 
-    // Update luftdaten every minute
+    // Update luftdaten every minute (pm)
     updateLuftdaten().then()
-    setInterval(updateLuftdaten, 6e4)
+    setInterval(updateLuftdaten, 2*6e4)
 
     // Update Irceline every 10 minutes
-    updateIrceline().then()
-    setInterval(updateIrceline, 6e5)
+	if (globalConfig.showIrceline) {
+		updateIrceline().then()
+		setInterval(updateIrceline, 6e5)
+	}
   }
 
   render () {
@@ -43,7 +46,11 @@ class App extends Component {
         <div className="UI_container">
           <UpdatedTime />
           <Legend />
-          <DataOriginPicker />
+{
+	(globalConfig.showIrceline) ? <React.Fragment>
+		  <DataOriginPicker />
+    </React.Fragment> : null
+}
           <PhenomenonPicker />
         </div>
         <Sidebar />
