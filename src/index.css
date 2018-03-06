@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.leaflet-tile-pane {
+	filter: grayscale(85%) saturate(150%) hue-rotate(60deg) contrast(90%) brightness(110%) 
+}

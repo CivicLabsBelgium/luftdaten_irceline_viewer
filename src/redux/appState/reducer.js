@@ -62,6 +62,19 @@ const defaultState = {
       unit: '%',
       name: 'Humidity'
     },
+    pressure: {
+      data: [
+        {color: '#9FF', value: 900},
+        {color: '#9F6', value: 940},
+        {color: '#9F0', value: 980},
+        {color: '#990', value: 1020},
+        {color: '#900', value: 1060},
+        {color: '#C00', value: 1100}
+      ],
+      max: 1000, //max non-hazardous value
+      unit: 'hPa',
+      name: 'Pressure'
+    },
 
   }
 }

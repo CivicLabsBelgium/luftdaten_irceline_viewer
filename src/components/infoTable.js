@@ -9,23 +9,27 @@ const InfoTable = props => {
   let countCol1 = 0
   let sumCol2 = 0
   let countCol2 = 0
+  let sumCol3 = 0
+  let countCol3 = 0
 
   const sensorList = props.data.map(
     sensor => {
       //TODO Keep or not?
       if (props.origin[sensor.origin] === false) return null
 
-      let col1Value, col1Unit, col2Value, col2Unit
+      let col1Value, col1Unit, col2Value, col2Unit, col3Value, col3Unit
       if (sensor.PM10 || sensor.PM25) {
         col1Value = sensor.PM10
         col1Unit = <span>&nbsp;µg/m<sup>3</sup></span>
         col2Value = sensor.PM25
         col2Unit = <span>&nbsp;µg/m<sup>3</sup></span>
-      } else if (sensor.temperature || sensor.humidity) {
+      } else if (sensor.temperature || sensor.humidity || sensor.pressure) {
         col1Value = sensor.temperature
         col1Unit = <span>&nbsp;°C</span>
         col2Value = sensor.humidity
         col2Unit = <span>&nbsp;&#37;</span>
+        col3Value = sensor.pressure
+        col3Unit = <span>&nbsp;hPa</span>
       }
 
       if (col1Value) {
@@ -44,6 +48,16 @@ const InfoTable = props => {
         col2Value = '-'
       }
 
+      if (col3Value) {
+        sumCol3 += parseFloat(col3Value)
+        countCol3++
+        col3Value = parseFloat(col3Value)
+        col3Value = col3Value.toFixed(2)
+        col3Value = <span>{col3Value}{col3Unit}</span>
+      } else {
+        col3Value = '-'
+      }
+
       return (
         <React.Fragment key={sensor.id}>
           <tr className={
@@ -54,6 +68,11 @@ const InfoTable = props => {
             </td>
             <td>{col1Value}</td>
             <td>{col2Value}</td>
+			{
+				(props.type === 'tempAndHum') ? <React.Fragment>
+				<td>{col3Value}</td>
+				</React.Fragment> : null
+			}
           </tr>
           {
             (props.sensor === sensor.id) ? <React.Fragment>
@@ -73,7 +92,7 @@ const InfoTable = props => {
               <tr className='selected'>
                 <td>Location</td>
                 <td colSpan='2'>
-                  <span >lat: {sensor.lat},<br /> long: {sensor.lng}</span>
+                  <span >lat: {sensor.lat},<br /> long: {sensor.lng},<br /> alt: {sensor.alt}</span>
                 </td>
               </tr>
             </React.Fragment> : null
@@ -88,6 +107,8 @@ const InfoTable = props => {
   if (isNaN(meanCol1)) meanCol1 = '-'
   let meanCol2 = (sumCol2 / countCol2).toFixed(2)
   if (isNaN(meanCol2)) meanCol2 = '-'
+  let meanCol3 = (sumCol3 / countCol3).toFixed(2)
+  if (isNaN(meanCol3)) meanCol3 = '-'
 
   // TODO shorten
 
@@ -122,13 +143,15 @@ const InfoTable = props => {
             <th>Sensor&nbsp;ID</th>
             <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
             <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
+            <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>Pres.</th>
           </tr>
           {
-            (countCol1 <= 1 && countCol2 <= 1) ? null : (
+            (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
               <tr className='mean'>
                 <th>Mean</th>
                 <td>{meanCol1}&nbsp;°C</td>
                 <td>{meanCol2}&nbsp;&#37;</td>
+                <td>{meanCol3}&nbsp;hPa</td>
               </tr>
             )
           }

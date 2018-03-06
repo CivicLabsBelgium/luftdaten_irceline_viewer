@@ -25,6 +25,8 @@ Users may contribute by making a new issue about bugs they find or features they
 
 ### building and running
 
+* Copy src/config.js.dist to src/config.js , edit the copy for your needs
+
 * With docker:
     1. `cd` to the project directory
     2. `docker build . -t luftdaten_irceline_viewer`

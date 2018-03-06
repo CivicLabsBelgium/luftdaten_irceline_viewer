@@ -1,3 +1,4 @@
+import { globalConfig } from '../config'
 import * as genericFunctions from './generic_functions'
 import store from '../redux/store'
 import { addStations, setReachable, setUpdating } from '../redux/stationUpdates/actions'
@@ -5,6 +6,7 @@ import { setTime } from '../redux/appState/actions'
 
 const stationsBoth = {
   luftdaten: [],
+  luftdatenTemp: [],
   irceline: []
 }
 
@@ -17,8 +19,13 @@ export const updateLuftdaten = async () => {
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'luftdaten'))
 
-  let luftdatenAllUrl = 'https://api.luftdaten.info/v1/filter/country=BE'
+  let luftdatenAllUrl = globalConfig.luftdatenURL1
   let luftdatenAllJson = await genericFunctions.fetchJson(luftdatenAllUrl, 'luftdaten')
+  if (globalConfig.luftdatenURL2 != '') {
+	let luftdatenTempAllUrl = globalConfig.luftdatenURL2
+	let luftdatenTempAllJson = await genericFunctions.fetchJson(luftdatenTempAllUrl, 'luftdatenTemp')
+	luftdatenAllJson = luftdatenAllJson.concat(luftdatenTempAllJson)
+  }
   let luftdatenStations = parseLuftdatenData(luftdatenAllJson)
 
   const time = new Date().toLocaleTimeString()
@@ -167,6 +174,9 @@ const parseLuftdatenData = (data) => {
   let parsedDataArray = []
   data.forEach(
     (station) => {
+
+      let is_valid = true;
+
       if (parsedDataArray.find(
           (duplicateCheck) => {
             return duplicateCheck.id === station.location.id
@@ -179,6 +189,7 @@ const parseLuftdatenData = (data) => {
         id: station.location.id,
         latitude: station.location.latitude,
         longitude: station.location.longitude,
+        altitude: station.location.altitude,
         origin: 'luftdaten',
         sensors: []
       }
@@ -193,6 +204,7 @@ const parseLuftdatenData = (data) => {
 
       for (let d in duplicates) {
         let currentStation = duplicates[d]
+
         for (let s in currentStation.sensordatavalues) {
           let currentSensorDataValue = currentStation.sensordatavalues[s]
           let currentSensor = parsedStation.sensors
@@ -218,16 +230,39 @@ const parseLuftdatenData = (data) => {
 
           switch (currentSensorDataValue.value_type) {
             case 'P1':
-              currentSensor.PM10 = currentSensorDataValue.value
+              if (currentSensorDataValue.value < 1990) {
+			    currentSensor.PM10 = currentSensorDataValue.value
+		      } else {
+				is_valid = false;
+			  }
               break
             case 'P2':
-              currentSensor.PM25 = currentSensorDataValue.value
+              if (currentSensorDataValue.value < 990) {
+                currentSensor.PM25 = currentSensorDataValue.value
+		      } else {
+				is_valid = false;
+			  }
               break
             case 'temperature':
-              currentSensor.temperature = currentSensorDataValue.value
+              if (currentSensorDataValue.value >= -100 && currentSensorDataValue.value <= 100) {
+                currentSensor.temperature = currentSensorDataValue.value
+		      } else {
+				is_valid = false;
+			  }
               break
             case 'humidity':
-              currentSensor.humidity = currentSensorDataValue.value
+              if (currentSensorDataValue.value >= 0 && currentSensorDataValue.value <= 100) {
+                currentSensor.humidity = currentSensorDataValue.value
+		      } else {
+				is_valid = false;
+			  }
+              break
+            case 'pressure_at_sealevel':
+              if (currentSensorDataValue.value >= 90000 && currentSensorDataValue.value <= 120000) {
+                currentSensor.pressure = currentSensorDataValue.value/100
+		      } else {
+				is_valid = false;
+			  }
               break
             default:
               break
@@ -236,7 +271,7 @@ const parseLuftdatenData = (data) => {
         }
       }
 
-      parsedDataArray.push(parsedStation)
+      if (is_valid) parsedDataArray.push(parsedStation)
   })
 
   return parsedDataArray

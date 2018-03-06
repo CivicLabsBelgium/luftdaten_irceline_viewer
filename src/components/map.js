@@ -1,3 +1,4 @@
+import { globalConfig } from '../config'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentSensor, setCurrentStationList, setID, setMapCoords } from '../redux/appState/actions'
@@ -27,14 +28,10 @@ class Map extends Component {
     }
 
     const map = window.L.map('map', {
-      center: [initialParams.lat || 50.843, initialParams.lng || 4.368],
-      zoom: initialParams.zoom || 12,
-      minZoom: 6,
-      // restrict panning and zooming to belgium
-      maxBounds: [
-        [60, -20],
-        [40, 25]
-      ],
+      center: [initialParams.lat || globalConfig.lat, initialParams.lng || globalConfig.lng],
+      zoom: initialParams.zoom || globalConfig.zoom,
+      minZoom: globalConfig.minZoom,
+      maxBounds: globalConfig.maxBounds,
       scrollWheelZoom: 'center'
     })
 
@@ -64,11 +61,11 @@ class Map extends Component {
       this.isMoving = false
     })
 
-    window.L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map stations &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-      maxZoom: 18,
-      id: 'mapbox.streets',
-      accessToken: 'pk.eyJ1IjoiZGF2aWRzaW5naCIsImEiOiJjamIxenh3eXQyNmduMnFwaWJnNzlycTczIn0.CWe6Ty3qZ-AD17PP6D7vpA'
+    window.L.tileLayer(globalConfig.tilesURL, {
+      attribution: globalConfig.tilesAttribution,
+      maxZoom: globalConfig.maxZoom,
+      id: globalConfig.tilesID,
+      accessToken: globalConfig.tilesAccessToken
     }).addTo(map)
 
     const layerGroup = window.L.layerGroup([]).addTo(map)
@@ -199,7 +196,7 @@ class Map extends Component {
           ) || phenomenonMeta.data[phenomenonMeta.data.length - 1].value))
         const valueLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].value
         const valueUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].value - valueLower
-        const valuePercent = (meanValue - valueLower) / valueUpper
+        const valuePercent = Math.min(100,Math.max(0,(meanValue - valueLower) / valueUpper))
         const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
         const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
         const colorBlend = blendColors(colorLower, colorUpper, valuePercent)
