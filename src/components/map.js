@@ -260,7 +260,6 @@ class Map extends Component {
 
     //TODO fix this mess
     if(nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
-      console.log('setting ID')
       setParams({
         id: nextProps.appState.id
       })

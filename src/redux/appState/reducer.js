@@ -86,7 +86,6 @@ export default function appState (state = defaultState, action) {
       newState.stationList = (newState.stationList === action.stationList) ? null : action.stationList
       newState.sensor = null
       if (action.stationList === null) {
-        console.log(action.stationList)
         newState.id = null
       }
       return newState
