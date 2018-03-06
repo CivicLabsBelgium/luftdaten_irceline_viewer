@@ -25,7 +25,7 @@ Users may contribute by making a new issue about bugs they find or features they
 
 ### building and running
 
-* Copy src/config.js.dist to src/config.js , edit the copy for your needs
+* copy src/config.js.dist to src/config.js , edit the copy for your needs
 
 * With docker:
     1. `cd` to the project directory
@@ -39,7 +39,7 @@ Users may contribute by making a new issue about bugs they find or features they
 * SSL with self-signed (for localhost), or otherwise obtained certificates for https support:
     1. put your .key and .crt files into the project's ssl/ directory before running the app, or building the docker container
     
-* SSL with letsencrypt (a free certificate authority)
+* SSL with letsencrypt (a free certificate authority) on docker cloud services
     1. build the docker image
     2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `true`
     3. spin up the container as a service

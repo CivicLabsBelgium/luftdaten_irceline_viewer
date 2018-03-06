@@ -18,7 +18,7 @@ import * as polyfill from './utilities/polyfills'
 
 class App extends Component {
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     polyfill.arrayFindPolyfill()
     polyfill.findIndexPolyfill()
@@ -27,33 +27,32 @@ class App extends Component {
   componentDidMount () {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
-
     // Update luftdaten every minute (pm)
     updateLuftdaten().then()
-    setInterval(updateLuftdaten, 2*6e4)
+    setInterval(updateLuftdaten, 2 * 6e4)
 
     // Update Irceline every 10 minutes
-	if (globalConfig.showIrceline) {
-		updateIrceline().then()
-		setInterval(updateIrceline, 6e5)
-	}
+    if (globalConfig.showIrceline) {
+      updateIrceline().then()
+      setInterval(updateIrceline, 6e5)
+    }
   }
 
   render () {
     return (
       <div className="container">
-        <Map />
+        <Map/>
         <div className="UI_container">
-          <UpdatedTime />
-          <Legend />
-{
-	(globalConfig.showIrceline) ? <React.Fragment>
-		  <DataOriginPicker />
-    </React.Fragment> : null
-}
-          <PhenomenonPicker />
+          <UpdatedTime/>
+          <Legend/>
+          {
+            (globalConfig.showIrceline) ? <React.Fragment>
+              <DataOriginPicker/>
+            </React.Fragment> : null
+          }
+          <PhenomenonPicker/>
         </div>
-        <Sidebar />
+        <Sidebar/>
       </div>
 
     )

@@ -68,31 +68,32 @@ const InfoTable = props => {
             </td>
             <td>{col1Value}</td>
             <td>{col2Value}</td>
-			{
-				(props.type === 'tempAndHum') ? <React.Fragment>
-				<td>{col3Value}</td>
-				</React.Fragment> : null
-			}
+            {
+              (props.type === 'tempAndHum') ? <React.Fragment>
+                <td>{col3Value}</td>
+              </React.Fragment> : null
+            }
           </tr>
           {
             (props.sensor === sensor.id) ? <React.Fragment>
               <tr className='selected'>
                 <td>Station ID</td>
-                <td colSpan='2'>{sensor.stationID}</td>
+                <td colSpan='3'>{sensor.stationID}</td>
               </tr>
               <tr className='selected'>
                 <td>Name</td>
-                <td colSpan='2'>{sensor.name}</td>
+                <td colSpan='3'>{sensor.name}</td>
               </tr>
               <tr className='selected'>
                 <td>Source</td>
-                <td colSpan='2'><a target='_blank' href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : ''}>{sensor.origin}</a>
+                <td colSpan='3'><a target='_blank'
+                                   href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : ''}>{sensor.origin}</a>
                 </td>
               </tr>
               <tr className='selected'>
                 <td>Location</td>
-                <td colSpan='2'>
-                  <span >lat: {sensor.lat},<br /> long: {sensor.lng},<br /> alt: {sensor.alt}</span>
+                <td colSpan='3'>
+                  <span>lat: {sensor.lat},<br/> long: {sensor.lng},<br/> alt: {sensor.alt}</span>
                 </td>
               </tr>
             </React.Fragment> : null
@@ -116,21 +117,21 @@ const InfoTable = props => {
     return (
       <table>
         <tbody>
-          <tr className='headers'>
-            <th>Sensor&nbsp;ID</th>
-            <th style={{textDecoration: props.phenomenon === 'PM10' ? 'underline' : 'none'}}>PM10</th>
-            <th style={{textDecoration: props.phenomenon === 'PM25' ? 'underline' : 'none'}}>PM2.5</th>
-          </tr>
-          {
-            (countCol1 <= 1 && countCol2 <= 1) ? null : (
-              <tr className='mean'>
-                <th>Mean</th>
-                <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
-                <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
-              </tr>
-            )
-          }
-          {sensorList}
+        <tr className='headers'>
+          <th>Sensor&nbsp;ID</th>
+          <th style={{textDecoration: props.phenomenon === 'PM10' ? 'underline' : 'none'}}>PM10</th>
+          <th style={{textDecoration: props.phenomenon === 'PM25' ? 'underline' : 'none'}}>PM2.5</th>
+        </tr>
+        {
+          (countCol1 <= 1 && countCol2 <= 1) ? null : (
+            <tr className='mean'>
+              <th>Mean</th>
+              <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
+              <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
+            </tr>
+          )
+        }
+        {sensorList}
         </tbody>
       </table>
     )
@@ -139,23 +140,23 @@ const InfoTable = props => {
     return (
       <table>
         <tbody>
-          <tr className='headers'>
-            <th>Sensor&nbsp;ID</th>
-            <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
-            <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
-            <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>Pres.</th>
-          </tr>
-          {
-            (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
-              <tr className='mean'>
-                <th>Mean</th>
-                <td>{meanCol1}&nbsp;°C</td>
-                <td>{meanCol2}&nbsp;&#37;</td>
-                <td>{meanCol3}&nbsp;hPa</td>
-              </tr>
-            )
-          }
-          {sensorList}
+        <tr className='headers'>
+          <th>Sensor&nbsp;ID</th>
+          <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
+          <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
+          <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>Pres.</th>
+        </tr>
+        {
+          (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
+            <tr className='mean'>
+              <th>Mean</th>
+              <td>{meanCol1}&nbsp;°C</td>
+              <td>{meanCol2}&nbsp;&#37;</td>
+              <td>{meanCol3}&nbsp;hPa</td>
+            </tr>
+          )
+        }
+        {sensorList}
         </tbody>
       </table>
     )

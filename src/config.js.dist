@@ -31,11 +31,12 @@ export const globalConfig  = {
 	tilesAccessToken: '',
 
 
-//	luftdatenURL1: 'https://api.luftdaten.info/v1/filter/country=BE',
-//	luftdatenURL2: '',
-	luftdatenURL1: 'https://api.luftdaten.info/static/v2/data.dust.min.json',
-	luftdatenURL2: 'https://api.luftdaten.info/static/v2/data.temp.min.json',
+//	luftdatenURL1: 'https://api.luftdaten.info/static/v2/data.dust.min.json',
+//	luftdatenURL2: 'https://api.luftdaten.info/static/v2/data.temp.min.json',
 
-	showIrceline: false,
+	luftdatenURL1: 'https://api.luftdaten.info/v1/filter/country=BE',
+	luftdatenURL2: '',
+
+	showIrceline: true,
 
 }

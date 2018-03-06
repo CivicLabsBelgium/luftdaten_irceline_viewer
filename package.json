@@ -11,7 +11,8 @@
     "redux": "^3.7.2"
   },
   "scripts": {
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "start": "react-scripts build && sudo node server.js"
   },
   "devDependencies": {
     "eslint": "^4.14.0",

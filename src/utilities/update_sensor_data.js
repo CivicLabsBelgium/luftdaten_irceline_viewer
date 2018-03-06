@@ -22,9 +22,9 @@ export const updateLuftdaten = async () => {
   let luftdatenAllUrl = globalConfig.luftdatenURL1
   let luftdatenAllJson = await genericFunctions.fetchJson(luftdatenAllUrl, 'luftdaten')
   if (globalConfig.luftdatenURL2 != '') {
-	let luftdatenTempAllUrl = globalConfig.luftdatenURL2
-	let luftdatenTempAllJson = await genericFunctions.fetchJson(luftdatenTempAllUrl, 'luftdatenTemp')
-	luftdatenAllJson = luftdatenAllJson.concat(luftdatenTempAllJson)
+    let luftdatenTempAllUrl = globalConfig.luftdatenURL2
+    let luftdatenTempAllJson = await genericFunctions.fetchJson(luftdatenTempAllUrl, 'luftdatenTemp')
+    luftdatenAllJson = luftdatenAllJson.concat(luftdatenTempAllJson)
   }
   let luftdatenStations = parseLuftdatenData(luftdatenAllJson)
 
@@ -175,7 +175,7 @@ const parseLuftdatenData = (data) => {
   data.forEach(
     (station) => {
 
-      let is_valid = true;
+      let is_valid = true
 
       if (parsedDataArray.find(
           (duplicateCheck) => {
@@ -231,38 +231,38 @@ const parseLuftdatenData = (data) => {
           switch (currentSensorDataValue.value_type) {
             case 'P1':
               if (currentSensorDataValue.value < 1990) {
-			    currentSensor.PM10 = currentSensorDataValue.value
-		      } else {
-				is_valid = false;
-			  }
+                currentSensor.PM10 = currentSensorDataValue.value
+              } else {
+                is_valid = false
+              }
               break
             case 'P2':
               if (currentSensorDataValue.value < 990) {
                 currentSensor.PM25 = currentSensorDataValue.value
-		      } else {
-				is_valid = false;
-			  }
+              } else {
+                is_valid = false
+              }
               break
             case 'temperature':
               if (currentSensorDataValue.value >= -100 && currentSensorDataValue.value <= 100) {
                 currentSensor.temperature = currentSensorDataValue.value
-		      } else {
-				is_valid = false;
-			  }
+              } else {
+                is_valid = false
+              }
               break
             case 'humidity':
               if (currentSensorDataValue.value >= 0 && currentSensorDataValue.value <= 100) {
                 currentSensor.humidity = currentSensorDataValue.value
-		      } else {
-				is_valid = false;
-			  }
+              } else {
+                is_valid = false
+              }
               break
             case 'pressure_at_sealevel':
               if (currentSensorDataValue.value >= 90000 && currentSensorDataValue.value <= 120000) {
-                currentSensor.pressure = currentSensorDataValue.value/100
-		      } else {
-				is_valid = false;
-			  }
+                currentSensor.pressure = currentSensorDataValue.value / 100
+              } else {
+                is_valid = false
+              }
               break
             default:
               break
@@ -272,7 +272,7 @@ const parseLuftdatenData = (data) => {
       }
 
       if (is_valid) parsedDataArray.push(parsedStation)
-  })
+    })
 
   return parsedDataArray
 }
