@@ -2,7 +2,7 @@ import { globalConfig } from '../config'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentSensor, setCurrentStationList, setID, setMapCoords } from '../redux/appState/actions'
-import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/generic_functions'
+import { createMarkerIconSVG, colorToRgba, snapToGrid } from '../utilities/genericFunctions'
 import { setParams, getParams } from '../utilities/updateURL'
 import { blendColors } from '../utilities/colorBlender'
 
