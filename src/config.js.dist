@@ -39,4 +39,12 @@ export const globalConfig  = {
 
 	showIrceline: true,
 
+
+// show nearest irceline station data for every luftdaten sensor (showIrceline must also be true
+    showNearestIrcelineStation: true,
+// nearest irceline station max range (kilometers)
+    nearestIrcelineStationRange: 30
+}
+
+
 }
