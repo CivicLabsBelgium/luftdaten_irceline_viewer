@@ -75,7 +75,7 @@ class InfoTable extends React.Component {
     let sumCol3 = 0
     let countCol3 = 0
 
-    const data = globalConfig.showNearestIrcelineStation ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data) : props.data
+    const data = globalConfig.showNearestIrcelineStation && props.origin.irceline ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data) : props.data
     const sensorList = data.map(
       sensor => {
 
@@ -147,7 +147,7 @@ class InfoTable extends React.Component {
             {
               (props.sensor === sensor.id) ? <React.Fragment>
                 {
-                  sensor.nearestIrceline ?
+                  sensor.nearestIrceline && props.origin.irceline ?
                     <tr className='selected'>
                       <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>nearest irceline station</span></td>
                       <td>{nearestCol1Value || '-'}</td>
@@ -250,7 +250,7 @@ const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     sensor: state.appState.sensor,
-    origin: state.appState.dataOrigin,
+    origin: {...state.appState.dataOrigin},
     stations: state.stationUpdates.stations
   }
 }
