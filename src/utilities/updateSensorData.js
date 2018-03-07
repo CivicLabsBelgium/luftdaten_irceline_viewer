@@ -11,32 +11,35 @@ const stationsBoth = {
 }
 
 export const updateLuftdaten = async () => {
+  if(store.getState().appState.dataOrigin.luftdaten) {
+    store.dispatch(setReachable(true, 'luftdaten'))
+    store.dispatch(setTime(null))
+    store.dispatch(setUpdating(true, 'luftdaten'))
 
-  store.dispatch(setReachable(true, 'luftdaten'))
-  store.dispatch(setTime(null))
-  store.dispatch(setUpdating(true, 'luftdaten'))
+    const luftdatenStations = await fetchStations.luftdaten()
 
-  const luftdatenStations = await fetchStations.luftdaten()
+    stationsBoth.luftdaten = await parseStations.luftdaten(luftdatenStations)
 
-  stationsBoth.luftdaten = await parseStations.luftdaten(luftdatenStations)
+    if (!(luftdatenStations && luftdatenStations.length))
+      store.dispatch(setReachable(false, 'luftdaten'))
 
-  if (!(luftdatenStations && luftdatenStations.length))
-    store.dispatch(setReachable(false, 'luftdaten'))
-
-  combineData()
-  store.dispatch(setUpdating(false, 'luftdaten'))
+    combineData()
+    store.dispatch(setUpdating(false, 'luftdaten'))
+  }
 }
 
 export const updateIrceline = async () => {
-  const ircelineStations = await fetchStations.irceline()
+  if(store.getState().appState.dataOrigin.irceline) {
+    const ircelineStations = await fetchStations.irceline()
 
-  stationsBoth.irceline = await parseStations.irceline(ircelineStations)
+    stationsBoth.irceline = await parseStations.irceline(ircelineStations)
 
-  if (ircelineStations.length === 0)
-    store.dispatch(setReachable(false, 'irceline'))
+    if (ircelineStations.length === 0)
+      store.dispatch(setReachable(false, 'irceline'))
 
-  combineData()
-  store.dispatch(setUpdating(false, 'irceline'))
+    combineData()
+    store.dispatch(setUpdating(false, 'irceline'))
+  }
 }
 
 export const combineData = () => {
