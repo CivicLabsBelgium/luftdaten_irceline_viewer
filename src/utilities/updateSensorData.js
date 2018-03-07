@@ -29,6 +29,7 @@ export const updateLuftdaten = async () => {
 
 export const updateIrceline = async () => {
   const ircelineStations = await fetchStations.irceline()
+
   stationsBoth.irceline = await parseStations.irceline(ircelineStations)
 
   if (ircelineStations.length === 0)

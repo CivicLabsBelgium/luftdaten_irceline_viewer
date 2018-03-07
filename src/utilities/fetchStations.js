@@ -17,6 +17,11 @@ export const luftdaten = async () => {
 
   return luftdatenAllJson
 }
+const ircelinePhenomenonIndex = {
+  'PM10': 5,
+  'PM25': 6001,
+  'temperature': 62101
+}
 
 export const irceline = async () => {
   if (store.getState().appState.dataOrigin.luftdaten === false) return
@@ -25,9 +30,9 @@ export const irceline = async () => {
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'irceline'))
 
-  let ircelinePm10Url = 'https://geo.irceline.be/sos/api/v1/stations?phenomenon=5'
-  let ircelinePm25Url = 'https://geo.irceline.be/sos/api/v1/stations?phenomenon=6001'
-  let ircelineTempUrl = 'https://geo.irceline.be/sos/api/v1/stations?phenomenon=62101'
+  let ircelinePm10Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.pm10}`
+  let ircelinePm25Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.pm25}`
+  let ircelineTempUrl = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.temperature}`
 
   let ircelinePm10Json = await genericFunctions.fetchJson(ircelinePm10Url, 'irceline')
   let ircelinePm25Json = await genericFunctions.fetchJson(ircelinePm25Url, 'irceline')
