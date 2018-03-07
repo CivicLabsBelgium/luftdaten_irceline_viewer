@@ -41,6 +41,6 @@ Users may contribute by making a new issue about bugs they find or features they
     
 * SSL with letsencrypt (a free certificate authority) on docker cloud services
     1. build the docker image
-    2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `true`
+    2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `production`
     3. spin up the container as a service
     4. to prevent losing your certificates on a redeploy, add a volume for the path `/etc/letsencrypt`
