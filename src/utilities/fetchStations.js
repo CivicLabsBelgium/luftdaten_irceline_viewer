@@ -4,6 +4,10 @@ import * as genericFunctions from './genericFunctions'
 import { globalConfig } from '../config'
 import { setTime } from '../redux/appState/actions'
 
+export const luftdatenMean = async url => {
+  return genericFunctions.fetchJson(url)
+}
+
 export const luftdaten = async () => {
   if (store.getState().appState.dataOrigin.luftdaten === false) return
 

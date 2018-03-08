@@ -7,7 +7,7 @@ import './styles/legend.css'
 import './styles/phenomenonPicker.css'
 import './styles/sidebar.css'
 import './styles/map.css'
-import { updateLuftdaten, updateIrceline } from './utilities/updateSensorData'
+import { updateLuftdaten, updateLuftdatenMean, updateIrceline } from './utilities/updateSensorData'
 import Map from './components/map'
 import Sidebar from './components/sidebar'
 import Legend from './components/legend'
@@ -28,7 +28,7 @@ class App extends Component {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
     // Update luftdaten every minute (pm)
-    updateLuftdaten().then()
+    updateLuftdaten().then(updateLuftdatenMean)
     setInterval(updateLuftdaten, 2 * 6e4)
 
     // Update Irceline every 10 minutes
@@ -42,7 +42,7 @@ class App extends Component {
     return (
       <div className='container'>
         <div style={{position: 'absolute', top: 0, right: 0, zIndex: 401}}>
-          <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'>
+          <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank' rel='noopener noreferrer'>
             <img style={{border: 0}} src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png' alt='Fork me on GitHub' />
           </a>
         </div>

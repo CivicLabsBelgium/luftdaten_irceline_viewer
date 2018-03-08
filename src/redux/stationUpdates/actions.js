@@ -20,3 +20,17 @@ export function setUpdating (status, source) {
     source: source
   }
 }
+
+export function setLuftdaten1HrMeans (data) {
+  return {
+    type: 'STATIONUPDATES_SET_1HR_MEANS',
+    data
+  }
+}
+
+export function setLuftdaten24HrMeans (data) {
+  return {
+    type: 'STATIONUPDATES_SET_24HR_MEANS',
+    data
+  }
+}

@@ -1,5 +1,8 @@
 import store from '../redux/store'
-import { addStations, setReachable, setUpdating } from '../redux/stationUpdates/actions'
+import {
+  addStations, setLuftdaten1HrMeans, setLuftdaten24HrMeans, setReachable,
+  setUpdating
+} from '../redux/stationUpdates/actions'
 import { setTime } from '../redux/appState/actions'
 import * as fetchStations from './fetchStations'
 import * as parseStations from './parseStations'
@@ -8,6 +11,32 @@ const stationsBoth = {
   luftdaten: [],
   luftdatenTemp: [],
   irceline: []
+}
+
+export const updateLuftdatenMean = async () => {
+  const url= {
+    hourly: 'http://api.luftdaten.info/static/v2/data.1h.json',
+    daily: 'http://api.luftdaten.info/static/v2/data.24h.json'
+  }
+
+  const hourlyPromise = new Promise((resolve, reject) => fetchStations.luftdatenMean(url.hourly).then(resolve).catch(reject))
+  const dailyPromise = new Promise((resolve, reject) => fetchStations.luftdatenMean(url.daily).then(resolve).catch(reject))
+  let [hourly, daily] = await Promise.all([hourlyPromise, dailyPromise])
+
+  const stationsWithMeans = store.getState().stationUpdates.stations.map(
+    station => {
+      station.sensors = station.sensors.map(
+        sensor => {
+          const sensorHourlyPM10 = hourly.find(sensorHourly => sensorHourly.sensor.id.toString() === sensor.id
+          )
+          return sensor
+        }
+      )
+      return station
+    }
+  )
+
+  console.log(stationsWithMeans, hourly, daily)
 }
 
 export const updateLuftdaten = async () => {
