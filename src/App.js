@@ -40,9 +40,14 @@ class App extends Component {
 
   render () {
     return (
-      <div className="container">
+      <div className='container'>
+        <div style={{position: 'absolute', top: 0, right: 0, zIndex: 401}}>
+          <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'>
+            <img style={{border: 0}} src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png' alt='Fork me on GitHub' />
+          </a>
+        </div>
         <Map/>
-        <div className="UI_container">
+        <div className='UI_container'>
           <UpdatedTime/>
           <Legend/>
           {
