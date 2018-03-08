@@ -27,8 +27,9 @@ export const updateLuftdatenMean = async () => {
     station => {
       station.sensors = station.sensors.map(
         sensor => {
-          const sensorHourlyPM10 = hourly.find(sensorHourly => sensorHourly.sensor.id.toString() === sensor.id
-          )
+          let sensorHourly = hourly.find(sensorHourly => 'L-'.concat(sensorHourly.sensor.id) === sensor.id)
+          sensorHourly = sensorHourly && [sensorHourly.sensor.id, sensorHourly.sensordatavalues]
+          console.log('sensorHourly:', sensorHourly)
           return sensor
         }
       )
