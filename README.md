@@ -1,4 +1,4 @@
-#Luftdaten/irceline viewer
+# Luftdaten/irceline viewer
 
 Luftdaten/irceline viewer is an app to display air quality sensors registered by luftdaten or irceline accross Belgium. Sensors can contain information about fine particulate matter, temperature and humidity.
 This app is built with react/redux.
