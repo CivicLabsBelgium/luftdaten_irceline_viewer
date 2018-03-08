@@ -196,7 +196,7 @@ class Map extends Component {
           ) || phenomenonMeta.data[phenomenonMeta.data.length - 1].value))
         const valueLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].value
         const valueUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].value - valueLower
-        const valuePercent = Math.min(100,Math.max(0,(meanValue - valueLower) / valueUpper))
+        const valuePercent = Math.min(100, Math.max(0, (meanValue - valueLower) / valueUpper))
         const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
         const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
         const colorBlend = blendColors(colorLower, colorUpper, valuePercent)
@@ -232,8 +232,32 @@ class Map extends Component {
 
         // ADD BUNDLED MARKERS TO MAP
         marker.addEventListener('click',
-          () => {
-            nextProps.onChangeCurrentStation(marker.options.stations)
+          (e) => {
+            let newStationList = marker.options.stations
+
+            // when a marker is clicked while the shift key is held down, combine current selection of stations with new stations associated with clicked marker. Then filter out duplicates.
+            if (e.originalEvent.shiftKey) {
+              newStationList = newStationList.concat(this.props.selectedStations || [])
+                .reduce(
+                (accumulator, station, index) => {
+                  let arrayWithoutThisIndex = newStationList.concat([])
+                  arrayWithoutThisIndex.splice(index, 1)
+                  const duplicate = arrayWithoutThisIndex.find(findStation => findStation.id === station.id)
+                  if (!duplicate) {
+                    accumulator.push(station)
+                  } else {
+                    accumulator = accumulator.filter(filterStation => {
+                      return filterStation.id !== duplicate.id
+                    })
+                  }
+                  return accumulator
+                },
+                []
+              )
+            }
+
+            newStationList = newStationList && newStationList.length && newStationList
+            nextProps.onChangeCurrentStation(newStationList)
 
             //center zoom on marker
             const coords = marker.getLatLng()
@@ -251,22 +275,20 @@ class Map extends Component {
 
   componentWillReceiveProps (nextProps) {
 
-    if(this.props.appState.id !== nextProps.appState.id && nextProps.appState.id === null) {
+    if (this.props.appState.id !== nextProps.appState.id && nextProps.appState.id === null) {
       const params = getParams()
       delete params.id
       setParams(params)
     }
 
-
     //TODO fix this mess
-    if(nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
+    if (nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
       setParams({
         id: nextProps.appState.id
       })
       this.centeredOnSensorFromURL = false
       // this.props.onSetID(null)
     }
-
 
     if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
       this.centerOnCoords(nextProps.appState.mapCoords, 14)
@@ -313,7 +335,8 @@ class Map extends Component {
 const mapStateToProps = state => {
   return {
     appState: state.appState,
-    stations: state.stationUpdates.stations
+    stations: state.stationUpdates.stations,
+    selectedStations: state.appState.stationList
   }
 
 }
