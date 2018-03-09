@@ -15,8 +15,8 @@ const stationsBoth = {
 
 export const updateLuftdatenMean = async () => {
   const url= {
-    hourly: 'http://api.luftdaten.info/static/v2/data.1h.json',
-    daily: 'http://api.luftdaten.info/static/v2/data.24h.json'
+    hourly: 'https://api.luftdaten.info/static/v2/data.1h.json',
+    daily: 'https://api.luftdaten.info/static/v2/data.24h.json'
   }
 
   const hourlyPromise = new Promise((resolve, reject) => fetchStations.luftdatenMean(url.hourly).then(resolve).catch(reject))
