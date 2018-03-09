@@ -97,6 +97,31 @@ export const updateLuftdaten = async () => {
     if (!(luftdatenStations && luftdatenStations.length))
       store.dispatch(setReachable(false, 'luftdaten'))
 
+    const previousStations = store.getState().stationUpdates.stations
+    if (previousStations && previousStations.length) {
+      stationsBoth.luftdaten = stationsBoth.luftdaten.map(
+        luftdatenStation => {
+          const previousStation = previousStations.find(station => station.id === luftdatenStation.id)
+          if (previousStation) {
+            luftdatenStation.sensors = luftdatenStation.sensors.map(
+              luftdatenSensor => {
+                previousStation.sensors.forEach(
+                  previousSensor => {
+                    if (previousSensor.hourly)
+                      luftdatenSensor.hourly = previousSensor.hourly
+                    if (previousSensor.daily)
+                      luftdatenSensor.daily = previousSensor.daily
+                  }
+                )
+                return luftdatenSensor
+              }
+            )
+          }
+          return luftdatenStation
+        }
+      )
+    }
+
     combineData()
     store.dispatch(setUpdating(false, 'luftdaten'))
   }
