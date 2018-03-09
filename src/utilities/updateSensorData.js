@@ -99,25 +99,29 @@ export const updateLuftdaten = async () => {
 
     const previousStations = store.getState().stationUpdates.stations
     if (previousStations && previousStations.length) {
+      // console.warn('previous stations found')
       stationsBoth.luftdaten = stationsBoth.luftdaten.map(
-        luftdatenStation => {
-          const previousStation = previousStations.find(station => station.id === luftdatenStation.id)
+        currentStation => {
+          // console.log('current station', currentStation)
+          const previousStation = previousStations.find(previousStation => previousStation.id === currentStation.id)
           if (previousStation) {
-            luftdatenStation.sensors = luftdatenStation.sensors.map(
-              luftdatenSensor => {
-                previousStation.sensors.forEach(
-                  previousSensor => {
-                    if (previousSensor.hourly)
-                      luftdatenSensor.hourly = previousSensor.hourly
-                    if (previousSensor.daily)
-                      luftdatenSensor.daily = previousSensor.daily
-                  }
-                )
-                return luftdatenSensor
+            // console.log('previous station', previousStation)
+            currentStation.sensors = currentStation.sensors.map(
+              currentSensor => {
+                const previousSensor = previousStation.sensors.find(previousSensor => previousSensor.id === currentSensor.id)
+                if (previousSensor) {
+                  if (previousSensor.hourly)
+                    currentSensor.hourly = previousSensor.hourly
+                  if (previousSensor.daily)
+                    currentSensor.daily = previousSensor.daily
+                }
+
+                return currentSensor
               }
             )
+            // console.log('new sensor', currentStation)
           }
-          return luftdatenStation
+          return currentStation
         }
       )
     }

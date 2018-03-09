@@ -53,9 +53,9 @@ class App extends Component {
   componentDidMount () {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
-    // Update luftdaten every minute (pm)
     updateLuftdaten().then(updateLuftdatenMean)
-    setInterval(updateLuftdaten, 2 * 6e4)
+    setInterval(updateLuftdatenMean, 3.6e+6) // update mean values every hour
+    setInterval(updateLuftdaten, 2* 6e4) // update sensors every 2 minutes
 
     // Update Irceline every 10 minutes
     if (this.props.showIrceline) {
