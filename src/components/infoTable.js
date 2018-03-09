@@ -97,9 +97,9 @@ class InfoTable extends React.Component {
             <span>{sensor.nearestIrceline.PM25.toFixed(2)}{col2Unit}</span>
           nearestId = sensor.nearestIrceline && sensor.nearestIrceline.idP
           col1Hourly = sensor.hourly && sensor.hourly.PM10 && <span>{sensor.hourly.PM10}{col1Unit}</span>
-          col2Hourly = sensor.hourly && sensor.hourly.PM25 && <span>{sensor.hourly.PM25}{col1Unit}</span>
+          col2Hourly = sensor.hourly && sensor.hourly.PM25 && <span>{sensor.hourly.PM25}{col2Unit}</span>
           col1Daily = sensor.daily && sensor.daily.PM10 && <span>{sensor.daily.PM10}{col1Unit}</span>
-          col2Daily = sensor.daily && sensor.daily.PM25 && <span>{sensor.daily.PM25}{col1Unit}</span>
+          col2Daily = sensor.daily && sensor.daily.PM25 && <span>{sensor.daily.PM25}{col2Unit}</span>
         } else if (sensor.temperature || sensor.humidity || sensor.pressure) {
           col1Value = sensor.temperature
           col1Unit = <span>&nbsp;°C</span>
@@ -115,11 +115,11 @@ class InfoTable extends React.Component {
             <span>{sensor.nearestIrceline.pressure.toFixed(2)}{col3Unit}</span>
           nearestId = sensor.nearestIrceline && sensor.nearestIrceline.idT
           col1Hourly = sensor.hourly && sensor.hourly.temperature && <span>{sensor.hourly.temperature}{col1Unit}</span>
-          col2Hourly = sensor.hourly && sensor.hourly.humidity && <span>{sensor.hourly.humidity}{col1Unit}</span>
-          col3Hourly = sensor.hourly && sensor.hourly.pressure && <span>{sensor.hourly.pressure}{col1Unit}</span>
+          col2Hourly = sensor.hourly && sensor.hourly.humidity && <span>{sensor.hourly.humidity}{col2Unit}</span>
+          col3Hourly = sensor.hourly && sensor.hourly.pressure && <span>{sensor.hourly.pressure}{col3Unit}</span>
           col1Daily = sensor.daily && sensor.daily.temperature && <span>{sensor.daily.temperature}{col1Unit}</span>
-          col2Daily = sensor.daily && sensor.daily.humidity && <span>{sensor.daily.humidity}{col1Unit}</span>
-          col3Daily = sensor.daily && sensor.daily.pressure && <span>{sensor.daily.pressure}{col1Unit}</span>
+          col2Daily = sensor.daily && sensor.daily.humidity && <span>{sensor.daily.humidity}{col2Unit}</span>
+          col3Daily = sensor.daily && sensor.daily.pressure && <span>{sensor.daily.pressure}{col3Unit}</span>
         }
 
         if (col1Value) {
