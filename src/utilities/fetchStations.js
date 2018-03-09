@@ -1,7 +1,6 @@
 import { setReachable, setUpdating } from '../redux/stationUpdates/actions'
 import store from '../redux/store'
 import * as genericFunctions from './genericFunctions'
-import { globalConfig } from '../config'
 import { setTime } from '../redux/appState/actions'
 
 export const luftdatenMean = async url => {
@@ -9,6 +8,7 @@ export const luftdatenMean = async url => {
 }
 
 export const luftdaten = async () => {
+  const globalConfig = store.getState().globalConfig
   if (store.getState().appState.dataOrigin.luftdaten === false) return
 
   let luftdatenAllUrl = globalConfig.luftdatenURL1

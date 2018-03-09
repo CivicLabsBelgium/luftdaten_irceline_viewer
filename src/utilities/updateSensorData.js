@@ -29,7 +29,7 @@ export const updateLuftdatenMean = async () => {
         sensor => {
           let sensorHourly = hourly.find(sensorHourly => 'L-'.concat(sensorHourly.sensor.id) === sensor.id)
           sensorHourly = sensorHourly && [sensorHourly.sensor.id, sensorHourly.sensordatavalues]
-          console.log('sensorHourly:', sensorHourly)
+          // console.log('sensorHourly:', sensorHourly)
           return sensor
         }
       )
@@ -37,7 +37,7 @@ export const updateLuftdatenMean = async () => {
     }
   )
 
-  console.log(stationsWithMeans, hourly, daily)
+  // console.log(stationsWithMeans, hourly, daily)
 }
 
 export const updateLuftdaten = async () => {

@@ -1,4 +1,5 @@
 // server requirements
+
 const express = require('express')
 const path = require('path')
 const fs = require('fs')
@@ -10,6 +11,9 @@ const server = {
   http: null,
   https: null
 }
+
+const httpPort = process.env.NODE_ENV === 'production' ? 80 : 8080
+const httpsPort = process.env.NODE_ENV === 'production' ? 443 : 8443
 
 const app = express()
 
@@ -28,6 +32,19 @@ app.get('/.well-known/acme-challenge/:fileName', (req, res) => {
   }
 })
 
+// Serve token from env
+app.get('/token', function (req, res) {
+  const tilesAccessToken = process.env.TILES_ACCESS_TOKEN
+  if (tilesAccessToken)
+    res.json({tilesAccessToken})
+  else
+    res.status(404).json(
+      {
+        error: 'TILES_ACCESS_TOKEN was not set.'
+      }
+    )
+})
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'build')))
 app.get('*', function (req, res) {
@@ -40,8 +57,8 @@ app.get('*', function (req, res) {
 
 server.http = http.createServer(app)
 
-server.http.listen(80, () => {
-    console.log('listening on http port 80')
+server.http.listen(httpPort, () => {
+    console.log('listening on http port ' + httpPort)
 
     /// try to initiate letsencrypt / certbot
     const generate_ssl_certificate_script = spawn('.', ['/generate_ssl_certificate.sh'], {cwd: '/', shell: true})
@@ -85,8 +102,8 @@ function setHttpsServer () {
     }
 
     server.https = https.createServer(certOptions, app)
-    server.https.listen(443, () => {
-        console.log('listening on https port 443')
+    server.https.listen(httpsPort, () => {
+        console.log('listening on https port ' + httpsPort)
       }
     )
   } catch (e) {

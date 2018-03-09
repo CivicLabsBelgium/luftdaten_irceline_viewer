@@ -1,4 +1,3 @@
-import { globalConfig } from '../config'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setCurrentSensor, setCurrentStationList, setID, setMapCoords } from '../redux/appState/actions'
@@ -28,10 +27,10 @@ class Map extends Component {
     }
 
     const map = window.L.map('map', {
-      center: [initialParams.lat || globalConfig.lat, initialParams.lng || globalConfig.lng],
-      zoom: initialParams.zoom || globalConfig.zoom,
-      minZoom: globalConfig.minZoom,
-      maxBounds: globalConfig.maxBounds,
+      center: [initialParams.lat || this.props.globalConfig.lat, initialParams.lng || this.props.globalConfig.lng],
+      zoom: initialParams.zoom || this.props.globalConfig.zoom,
+      minZoom: this.props.globalConfig.minZoom,
+      maxBounds: this.props.globalConfig.maxBounds,
       scrollWheelZoom: 'center'
     })
 
@@ -61,11 +60,11 @@ class Map extends Component {
       this.isMoving = false
     })
 
-    window.L.tileLayer(globalConfig.tilesURL, {
-      attribution: globalConfig.tilesAttribution,
-      maxZoom: globalConfig.maxZoom,
-      id: globalConfig.tilesID,
-      accessToken: globalConfig.tilesAccessToken
+    window.L.tileLayer(this.props.globalConfig.tilesURL, {
+      attribution: this.props.globalConfig.tilesAttribution,
+      maxZoom: this.props.globalConfig.maxZoom,
+      id: this.props.globalConfig.tilesID,
+      accessToken: this.props.globalConfig.tilesAccessToken
     }).addTo(map)
 
     const layerGroup = window.L.layerGroup([]).addTo(map)
@@ -336,7 +335,8 @@ const mapStateToProps = state => {
   return {
     appState: state.appState,
     stations: state.stationUpdates.stations,
-    selectedStations: state.appState.stationList
+    selectedStations: state.appState.stationList,
+    globalConfig: state.globalConfig
   }
 
 }

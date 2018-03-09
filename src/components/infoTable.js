@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setCurrentSensor, setID } from '../redux/appState/actions'
-import { globalConfig } from '../config'
 import store from '../redux/store'
 import * as genericFunctions from '../utilities/genericFunctions'
 
@@ -52,10 +51,10 @@ class InfoTable extends React.Component {
     const nearestIrceline = ircelineStations.reduce(
       (nearest, station) => {
         const distance = genericFunctions.getDistanceFromLatLonInKm(geolocation.latitude, geolocation.longitude, station.latitude, station.longitude)
-        return distance <= nearest.distance && distance <= globalConfig.nearestIrcelineStationRange ? {distance, station} : nearest
+        return distance <= nearest.distance && distance <= this.props.globalConfig.nearestIrcelineStationRange ? {distance, station} : nearest
       },
       {
-        distance: globalConfig.nearestIrcelineStationRange,
+        distance: this.props.globalConfig.nearestIrcelineStationRange,
         station: null
       }
     )
@@ -75,7 +74,7 @@ class InfoTable extends React.Component {
     let sumCol3 = 0
     let countCol3 = 0
 
-    const data = globalConfig.showNearestIrcelineStation && props.origin.irceline ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data) : props.data
+    const data = this.props.globalConfig.showNearestIrcelineStation && props.origin.irceline ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data) : props.data
     const sensorList = data.map(
       sensor => {
 
@@ -251,7 +250,8 @@ const mapStateToProps = state => {
     phenomenon: state.appState.phenomenon,
     sensor: state.appState.sensor,
     origin: {...state.appState.dataOrigin},
-    stations: state.stationUpdates.stations
+    stations: state.stationUpdates.stations,
+    globalConfig: state.globalConfig
   }
 }
 

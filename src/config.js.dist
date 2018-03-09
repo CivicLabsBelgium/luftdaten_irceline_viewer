@@ -45,6 +45,3 @@ export const globalConfig  = {
 // nearest irceline station max range (kilometers)
     nearestIrcelineStationRange: 30
 }
-
-
-}

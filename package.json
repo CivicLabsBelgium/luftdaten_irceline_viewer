@@ -8,11 +8,12 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "require": "^2.4.20"
   },
   "scripts": {
     "build": "react-scripts build",
-    "start": "react-scripts build && sudo node server.js",
+    "start": "react-scripts build && node server.js",
     "dev": "react-scripts start"
   },
   "devDependencies": {
