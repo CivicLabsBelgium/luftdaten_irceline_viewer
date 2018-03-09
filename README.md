@@ -29,7 +29,7 @@ Important: This app uses openstreets map tiles, which require an API token. If y
 
 * There are two places where you can set this token:
     1. Before building the project, rename `src/config.js.dist` to `src/config.js`, and set the value of `tilesAccessToken` to your own token. You can also configure other settings in this `config.js` file
-    2. Your second option is to build the project, and run it in an environment where the value of environment variable `TILES_ACCESS_TOKEN` is set to your own token. Note that even if you set this environment variable, **if** `config.js` exists, its `tilesAccessToken` will be used instead, even if it is not set.
+    2. Your second option is to set the environment variable `TILES_ACCESS_TOKEN` when running the server or docker image. Note that even if you set this environment variable, **if** `config.js` exists, its `tilesAccessToken` will be used instead, even if it is not set.
 
 * (optional) To configure various settings, copy `src/config.js.dist` to `src/config.js`, and edit the copy for your needs. If you dont create a `config.js`, default settings will be used instead, but you will need to set the environment variable `TILES_ACCESS_TOKEN` for the app to run (see previous point).
 
@@ -45,10 +45,12 @@ Important: This app uses openstreets map tiles, which require an API token. If y
     1. `npm install`
     2. `sudo node server.js`
 
-* SSL with self-signed (for localhost), or otherwise obtained certificates for https support:
+* Enable https with self-signed SSL certificates (for localhost), or SSL certificates signed by a CA for https support:
     1. put your .key and .crt files into the project's ssl/ directory before running the app, or building the docker container
     
-* SSL with letsencrypt (a free certificate authority) on docker cloud services
+* Enable https with letsencrypt (a free certificate authority) on docker cloud services
+
+    The server.js which serves a built react project is also capable of generating and renewing SSL certificates with letsencrypt. This process is completely automated, all you need to do is run the docker service with the correct environment variables:
     1. build the docker image
     2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `production`
     3. spin up the container as a service
