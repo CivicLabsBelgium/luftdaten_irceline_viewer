@@ -33,8 +33,8 @@ Important: This app uses openstreets map tiles, which require an API token. If y
 
 * (optional) To configure various settings, copy `src/config.js.dist` to `src/config.js`, and edit the copy for your needs. If you dont create a `config.js`, default settings will be used instead, but you will need to set the environment variable `TILES_ACCESS_TOKEN` for the app to run (see previous point).
 
-* **NODE_ENV**
-    If the environment variable `NODE_ENV` is set to `production`, the application will run on port 80 (http) and 443 (https). Otherwise, it will run on port 8080 / 8443
+* NODE_ENV
+    If the environment variable `NODE_ENV` is set to `development`, the application will run on port 8080 (http) and 8443 (https). Otherwise, it will run on port 80 / 443
 
 * With docker:
     1. `cd` to the project directory
