@@ -51,7 +51,10 @@ class InfoTable extends React.Component {
     const nearestIrceline = ircelineStations.reduce(
       (nearest, station) => {
         const distance = genericFunctions.getDistanceFromLatLonInKm(geolocation.latitude, geolocation.longitude, station.latitude, station.longitude)
-        return distance <= nearest.distance && distance <= this.props.globalConfig.nearestIrcelineStationRange ? {distance, station} : nearest
+        return distance <= nearest.distance && distance <= this.props.globalConfig.nearestIrcelineStationRange ? {
+          distance,
+          station
+        } : nearest
       },
       {
         distance: this.props.globalConfig.nearestIrcelineStationRange,
@@ -81,15 +84,22 @@ class InfoTable extends React.Component {
         //TODO Keep or not?
         if (props.origin[sensor.origin] === false) return null
 
-        let col1Value, col1Unit, col2Value, col2Unit, col3Value, col3Unit, nearestCol1Value, nearestCol2Value, nearestCol3Value, nearestId
+        let col1Value, col1Unit, col2Value, col2Unit, col3Value, col3Unit, nearestCol1Value, nearestCol2Value,
+          nearestCol3Value, nearestId, col1Hourly, col2Hourly, col3Hourly, col1Daily, col2Daily, col3Daily
         if (sensor.PM10 || sensor.PM25) {
           col1Value = sensor.PM10
           col1Unit = <span>&nbsp;µg/m<sup>3</sup></span>
           col2Value = sensor.PM25
           col2Unit = <span>&nbsp;µg/m<sup>3</sup></span>
-          nearestCol1Value = sensor.nearestIrceline && sensor.nearestIrceline.PM10 && <span>{sensor.nearestIrceline.PM10.toFixed(2)}{col1Unit}</span>
-          nearestCol2Value = sensor.nearestIrceline && sensor.nearestIrceline.PM25 && <span>{sensor.nearestIrceline.PM25.toFixed(2)}{col2Unit}</span>
+          nearestCol1Value = sensor.nearestIrceline && sensor.nearestIrceline.PM10 &&
+            <span>{sensor.nearestIrceline.PM10.toFixed(2)}{col1Unit}</span>
+          nearestCol2Value = sensor.nearestIrceline && sensor.nearestIrceline.PM25 &&
+            <span>{sensor.nearestIrceline.PM25.toFixed(2)}{col2Unit}</span>
           nearestId = sensor.nearestIrceline && sensor.nearestIrceline.idP
+          col1Hourly = sensor.hourly && sensor.hourly.PM10 && <span>{sensor.hourly.PM10}{col1Unit}</span>
+          col2Hourly = sensor.hourly && sensor.hourly.PM25 && <span>{sensor.hourly.PM25}{col1Unit}</span>
+          col1Daily = sensor.daily && sensor.daily.PM10 && <span>{sensor.daily.PM10}{col1Unit}</span>
+          col2Daily = sensor.daily && sensor.daily.PM25 && <span>{sensor.daily.PM25}{col1Unit}</span>
         } else if (sensor.temperature || sensor.humidity || sensor.pressure) {
           col1Value = sensor.temperature
           col1Unit = <span>&nbsp;°C</span>
@@ -97,10 +107,19 @@ class InfoTable extends React.Component {
           col2Unit = <span>&nbsp;&#37;</span>
           col3Value = sensor.pressure
           col3Unit = <span>&nbsp;hPa</span>
-          nearestCol1Value = sensor.nearestIrceline && sensor.nearestIrceline.temperature && <span>{sensor.nearestIrceline.temperature.toFixed(2)}{col1Unit}</span>
-          nearestCol2Value = sensor.nearestIrceline && sensor.nearestIrceline.humidity && <span>{sensor.nearestIrceline.humidity.toFixed(2)}{col2Unit}</span>
-          nearestCol3Value = sensor.nearestIrceline && sensor.nearestIrceline.pressure && <span>{sensor.nearestIrceline.pressure.toFixed(2)}{col3Unit}</span>
+          nearestCol1Value = sensor.nearestIrceline && sensor.nearestIrceline.temperature &&
+            <span>{sensor.nearestIrceline.temperature.toFixed(2)}{col1Unit}</span>
+          nearestCol2Value = sensor.nearestIrceline && sensor.nearestIrceline.humidity &&
+            <span>{sensor.nearestIrceline.humidity.toFixed(2)}{col2Unit}</span>
+          nearestCol3Value = sensor.nearestIrceline && sensor.nearestIrceline.pressure &&
+            <span>{sensor.nearestIrceline.pressure.toFixed(2)}{col3Unit}</span>
           nearestId = sensor.nearestIrceline && sensor.nearestIrceline.idT
+          col1Hourly = sensor.hourly && sensor.hourly.temperature && <span>{sensor.hourly.temperature}{col1Unit}</span>
+          col2Hourly = sensor.hourly && sensor.hourly.humidity && <span>{sensor.hourly.humidity}{col1Unit}</span>
+          col3Hourly = sensor.hourly && sensor.hourly.pressure && <span>{sensor.hourly.pressure}{col1Unit}</span>
+          col1Daily = sensor.daily && sensor.daily.temperature && <span>{sensor.daily.temperature}{col1Unit}</span>
+          col2Daily = sensor.daily && sensor.daily.humidity && <span>{sensor.daily.humidity}{col1Unit}</span>
+          col3Daily = sensor.daily && sensor.daily.pressure && <span>{sensor.daily.pressure}{col1Unit}</span>
         }
 
         if (col1Value) {
@@ -145,10 +164,26 @@ class InfoTable extends React.Component {
             </tr>
             {
               (props.sensor === sensor.id) ? <React.Fragment>
+                <tr className='selected'>
+                  <td>Mean (hourly)</td>
+                  <td>{col1Hourly || '-'}</td>
+                  <td>{col2Hourly || '-'}</td>
+                  {
+                    (props.type === 'tempAndHum') ? <td>{col3Hourly || '-'}</td> : null
+                  }
+                </tr>
+                <tr className='selected'>
+                  <td>Mean (daily)</td>
+                  <td>{col1Daily || '-'}</td>
+                  <td>{col2Daily || '-'}</td>
+                  {
+                    (props.type === 'tempAndHum') ? <td>{col3Daily || '-'}</td> : null
+                  }
+                </tr>
                 {
-                  sensor.nearestIrceline && props.origin.irceline ?
-                    <tr className='selected'>
-                      <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>nearest irceline station</span></td>
+                  sensor.nearestIrceline && props.origin.irceline ? <tr className='selected'>
+                      <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>nearest irceline station</span>
+                      </td>
                       <td>{nearestCol1Value || '-'}</td>
                       <td>{nearestCol2Value || '-'}</td>
                       {
@@ -206,7 +241,7 @@ class InfoTable extends React.Component {
           {
             (countCol1 <= 1 && countCol2 <= 1) ? null : (
               <tr className='mean'>
-                <th>Mean</th>
+                <th>Mean (selected)</th>
                 <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
                 <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
               </tr>
@@ -230,7 +265,7 @@ class InfoTable extends React.Component {
           {
             (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
               <tr className='mean'>
-                <th>Mean</th>
+                <th>Mean (selected)</th>
                 <td>{meanCol1}&nbsp;°C</td>
                 <td>{meanCol2}&nbsp;&#37;</td>
                 <td>{meanCol3}&nbsp;hPa</td>
