@@ -12,8 +12,8 @@ const server = {
   https: null
 }
 
-const httpPort = process.env.NODE_ENV === 'production' ? 80 : 8080
-const httpsPort = process.env.NODE_ENV === 'production' ? 443 : 8443
+const httpPort = process.env.NODE_ENV === 'development' ? 8080 : 80
+const httpsPort = process.env.NODE_ENV === 'development' ? 8443 : 443
 
 const app = express()
 
