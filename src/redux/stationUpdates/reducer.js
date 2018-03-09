@@ -11,7 +11,8 @@ const defaultState = {
   means: {
     daily: [],
     hourly: []
-  }
+  },
+  meansLastUpdated: null
 }
 
 export default function stationUpdates (state = defaultState, action) {
@@ -37,6 +38,10 @@ export default function stationUpdates (state = defaultState, action) {
 
     case 'STATIONUPDATES_SET_24HR_MEANS':
       newState.means.daily = action.data
+      return newState
+
+    case 'APPSTATE_SET_MEANS_LAST_UPDATED':
+      newState.meansLastUpdated = action.meansLastUpdated
       return newState
 
     default:

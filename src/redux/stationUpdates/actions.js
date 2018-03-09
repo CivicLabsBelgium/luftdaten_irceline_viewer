@@ -34,3 +34,10 @@ export function setLuftdaten24HrMeans (data) {
     data
   }
 }
+
+export function setMeansLastUpdated (meansLastUpdated) {
+  return {
+    type: 'APPSTATE_SET_MEANS_LAST_UPDATED',
+    meansLastUpdated
+  }
+}

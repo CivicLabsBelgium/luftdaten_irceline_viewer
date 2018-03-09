@@ -74,8 +74,7 @@ const defaultState = {
       max: 1000, //max non-hazardous value
       unit: 'hPa',
       name: 'Pressure'
-    },
-
+    }
   }
 }
 
