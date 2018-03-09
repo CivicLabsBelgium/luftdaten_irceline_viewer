@@ -164,22 +164,28 @@ class InfoTable extends React.Component {
             </tr>
             {
               (props.sensor === sensor.id) ? <React.Fragment>
-                <tr className='selected'>
-                  <td>Mean (hourly)</td>
-                  <td>{col1Hourly || '-'}</td>
-                  <td>{col2Hourly || '-'}</td>
-                  {
-                    (props.type === 'tempAndHum') ? <td>{col3Hourly || '-'}</td> : null
-                  }
-                </tr>
-                <tr className='selected'>
-                  <td>Mean (daily)</td>
-                  <td>{col1Daily || '-'}</td>
-                  <td>{col2Daily || '-'}</td>
-                  {
-                    (props.type === 'tempAndHum') ? <td>{col3Daily || '-'}</td> : null
-                  }
-                </tr>
+                {
+                  (col1Hourly || col2Hourly || col3Hourly) &&
+                  <tr className='selected'>
+                    <td>Mean (hourly)</td>
+                    <td>{col1Hourly || '-'}</td>
+                    <td>{col2Hourly || '-'}</td>
+                    {
+                      (props.type === 'tempAndHum') ? <td>{col3Hourly || '-'}</td> : null
+                    }
+                  </tr>
+                }
+                {
+                  (col1Daily || col2Daily || col3Daily) &&
+                  <tr className='selected'>
+                    <td>Mean (daily)</td>
+                    <td>{col1Daily || '-'}</td>
+                    <td>{col2Daily || '-'}</td>
+                    {
+                      (props.type === 'tempAndHum') ? <td>{col3Daily || '-'}</td> : null
+                    }
+                  </tr>
+                }
                 {
                   sensor.nearestIrceline && props.origin.irceline ? <tr className='selected'>
                       <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>nearest irceline station</span>
