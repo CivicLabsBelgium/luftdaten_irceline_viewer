@@ -35,7 +35,9 @@ class PhenomenonPicker extends Component {
           {
             this.state.phenomenaNames.map(
               (phenomenon, index) => {
-                return <li key={index} style={
+                return <li key={index}
+                           className={this.state.phenomenaKeys[index] === this.props.phenomenon ? 'selected' : 'option'}
+                           style={
                   {display: ( this.state.phenomenaKeys[index] === this.props.phenomenon )? 'none':'flex' }
                 }
                            onClick={() => this.changePhenomenon( this.state.phenomenaKeys[index] )}>{phenomenon}</li>

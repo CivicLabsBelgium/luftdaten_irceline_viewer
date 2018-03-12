@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactTouchEvents from 'react-touch-events'
 import './styles/App.css'
 import './styles/dataOriginPicker.css'
 import './styles/updatedTime.css'
@@ -6,6 +7,7 @@ import './styles/legend.css'
 import './styles/phenomenonPicker.css'
 import './styles/sidebar.css'
 import './styles/map.css'
+import './styles/mobile.css'
 import { updateLuftdaten, updateLuftdatenMean, updateIrceline } from './utilities/updateSensorData'
 import Map from './components/map'
 import Sidebar from './components/sidebar'
@@ -24,6 +26,10 @@ class App extends Component {
     super(props)
     polyfill.arrayFindPolyfill()
     polyfill.findIndexPolyfill()
+
+    this.state = {
+      uiContainerToggled: false
+    }
 
     try {
       const config = require('./config')
@@ -55,7 +61,7 @@ class App extends Component {
 
     updateLuftdaten().then(updateLuftdatenMean)
     setInterval(updateLuftdatenMean, 3.6e+6) // update mean values every hour
-    setInterval(updateLuftdaten, 2* 6e4) // update sensors every 2 minutes
+    setInterval(updateLuftdaten, 2 * 6e4) // update sensors every 2 minutes
 
     // Update Irceline every 10 minutes
     if (this.props.showIrceline) {
@@ -64,28 +70,42 @@ class App extends Component {
     }
   }
 
+  handleSwipe = () => {
+    this.setState(
+      {
+        uiContainerToggled: !this.state.uiContainerToggled
+      }
+    )
+  }
+
   render () {
     return (
       this.props.tilesAccessToken === false ?
         <div>Please set a TILES_ACCESS_TOKEN environment variable or edit config.js before building this app.</div>
         : this.props.tilesAccessToken ? <div className='container'>
-          <div style={{position: 'absolute', top: 0, right: 0, zIndex: 401, pointerEvents:'none'}}>
+          <div className='github-ribbon'>
             <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'
                rel='noopener noreferrer'>
-              <img style={{border: 0, pointerEvents:'all', WebkitClipPath: 'polygon(10% 0, 38% 0, 100% 62%, 100% 90%)', clipPath: 'polygon(10% 0, 38% 0, 100% 62%, 100% 90%)'}} src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
+              <img src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
                    alt='Fork me on GitHub'/>
             </a>
           </div>
           <Map/>
-          <div className='UI_container'>
-            <UpdatedTime/>
+          <UpdatedTime/>
+          <div className={this.state.uiContainerToggled ? 'UI_container open' : 'UI_container collapsed'}>
+            <button className='toggle-panel' style={{display: 'none'}} onClick={this.handleSwipe}>close</button>
             <Legend/>
             {
-              (this.props.showIrceline) ? <React.Fragment>
-                <DataOriginPicker/>
-              </React.Fragment> : null
+              (()=>{
+                const pickers = <React.Fragment>
+                  {
+                    (this.props.showIrceline) ? <DataOriginPicker/> : null
+                  }
+                  <PhenomenonPicker/>
+                </React.Fragment>
+                return this.state.uiContainerToggled ? <div className='Pickers'>{pickers}</div> : pickers
+              })()
             }
-            <PhenomenonPicker/>
           </div>
           <Sidebar/>
         </div> : <div>Loading ...</div>

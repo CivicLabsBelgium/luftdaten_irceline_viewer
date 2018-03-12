@@ -23,3 +23,22 @@
     align-self: flex-end;
     white-space: nowrap;
 }
+
+.github-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 401;
+    pointer-events:none;
+}
+
+.github-ribbon img {
+    border: 0;
+    pointer-events:all;
+    -webkit-clip-path: polygon(10% 0, 38% 0, 100% 62%, 100% 90%);
+    clip-path: polygon(10% 0, 38% 0, 100% 62%, 100% 90%);
+}
+
+.pickers {
+    display: flex;
+}

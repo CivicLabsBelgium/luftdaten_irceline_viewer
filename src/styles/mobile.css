@@ -1,0 +1,111 @@
+@media only screen and (max-width: 1024px) {
+    .sidebar {
+        width: 100%;
+        background: rgba(117, 151, 151, 0.9);
+        z-index: 40000;
+    }
+
+    .sidebar .container {
+        padding: 0;
+    }
+
+    .sidebar .container .closeBtn button {
+        border-radius: 0;
+    }
+
+    .sidebar table {
+        border-radius: 0;
+    }
+
+    .sidebar table td, .sidebar table th {
+        white-space: normal !important;
+        padding: 8px 5px;
+    }
+
+    .updated-time {
+        position: absolute;
+        border-radius: 0 0 0 8px;
+        top: 0;
+        right: 0;
+        background-color: rgba(170, 170, 170, 0.8);
+        margin: 0;
+    }
+
+    .github-ribbon {
+        display: none;
+    }
+
+    .UI_container {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        z-index: 10001;
+    }
+
+    .UI_container > div {
+        flex: initial;
+    }
+
+    .UI_container.open {
+        left: 0;
+        background: rgba(170, 206, 168, 0.8);
+        pointer-events: all;
+        height: 100vh;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .UI_container.collapsed *:not(.toggle-panel):not(.updated-time) {
+        display: none;
+    }
+
+    .UI_container.open > * {
+        align-self: start;
+    }
+
+    .UI_container.open .updated-time, .phenomenon-picker .current {
+        display: none;
+    }
+
+    .UI_container.open .toggle-panel {
+        width: auto;
+        padding-left: 35px;
+        color: black;
+        font-size: 1.2em;
+    }
+
+    .UI_container .toggle-panel {
+        display: block !important;
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        height: 30px;
+        width: 30px;
+        background-image: url(gear.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        pointer-events: all;
+        color: transparent;
+        margin: 0;
+        border-color: #5c626e;
+        border-radius: 8px;
+        background-color: #ABC;
+    }
+
+    .dropdown, .dropdown li {
+        display: flex !important;
+    }
+
+
+    .UI_container .phenomenon-picker {
+        flex: 0.65;
+        display: flex;
+        width: 100%;
+    }
+
+    .UI_container .data-origin-picker {
+        width: 90%;
+        align-self: center;
+    }
+}
