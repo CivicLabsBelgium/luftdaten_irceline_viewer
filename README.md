@@ -22,6 +22,7 @@ The color coded legend displays all the colors associated with the currently sel
 ## Contributing
 
 Users may contribute by making a new issue about bugs they find or features they think should be implemented in this app.
+Volunteer translators are also welcome. Right now this app has very few lines of text, making it easy to add support for another language you are proficient at. New languages can be added in `/src/lang/`. New translations should be a `.json` file named as the ISO 639-1 language code of the relevant language.
 
 ### configuration and deployment
 
