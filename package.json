@@ -8,7 +8,6 @@
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-scripts": "1.0.17",
-    "react-touch-events": "^2.1.0",
     "redux": "^3.7.2",
     "require": "^2.4.20"
   },
