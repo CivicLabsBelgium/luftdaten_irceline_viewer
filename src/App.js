@@ -69,10 +69,10 @@ class App extends Component {
       this.props.tilesAccessToken === false ?
         <div>Please set a TILES_ACCESS_TOKEN environment variable or edit config.js before building this app.</div>
         : this.props.tilesAccessToken ? <div className='container'>
-          <div style={{position: 'absolute', top: 0, right: 0, zIndex: 401}}>
+          <div style={{position: 'absolute', top: 0, right: 0, zIndex: 401, pointerEvents:'none'}}>
             <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'
                rel='noopener noreferrer'>
-              <img style={{border: 0}} src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
+              <img style={{border: 0, pointerEvents:'all', WebkitClipPath: 'polygon(10% 0, 38% 0, 100% 62%, 100% 90%)', clipPath: 'polygon(10% 0, 38% 0, 100% 62%, 100% 90%)'}} src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
                    alt='Fork me on GitHub'/>
             </a>
           </div>
