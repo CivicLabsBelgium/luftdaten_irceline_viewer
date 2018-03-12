@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactTouchEvents from 'react-touch-events'
 import './styles/App.css'
 import './styles/dataOriginPicker.css'
 import './styles/updatedTime.css'
@@ -19,6 +18,7 @@ import * as polyfill from './utilities/polyfills'
 import request from './request/request'
 import { connect } from 'react-redux'
 import { setConfig, setTilesAccessToken } from './redux/globalConfig/actions'
+import { setLang } from './redux/appState/actions'
 
 class App extends Component {
 
@@ -26,6 +26,14 @@ class App extends Component {
     super(props)
     polyfill.arrayFindPolyfill()
     polyfill.findIndexPolyfill()
+
+    const userLang = navigator.language
+    try {
+      const lang = require(`./lang/${userLang}.json`)
+      props.onSetLang(lang)
+    } catch(e) {
+      console.warn(`Your current browser language "${userLang}" is not supported by this app, falling back to default (en).`)
+    }
 
     this.state = {
       uiContainerToggled: false
@@ -93,7 +101,7 @@ class App extends Component {
           <Map/>
           <UpdatedTime/>
           <div className={this.state.uiContainerToggled ? 'UI_container open' : 'UI_container collapsed'}>
-            <button className='toggle-panel' style={{display: 'none'}} onClick={this.handleSwipe}>close</button>
+            <button className='toggle-panel' style={{display: 'none'}} onClick={this.handleSwipe}>{this.props.lang.close}</button>
             <Legend/>
             {
               (()=>{
@@ -116,7 +124,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     tilesAccessToken: state.globalConfig.tilesAccessToken,
-    showIrceline: state.globalConfig.showIrceline
+    showIrceline: state.globalConfig.showIrceline,
+    lang: state.appState.lang
   }
 }
 
@@ -127,6 +136,9 @@ const mapDispatchToProps = dispatch => {
     },
     onSetConfig: config => {
       dispatch(setConfig(config))
+    },
+    onSetLang: lang => {
+      dispatch(setLang(lang))
     }
   }
 }

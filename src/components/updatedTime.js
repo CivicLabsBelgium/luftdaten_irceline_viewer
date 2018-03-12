@@ -2,15 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 
-const UpdatedTime = ({time}) =>
-  <div className="updated-time">{(time === null ) ? 'Updating...' : 'Last updated '+ time}</div>
+const UpdatedTime = ({time, lang}) =>
+  <div className="updated-time">{(time === null ) ? lang.updating : lang.lastUpdated + ' ' + time}</div>
 
 
 
 
 const mapStateToProps = state => {
   return {
-    time: state.appState.time
+    time: state.appState.time,
+    lang: state.appState.lang
   }
 }
 

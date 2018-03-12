@@ -1,4 +1,5 @@
 const defaultState = {
+  lang: require('../../lang/en.json'),
   dataOrigin: {
     luftdaten: true,
     irceline: true
@@ -10,72 +11,72 @@ const defaultState = {
   time: null,
   phenomenon: 'PM25',
   phenomenonMeta: {
-    PM25: {
-      data: [
-        {color: '#205050', value: 0},
-        {color: '#00796B', value: 20},
-        {color: '#F9A825', value: 40},
-        {color: '#E65100', value: 60},
-        {color: '#DD2C00', value: 100},
-        {color: '#960084', value: 500}
-      ],
-      max: 25, //max non-hazardous value
-      unit: 'µg/m³',
-      name: 'Particulate Matter < 2.5µm'
-    },
-    PM10: {
-      data: [
-        {color: '#205050', value: 0},
-        {color: '#00796B', value: 20},
-        {color: '#F9A825', value: 40},
-        {color: '#E65100', value: 60},
-        {color: '#DD2C00', value: 100},
-        {color: '#960084', value: 500}
-      ],
-      max: 50, //max non-hazardous value
-      unit: 'µg/m³',
-      name: 'Particulate Matter < 10µm'
-    },
-    temperature: {
-      data: [
-        {color: '#9FF', value: -10},
-        {color: '#9F6', value: 0},
-        {color: '#9F0', value: 10},
-        {color: '#990', value: 20},
-        {color: '#900', value: 30},
-        {color: '#C00', value: 40}
-      ],
-      max: 30, //max non-hazardous value
-      unit: '°C',
-      name: 'Temperature'
-    },
-    humidity: {
-      data: [
-        {color: '#206', value: 0},
-        {color: '#236', value: 20},
-        {color: '#255', value: 40},
-        {color: '#695', value: 60},
-        {color: '#5A5', value: 80},
-        {color: '#FF4', value: 100}
-      ],
-      max: 100, //max non-hazardous value
-      unit: '%',
-      name: 'Humidity'
-    },
-    pressure: {
-      data: [
-        {color: '#9FF', value: 900},
-        {color: '#9F6', value: 940},
-        {color: '#9F0', value: 980},
-        {color: '#990', value: 1020},
-        {color: '#900', value: 1060},
-        {color: '#C00', value: 1100}
-      ],
-      max: 1000, //max non-hazardous value
-      unit: 'hPa',
-      name: 'Pressure'
+      PM25: {
+        data: [
+          {color: '#205050', value: 0},
+          {color: '#00796B', value: 20},
+          {color: '#F9A825', value: 40},
+          {color: '#E65100', value: 60},
+          {color: '#DD2C00', value: 100},
+          {color: '#960084', value: 500}
+        ],
+        max: 25, //max non-hazardous value
+        unit: 'µg/m³',
+        name: `Particulate Matter < 2.5µm`
+      },
+      PM10: {
+        data: [
+          {color: '#205050', value: 0},
+          {color: '#00796B', value: 20},
+          {color: '#F9A825', value: 40},
+          {color: '#E65100', value: 60},
+          {color: '#DD2C00', value: 100},
+          {color: '#960084', value: 500}
+        ],
+        max: 50, //max non-hazardous value
+        unit: 'µg/m³',
+        name: 'Particulate Matter < 10µm'
+      },
+      temperature: {
+        data: [
+          {color: '#9FF', value: -10},
+          {color: '#9F6', value: 0},
+          {color: '#9F0', value: 10},
+          {color: '#990', value: 20},
+          {color: '#900', value: 30},
+          {color: '#C00', value: 40}
+        ],
+        max: 30, //max non-hazardous value
+        unit: '°C',
+        name: 'Temperature'
+      },
+      humidity: {
+        data: [
+          {color: '#206', value: 0},
+          {color: '#236', value: 20},
+          {color: '#255', value: 40},
+          {color: '#695', value: 60},
+          {color: '#5A5', value: 80},
+          {color: '#FF4', value: 100}
+        ],
+        max: 100, //max non-hazardous value
+        unit: '%',
+        name: 'Humidity'
+      },
+      pressure: {
+        data: [
+          {color: '#9FF', value: 900},
+          {color: '#9F6', value: 940},
+          {color: '#9F0', value: 980},
+          {color: '#990', value: 1020},
+          {color: '#900', value: 1060},
+          {color: '#C00', value: 1100}
+        ],
+        max: 1000, //max non-hazardous value
+        unit: 'hPa',
+        name: 'Pressure'
+      }
     }
-  }
 }
 
 export default function appState (state = defaultState, action) {
@@ -111,6 +112,15 @@ export default function appState (state = defaultState, action) {
 
     case 'APPSTATE_SET_DATA_ORIGIN':
       newState.dataOrigin = action.dataOrigin
+      return newState
+
+    case 'APPSTATE_SET_LANG':
+      newState.lang = action.lang
+      newState.phenomenonMeta.PM25.name = action.lang.particulateMatter + ' < 2.5µm'
+      newState.phenomenonMeta.PM10.name = action.lang.particulateMatter + ' < 10µm'
+      newState.phenomenonMeta.temperature.name = action.lang.temperature
+      newState.phenomenonMeta.humidity.name = action.lang.humidity
+      newState.phenomenonMeta.pressure.name = action.lang.pressure
       return newState
 
     default:

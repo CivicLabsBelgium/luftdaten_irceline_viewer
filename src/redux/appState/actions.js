@@ -40,7 +40,6 @@ export function setTime (time) {
   }
 }
 
-
 export function setDataOrigin (dataOrigin) {
   return {
     type: 'APPSTATE_SET_DATA_ORIGIN',
@@ -48,3 +47,10 @@ export function setDataOrigin (dataOrigin) {
   }
 }
 
+
+export function setLang (lang) {
+  return {
+    type: 'APPSTATE_SET_LANG',
+    lang
+  }
+}

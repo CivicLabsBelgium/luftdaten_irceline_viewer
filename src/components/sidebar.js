@@ -44,10 +44,10 @@ class Sidebar extends Component {
       <div className="sidebar">
         <div className="container">
           <div className="closeBtn">
-            <button onClick={() => this.props.onChangeCurrentStation()}>close</button>
+            <button onClick={() => this.props.onChangeCurrentStation()}>{this.props.lang.close}</button>
             <br/>
           </div>
-          <span># selected sensors: {count}</span>
+          <span># {this.props.lang.selectedSensors}: {count}</span>
           <InfoTable type="partsPerMillion" data={sensors.partsPerMillion}/>
           <InfoTable type="tempAndHum" data={sensors.tempAndHum}/>
         </div>
@@ -60,7 +60,8 @@ class Sidebar extends Component {
 const mapStateToProps = state => {
   return {
     stationList: state.appState.stationList,
-    phenomenon: state.appState.phenomenon
+    phenomenon: state.appState.phenomenon,
+    lang: state.appState.lang
   }
 }
 

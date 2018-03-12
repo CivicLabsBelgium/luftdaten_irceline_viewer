@@ -167,7 +167,7 @@ class InfoTable extends React.Component {
                 {
                   (col1Hourly || col2Hourly || col3Hourly) &&
                   <tr className='selected'>
-                    <td>Mean (hourly)</td>
+                    <td>{this.props.lang.mean} ({this.props.lang.hourly})</td>
                     <td>{col1Hourly || '-'}</td>
                     <td>{col2Hourly || '-'}</td>
                     {
@@ -178,7 +178,7 @@ class InfoTable extends React.Component {
                 {
                   (col1Daily || col2Daily || col3Daily) &&
                   <tr className='selected'>
-                    <td>Mean (daily)</td>
+                    <td>{this.props.lang.mean} ({this.props.lang.daily})</td>
                     <td>{col1Daily || '-'}</td>
                     <td>{col2Daily || '-'}</td>
                     {
@@ -188,7 +188,7 @@ class InfoTable extends React.Component {
                 }
                 {
                   sensor.nearestIrceline && props.origin.irceline ? <tr className='selected'>
-                      <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>nearest irceline station</span>
+                      <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>{this.props.lang.nearestIrcelineStation}</span>
                       </td>
                       <td>{nearestCol1Value || '-'}</td>
                       <td>{nearestCol2Value || '-'}</td>
@@ -203,17 +203,17 @@ class InfoTable extends React.Component {
                   <td colSpan='3'>{sensor.stationID}</td>
                 </tr>
                 <tr className='selected'>
-                  <td>Name</td>
+                  <td>{this.props.lang.name}</td>
                   <td colSpan='3'>{sensor.name}</td>
                 </tr>
                 <tr className='selected'>
-                  <td>Source</td>
+                  <td>{this.props.lang.source}</td>
                   <td colSpan='3'><a target='_blank'
                                      href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : ''}>{sensor.origin}</a>
                   </td>
                 </tr>
                 <tr className='selected'>
-                  <td>Location</td>
+                  <td>{this.props.lang.location}</td>
                   <td colSpan='3'>
                     <span>lat: {sensor.lat},<br/> long: {sensor.lng},<br/> alt: {sensor.alt}</span>
                   </td>
@@ -247,7 +247,7 @@ class InfoTable extends React.Component {
           {
             (countCol1 <= 1 && countCol2 <= 1) ? null : (
               <tr className='mean'>
-                <th>Mean (selected)</th>
+                <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
                 <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
                 <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
               </tr>
@@ -264,14 +264,14 @@ class InfoTable extends React.Component {
           <tbody>
           <tr className='headers'>
             <th>Sensor&nbsp;ID</th>
-            <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>Temp.</th>
-            <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>Hum.</th>
-            <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>Pres.</th>
+            <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>{this.props.lang.temp}</th>
+            <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>{this.props.lang.hum}</th>
+            <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>{this.props.lang.pres}</th>
           </tr>
           {
             (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
               <tr className='mean'>
-                <th>Mean (selected)</th>
+                <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
                 <td>{meanCol1}&nbsp;°C</td>
                 <td>{meanCol2}&nbsp;&#37;</td>
                 <td>{meanCol3}&nbsp;hPa</td>
@@ -292,7 +292,8 @@ const mapStateToProps = state => {
     sensor: state.appState.sensor,
     origin: {...state.appState.dataOrigin},
     stations: state.stationUpdates.stations,
-    globalConfig: state.globalConfig
+    globalConfig: state.globalConfig,
+    lang: state.appState.lang
   }
 }
 
