@@ -93,6 +93,12 @@
         background-color: #ABC;
     }
 
+    .UI_container .toggle-panel:hover,
+    .UI_container .toggle-panel:active,
+    .UI_container .toggle-panel:focus {
+        outline: none;
+    }
+
     .dropdown, .dropdown li {
         display: flex !important;
     }
