@@ -97,6 +97,9 @@
         display: flex !important;
     }
 
+    .dropdown li.selected {
+        background-color: rgba(100, 150, 150, 0.8);
+    }
 
     .UI_container .phenomenon-picker {
         flex: 0.65;
