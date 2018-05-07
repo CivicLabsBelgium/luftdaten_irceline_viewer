@@ -34,13 +34,15 @@ export const irceline = async () => {
   store.dispatch(setTime(null))
   store.dispatch(setUpdating(true, 'irceline'))
 
-  let ircelinePm10Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.pm10}`
-  let ircelinePm25Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.pm25}`
+  let ircelinePm10Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.PM10}`
+  let ircelinePm25Url = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.PM25}`
   let ircelineTempUrl = `https://geo.irceline.be/sos/api/v1/stations?phenomenon=${ircelinePhenomenonIndex.temperature}`
 
-  let ircelinePm10Json = await genericFunctions.fetchJson(ircelinePm10Url, 'irceline')
-  let ircelinePm25Json = await genericFunctions.fetchJson(ircelinePm25Url, 'irceline')
-  let ircelineTempJson = await genericFunctions.fetchJson(ircelineTempUrl, 'irceline')
+  let ircelinePm10Json = new Promise((resolve, reject) => genericFunctions.fetchJson(ircelinePm10Url, 'irceline').then(resolve).catch(reject))
+  let ircelinePm25Json = new Promise((resolve, reject) => genericFunctions.fetchJson(ircelinePm25Url, 'irceline').then(resolve).catch(reject))
+  let ircelineTempJson = new Promise((resolve, reject) => genericFunctions.fetchJson(ircelineTempUrl, 'irceline').then(resolve).catch(reject))
 
-  return await [...ircelinePm10Json, ...ircelinePm25Json, ...ircelineTempJson]
+  const result = await Promise.all([ircelinePm10Json, ircelinePm25Json, ircelineTempJson])
+
+  return await [].concat.apply([], result)
 }
