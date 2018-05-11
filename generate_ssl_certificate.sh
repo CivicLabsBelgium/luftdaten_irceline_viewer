@@ -10,10 +10,6 @@ if [ $DOMAINNAME ] && [ $SUBDOMAIN ] && [ $ADMINEMAIL ] && [ "$NODE_ENV" = "prod
     echo "Executing the initial letsencrypt / certbot SSL certificate request ..."
     /certbot/certbot-auto certonly --webroot --webroot-path /usr/src/app --email $ADMINEMAIL -d $SUBDOMAIN.$DOMAINNAME -n --agree-tos --no-self-upgrade
 
-    # cron job for certificate renewal
-    echo "Creating certificate renewal cronjob ..."
-    cd / && echo "51 3 * * 4 /certbot/certbot-auto renew --webroot --webroot-path /usr/src/app --email david@appsaloon.be -d $SUBDOMAIN.$DOMAINNAME -n --agree-tos --no-self-upgrade >> /renew.log" >> renew_ssl_cron
-    crontab renew_ssl_cron && rm renew_ssl_cron && cron
 else
     echo "(optional) To generate a letsencrypt / certbot SSL certificate, make sure the following environment variables are set: SUBDOMAIN DOMAINNAME ADMINEMAIL"
 fi

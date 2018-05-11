@@ -7,13 +7,22 @@
 
 
 #Source image
-FROM node:boron
+FROM node:8.6.0-slim
+
+RUN apt-get update \
+ && apt-get install nano cron -y \
+ && apt-get clean
 
 #install letsencrypt's certbot, make it executable
 WORKDIR /certbot
 RUN wget https://dl.eff.org/certbot-auto \
  && chmod a+x certbot-auto \
  && ./certbot-auto -n; exit 0
+
+COPY cronjob /
+RUN crontab /cronjob \
+ && cron
+RUN rm /cronjob
 
 #set workdir
 WORKDIR /usr/src/app
@@ -69,4 +78,4 @@ RUN chmod +x /generate_ssl_certificate.sh
 WORKDIR /usr/src/app
 
 #this entrypoint refers to the "start" script in package-serve.json
-CMD [ "node", "server.js" ]
+ENTRYPOINT [ "node", "server.js" ]
