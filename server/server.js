@@ -1,5 +1,6 @@
 const express = require('express')
 const auto_ssl = require('auto-ssl-on-express-with-docker')
+const path = require('path')
 const httpAppBehaviour = [
   {
     method: 'get',
