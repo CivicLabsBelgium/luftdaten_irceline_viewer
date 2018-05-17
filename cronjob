@@ -1,1 +1,0 @@
-51 3 * * 4 /certbot/certbot-auto renew --webroot --webroot-path /usr/src/app  >> /renew.log
