@@ -1,0 +1,1 @@
+51 3 * * 4 certbot renew --webroot --webroot-path /server >> /renew.log # This is the cronjob to renew letsencrypt's certificates before they expire.
