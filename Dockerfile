@@ -49,7 +49,7 @@ RUN rm -r ./node_modules
 RUN rm  ./package.json
 
 #copy package-serve.json and paste it as package.json alongside the build folder
-COPY package-serve.json ./package.json
+COPY server/package.json ./package.json
 
 #install node_modules based on package-serve.json
 #this json config contains only the minimum dependencies to support npm serve
