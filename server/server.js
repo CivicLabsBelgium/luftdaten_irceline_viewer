@@ -1,5 +1,5 @@
 const express = require('express')
-const auto_ssl = require('auto-ssl-on-express-with-docker')
+const auto_ssl = require('auto-ssl')
 const path = require('path')
 
 const app = express()

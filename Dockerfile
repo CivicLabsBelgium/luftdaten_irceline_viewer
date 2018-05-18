@@ -1,20 +1,19 @@
-### A docker image built with this Dockerfile, will contain the following:
-###     - node (boron version), the base of this image
-###     - certbot, a program which can request ssl certificates with the free certificate authority (CA), "letsencrypt.org"
-###     - "Luftdaten/Irceline Viewer", the built version of the create-react-app source
-###     - server.js, an express application which will serve the build of "Luftdaten/Irceline Viewer" statically on http (and optionally https), as well as accept challenges from certbot.
-
 FROM node:carbon-alpine
 
 # adds the packages certbot and tini
-RUN apk add certbot tini --no-cache
+RUN apk add openrc certbot tini --no-cache
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # copy and chmod the shell script which will initiate the webroot
 COPY letsencrypt_webroot.sh /
 RUN chmod +x /letsencrypt_webroot.sh
 
-RUN crond -b
+RUN rm /etc/init.d/crond
+RUN echo "#!/sbin/openrc-run" >> /etc/init.d/crond
+RUN echo "command=\"/usr/sbin/crond\" # hide cron stdout stderr --background -1 /cron.log -2 /cronerr.log" >> /etc/init.d/crond
+RUN chmod +x /etc/init.d/crond
+RUN rc-update add crond default
+RUN openrc default
 
 # setup certificate renewal cron
 COPY letsencrypt_cronjob /
@@ -26,9 +25,11 @@ RUN rm /letsencrypt_cronjob
 EXPOSE 80
 EXPOSE 443
 
+ENV DOCKER_BUILD="true"
+
 # the directory for your app within the docker image
-# NOTE: this must not be changed
-WORKDIR usr/src/server
+# NOTE: if you need to change this, change the $CERT_WEBROOT_PATH env
+WORKDIR /usr/src/server
 
 ######################################################################################
 
@@ -68,4 +69,5 @@ COPY server/server.js ./server.js
 ######################################################################################
 
 # the command which starts your express server. Rename 'index.js' to the appropriate filename
+ENV DOCKER_BUILD="false"
 CMD [ "node", "server.js" ]
