@@ -1,5 +1,5 @@
 const express = require('express')
-const auto_ssl = require('auto-ssl')
+const auto_ssl = require('@appsaloon/auto-ssl')
 const path = require('path')
 const app = express()
 
