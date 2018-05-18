@@ -1,24 +1,12 @@
 FROM node:carbon-alpine
 
 # adds the packages certbot and tini
-RUN apk add openrc certbot tini --no-cache
+RUN apk add certbot tini --no-cache
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # copy and chmod the shell script which will initiate the webroot
 COPY letsencrypt_webroot.sh /
 RUN chmod +x /letsencrypt_webroot.sh
-
-RUN rm /etc/init.d/crond
-RUN echo "#!/sbin/openrc-run" >> /etc/init.d/crond
-RUN echo "command=\"/usr/sbin/crond\" # hide cron stdout stderr --background -1 /cron.log -2 /cronerr.log" >> /etc/init.d/crond
-RUN chmod +x /etc/init.d/crond
-RUN rc-update add crond default
-RUN openrc default
-
-# setup certificate renewal cron
-COPY letsencrypt_cronjob /
-RUN crontab /letsencrypt_cronjob
-RUN rm /letsencrypt_cronjob
 
 # port 80 is mandatory for webroot challenge
 # port 443 is mandatory for https

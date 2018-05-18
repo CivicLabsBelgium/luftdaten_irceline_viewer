@@ -1,8 +1,8 @@
 const express = require('express')
 const auto_ssl = require('auto-ssl')
 const path = require('path')
-
 const app = express()
+
 app.get('/token', (req, res) => {
   const tilesAccessToken = process.env.TILES_ACCESS_TOKEN
   if (tilesAccessToken)
