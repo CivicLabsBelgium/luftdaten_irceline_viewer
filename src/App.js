@@ -31,7 +31,7 @@ class App extends Component {
     try {
       const lang = require(`./lang/${userLang}.json`)
       props.onSetLang(lang)
-    } catch(e) {
+    } catch (e) {
       console.warn(`Your current browser language "${userLang}" is not supported by this app, falling back to default (en).`)
     }
 
@@ -53,6 +53,9 @@ class App extends Component {
         .then(
           res => {
             console.log('Got TILES_ACCESS_TOKEN environment variable')
+            if(!res.tilesAccessToken) {
+              throw new Error('TILES_ACCESS_TOKEN is undefined')
+            }
             props.onSetTilesAccessToken(res.tilesAccessToken)
           }
         )
@@ -87,36 +90,51 @@ class App extends Component {
   }
 
   render () {
-    return (
-      this.props.tilesAccessToken === false ?
+    const {
+      tilesAccessToken,
+    } = this.props
+
+    if (tilesAccessToken === false) {
+      return (
         <div>Please set a TILES_ACCESS_TOKEN environment variable or edit config.js before building this app.</div>
-        : this.props.tilesAccessToken ? <div className='container'>
-          <div className='github-ribbon'>
-            <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'
-               rel='noopener noreferrer'>
-              <img src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
-                   alt='Fork me on GitHub'/>
-            </a>
-          </div>
-          <Map/>
-          <UpdatedTime/>
-          <div className={this.state.uiContainerToggled ? 'UI_container open' : 'UI_container collapsed'}>
-            <button className='toggle-panel' style={{display: 'none'}} onClick={this.handleSwipe}>{this.props.lang.close}</button>
-            <Legend/>
-            {
-              (()=>{
-                const pickers = <React.Fragment>
-                  {
-                    (this.props.showIrceline) ? <DataOriginPicker/> : null
-                  }
-                  <PhenomenonPicker/>
-                </React.Fragment>
-                return this.state.uiContainerToggled ? <div className='Pickers'>{pickers}</div> : pickers
-              })()
-            }
-          </div>
-          <Sidebar/>
-        </div> : <div>Loading ...</div>
+      )
+    }
+
+    if (!tilesAccessToken) {
+      return (
+        <div>Loading ...</div>
+      )
+    }
+
+    return (
+      <div className='container'>
+        <div className='github-ribbon'>
+          <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'
+             rel='noopener noreferrer'>
+            <img src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
+                 alt='Fork me on GitHub'/>
+          </a>
+        </div>
+        <Map/>
+        <UpdatedTime/>
+        <div className={this.state.uiContainerToggled ? 'UI_container open' : 'UI_container collapsed'}>
+          <button className='toggle-panel' style={{display: 'none'}}
+                  onClick={this.handleSwipe}>{this.props.lang.close}</button>
+          <Legend/>
+          {
+            (() => {
+              const pickers = <React.Fragment>
+                {
+                  (this.props.showIrceline) ? <DataOriginPicker/> : null
+                }
+                <PhenomenonPicker/>
+              </React.Fragment>
+              return this.state.uiContainerToggled ? <div className='Pickers'>{pickers}</div> : pickers
+            })()
+          }
+        </div>
+        <Sidebar/>
+      </div>
     )
   }
 }
