@@ -34,8 +34,14 @@ Important: This app uses openstreets map tiles, which require an API token. If y
 
 * (optional) To configure various settings, copy `src/config.js.dist` to `src/config.js`, and edit the copy for your needs. If you dont create a `config.js`, default settings will be used instead, but you will need to set the environment variable `TILES_ACCESS_TOKEN` for the app to run (see previous point).
 
-* NODE_ENV
-    If the environment variable `NODE_ENV` is set to `development`, the application will run on port 8080 (http) and 8443 (https). Otherwise, it will run on port 80 / 443
+* Enable https with letsencrypt (a free certificate authority) on docker cloud services
+
+    1. build the docker image
+    2. Set the environment variable `SSL_DOMAINS` to a comma-separated list of domain names you wish to register. ex: "www.domain1.com,pictures.domain1.com,www.domain2.com",
+    3. Set the environment variable `SSL_EMAIL` to a valid email address to get updates about the status of your SSL certificate.
+    4. Set `NODE_ENV` to `production`
+    5. spin up the container as a service
+    6. to prevent losing your certificates on a redeploy, add a volume for the path `/etc/greenlock/acme/`
 
 * With docker:
     1. `cd` to the project directory
@@ -45,14 +51,3 @@ Important: This app uses openstreets map tiles, which require an API token. If y
 * Without docker:
     1. `npm install`
     2. `sudo node server.js`
-
-* Enable https with self-signed SSL certificates (for localhost), or SSL certificates signed by a CA for https support:
-    1. put your .key and .crt files into the project's ssl/ directory before running the app, or building the docker container
-    
-* Enable https with letsencrypt (a free certificate authority) on docker cloud services
-
-    The server.js which serves a built react project is also capable of generating and renewing SSL certificates with letsencrypt. This process is completely automated, all you need to do is run the docker service with the correct environment variables:
-    1. build the docker image
-    2. set the environment variables `DOMAINNAME`, `SUBDOMAIN`, `ADMINEMAIL` to their appropriate values for your domain name. Set `NODE_ENV` to `production`
-    3. spin up the container as a service
-    4. to prevent losing your certificates on a redeploy, add a volume for the path `/etc/letsencrypt`
