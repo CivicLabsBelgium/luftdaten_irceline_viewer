@@ -7,9 +7,16 @@ class Gradient extends Component {
     const currentPhenomenonMeta = this.props.phenomenonMeta[this.props.phenomenon]
     const height = (currentPhenomenonMeta.data.length - 1) * nodeSize + 1
 
-    const gradient = ['linear-gradient(to top'].concat(
-      currentPhenomenonMeta.data.map((pair, index) => pair.color + ' ' + (index * nodeSize) + 'px')
-    ).join(', ').concat(')')
+    const showSolidColor = (this.props.phenomenon.indexOf('PM') > -1)
+    let gradient = ''
+    if (showSolidColor) {
+      gradient = `linear-gradient(to top ${ currentPhenomenonMeta.data.map((pair, index) => index > 0 ? currentPhenomenonMeta.data[index].color + ' ' + ((index - 1) * nodeSize) + 'px, ' + currentPhenomenonMeta.data[index].color + ' ' + (index * nodeSize) + 'px' : '').join(', ')})`
+    } else {
+      gradient = ['linear-gradient(to top'].concat(
+        currentPhenomenonMeta.data.map((pair, index) => pair.color + ' ' + (index * nodeSize) + 'px')
+      ).join(', ').concat(')')
+    }
+    
 
     const gradientStyle = {
       height: height + 'px',

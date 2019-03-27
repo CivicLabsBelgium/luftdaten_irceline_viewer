@@ -31,7 +31,7 @@ class Map extends Component {
       zoom: initialParams.zoom || this.props.globalConfig.zoom,
       minZoom: this.props.globalConfig.minZoom,
       maxBounds: this.props.globalConfig.maxBounds,
-      scrollWheelZoom: 'center'
+      scrollWheelZoom: true
     })
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
@@ -187,6 +187,7 @@ class Map extends Component {
         //TODO move phenomenonmeta to separate file
 
         const phenomenonMeta = nextProps.appState.phenomenonMeta[nextProps.appState.phenomenon]
+        const showSolidColor = (nextProps.appState.phenomenon.indexOf('PM') > -1)
         const valueExceedsIndex = phenomenonMeta.data.indexOf(
           (phenomenonMeta.data.find(
             (data) => {
@@ -199,11 +200,12 @@ class Map extends Component {
         const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
         const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
         const colorBlend = blendColors(colorLower, colorUpper, valuePercent)
+        
 
         let hexagonIconOptions = {
           hexagonIsSelected: false,
           size: hexSize,
-          color: colorToRgba(colorBlend, 0.6)
+          color: showSolidColor ? colorToRgba(colorUpper, 0.6) : colorToRgba(colorBlend, 0.6)
         }
 
         //selected border on any marker containing selected stationList

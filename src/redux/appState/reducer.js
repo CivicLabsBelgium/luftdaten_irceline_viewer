@@ -20,10 +20,10 @@ const defaultState = {
           // {color: '#DD2C00', value: 100},
           // {color: '#960084', value: 500}
           {color: '#70AE6E', value: 0},
-          {color: '#E5C038', value: 10},
-          {color: '#ea8b00', value: 20},
-          {color: '#d8572a', value: 25},
-          {color: '#c32f27', value: 50},
+          {color: '#70AE6E', value: 10},
+          {color: '#E5C038', value: 20},
+          {color: '#ea8b00', value: 25},
+          {color: '#d8572a', value: 50},
           {color: '#c32f27', value: 800}
         ],
         max: 10, //max non-hazardous value
@@ -39,10 +39,10 @@ const defaultState = {
           // {color: '#DD2C00', value: 100},
           // {color: '#960084', value: 500}
           {color: '#70AE6E', value: 0},
-          {color: '#E5C038', value: 20},
-          {color: '#ea8b00', value: 35},
-          {color: '#d8572a', value: 50},
-          {color: '#c32f27', value: 100},
+          {color: '#70AE6E', value: 20},
+          {color: '#E5C038', value: 35},
+          {color: '#ea8b00', value: 50},
+          {color: '#d8572a', value: 100},
           {color: '#c32f27', value: 1200}
         ],
         max: 20, //max non-hazardous value
@@ -64,14 +64,14 @@ const defaultState = {
       },
       humidity: {
         data: [
-          {color: '#206', value: 0},
-          {color: '#236', value: 20},
-          {color: '#255', value: 40},
-          {color: '#695', value: 60},
-          {color: '#5A5', value: 80},
-          {color: '#FF4', value: 100}
+          {color: '#e9af21', value: 0},
+          {color: '#9a7d5a', value: 20},
+          {color: '#585067', value: 40},
+          {color: '#2a2c74', value: 60},
+          {color: '#2b1fd4', value: 80},
+          {color: '#1bffff', value: 100}
         ],
-        max: 100, //max non-hazardous value
+        max: 75, //max non-hazardous value
         unit: '%',
         name: 'Humidity'
       },
