@@ -13,27 +13,39 @@ const defaultState = {
   phenomenonMeta: {
       PM25: {
         data: [
-          {color: '#205050', value: 0},
-          {color: '#00796B', value: 20},
-          {color: '#F9A825', value: 40},
-          {color: '#E65100', value: 60},
-          {color: '#DD2C00', value: 100},
-          {color: '#960084', value: 500}
+          // {color: '#205050', value: 0},
+          // {color: '#00796B', value: 20},
+          // {color: '#F9A825', value: 40},
+          // {color: '#E65100', value: 60},
+          // {color: '#DD2C00', value: 100},
+          // {color: '#960084', value: 500}
+          {color: '#70AE6E', value: 0},
+          {color: '#E5C038', value: 10},
+          {color: '#ea8b00', value: 20},
+          {color: '#d8572a', value: 25},
+          {color: '#c32f27', value: 50},
+          {color: '#c32f27', value: 800}
         ],
-        max: 25, //max non-hazardous value
+        max: 10, //max non-hazardous value
         unit: 'µg/m³',
         name: `Particulate Matter < 2.5µm`
       },
       PM10: {
         data: [
-          {color: '#205050', value: 0},
-          {color: '#00796B', value: 20},
-          {color: '#F9A825', value: 40},
-          {color: '#E65100', value: 60},
-          {color: '#DD2C00', value: 100},
-          {color: '#960084', value: 500}
+          // {color: '#205050', value: 0},
+          // {color: '#00796B', value: 20},
+          // {color: '#F9A825', value: 40},
+          // {color: '#E65100', value: 60},
+          // {color: '#DD2C00', value: 100},
+          // {color: '#960084', value: 500}
+          {color: '#70AE6E', value: 0},
+          {color: '#E5C038', value: 20},
+          {color: '#ea8b00', value: 35},
+          {color: '#d8572a', value: 50},
+          {color: '#c32f27', value: 100},
+          {color: '#c32f27', value: 1200}
         ],
-        max: 50, //max non-hazardous value
+        max: 20, //max non-hazardous value
         unit: 'µg/m³',
         name: 'Particulate Matter < 10µm'
       },
