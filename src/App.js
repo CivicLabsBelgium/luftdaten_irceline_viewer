@@ -7,7 +7,7 @@ import './styles/phenomenonPicker.css'
 import './styles/sidebar.css'
 import './styles/map.css'
 import './styles/mobile.css'
-import { updateLuftdaten, updateLuftdatenMean, updateIrceline } from './utilities/updateSensorData'
+import { updateLuftdaten, updateIrceline } from './utilities/updateSensorData'
 import Map from './components/map'
 import Sidebar from './components/sidebar'
 import Legend from './components/legend'
@@ -70,13 +70,12 @@ class App extends Component {
   componentDidMount () {
     //TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
-    updateLuftdaten().then(updateLuftdatenMean)
-    setInterval(updateLuftdatenMean, 3.6e+6) // update mean values every hour
+    updateLuftdaten()
     setInterval(updateLuftdaten, 2 * 6e4) // update sensors every 2 minutes
 
     // Update Irceline every 10 minutes
     if (this.props.showIrceline) {
-      updateIrceline().then()
+      updateIrceline()
       setInterval(updateIrceline, 6e5)
     }
   }

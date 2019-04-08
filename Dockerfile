@@ -12,7 +12,7 @@ COPY package*.json ./
 COPY public ./public
 
 #install node_modules based on package.json
-RUN npm install
+RUN npm i
 
 #copy src dir from project to image
 COPY src ./src
@@ -31,9 +31,11 @@ COPY server/package.json ./package.json
 
 #install node_modules based on server/package.json
 #this json config contains only the minimum dependencies to support npm serve
-RUN npm install
+RUN npm i --only=prod
 
 #copy the express server.js file alongside the build folder
 COPY server/server.js ./server.js
+COPY server/irceline.js ./irceline.js
+COPY server/luftdaten.js ./luftdaten.js
 
 CMD [ "node", "server.js" ]

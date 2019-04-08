@@ -42,6 +42,8 @@ class Map extends Component {
     map.addEventListener('zoomend', () => {
         this.showMarkers(this.props)
         let params = getParams()
+        params.lat = map.getCenter().lat
+        params.lng = map.getCenter().lng
         params.zoom = map.getZoom()
         setParams(params)
       }
