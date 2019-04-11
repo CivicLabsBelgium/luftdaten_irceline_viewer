@@ -85,7 +85,7 @@ if (!noSSL) {
         // You MUST have access to write to directory where certs are saved
         // ex: /home/foouser/acme/etc
         configDir: '/etc/greenlock/acme/',
-
+        store: require('greenlock-store-fs'),
         app,
 
         // Get notified of important updates and help me make greenlock better
