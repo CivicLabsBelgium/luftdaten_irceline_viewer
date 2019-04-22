@@ -7,7 +7,8 @@
     "child_process": "^1.0.2",
     "express": "^4.16.2",
     "got": "^9.6.0",
-    "greenlock-express": "^2.6.8"
+    "greenlock-express": "^2.6.8",
+    "greenlock-store-fs": "^3.0.0"
   },
   "eslintConfig": {
     "extends": "standard",

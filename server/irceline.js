@@ -10,7 +10,7 @@ class Irceline {
         this.data = []
         this.stations = []
 
-        setInterval(() => this.getData, 1000 * 60 * 5)
+        setInterval(() => this.getData(), 1000 * 60 * 5)
         this.getStations()
     }
     async getStations () {
