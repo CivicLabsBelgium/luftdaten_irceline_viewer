@@ -10,12 +10,6 @@ const luftdaten = new Luftdaten()
 
 const app = express()
 
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-    next()
-})
-
 app.get('/token', (req, res) => {
     const tilesAccessToken = process.env.TILES_ACCESS_TOKEN
     if (tilesAccessToken) {
@@ -52,7 +46,7 @@ app.get('/luftdaten', (req, res) => {
     })
 })
 
+app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'build/index.html')))
 app.use(express.static(path.join(__dirname, 'build')))
-app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'build/index.html')))
 
 app.listen(80)
