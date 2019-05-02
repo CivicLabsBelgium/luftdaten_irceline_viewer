@@ -108,14 +108,14 @@ class Map extends Component {
       }
 
       if (hasSensorForCurrentPhenomenon) {
-
-        const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexSize)
-        const bundledStations = {
-          stations: [station],
-          latlng: latlngSnappedToGrid
+        if (station.latitude && station.longitude) {
+          const latlngSnappedToGrid = snapToGrid([station.latitude, station.longitude], this.state.map, hexSize)
+          const bundledStations = {
+            stations: [station],
+            latlng: latlngSnappedToGrid
+          }
+          this.markerLayer.push(bundledStations)
         }
-
-        this.markerLayer.push(bundledStations)
       }
     }
 
