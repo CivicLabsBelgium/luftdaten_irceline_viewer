@@ -21,7 +21,6 @@ import { setConfig, setTilesAccessToken } from './redux/globalConfig/actions'
 import { setLang } from './redux/appState/actions'
 
 class App extends Component {
-
   constructor (props) {
     super(props)
     polyfill.arrayFindPolyfill()
@@ -53,22 +52,22 @@ class App extends Component {
         .then(
           res => {
             console.log('Got TILES_ACCESS_TOKEN environment variable')
-            if(!res.tilesAccessToken) {
+            if (!res.tilesAccessToken) {
               throw new Error('TILES_ACCESS_TOKEN is undefined')
             }
             props.onSetTilesAccessToken(res.tilesAccessToken)
           }
         )
         .catch(() => {
-            console.warn('TILES_ACCESS_TOKEN environment variable must be set if config.js.dist was not copied as config.js')
-            props.onSetTilesAccessToken(false)
-          }
+          console.warn('TILES_ACCESS_TOKEN environment variable must be set if config.js.dist was not copied as config.js')
+          props.onSetTilesAccessToken(false)
+        }
         )
     }
   }
 
   componentDidMount () {
-    //TODO read values from location hash and set geolocation, zoom and other states according to this hash
+    // TODO read values from location hash and set geolocation, zoom and other states according to this hash
 
     updateLuftdaten()
     setInterval(updateLuftdaten, 2 * 6e4) // update sensors every 2 minutes
@@ -80,7 +79,7 @@ class App extends Component {
     }
   }
 
-  handleSwipe = () => {
+  handleSwipe () {
     this.setState(
       {
         uiContainerToggled: !this.state.uiContainerToggled
@@ -90,7 +89,7 @@ class App extends Component {
 
   render () {
     const {
-      tilesAccessToken,
+      tilesAccessToken
     } = this.props
 
     if (tilesAccessToken === false) {
@@ -109,16 +108,16 @@ class App extends Component {
       <div className='container'>
         <div className='github-ribbon'>
           <a href='https://github.com/CivicLabsBelgium/luftdaten_irceline_viewer' target='_blank'
-             rel='noopener noreferrer'>
+            rel='noopener noreferrer'>
             <img src='https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png'
-                 alt='Fork me on GitHub'/>
+              alt='Fork me on GitHub'/>
           </a>
         </div>
         <Map/>
         <UpdatedTime/>
         <div className={this.state.uiContainerToggled ? 'UI_container open' : 'UI_container collapsed'}>
-          <button className='toggle-panel' style={{display: 'none'}}
-                  onClick={this.handleSwipe}>{this.props.lang.close}</button>
+          <button className='toggle-panel' style={{ display: 'none' }}
+            onClick={this.handleSwipe}>{this.props.lang.close}</button>
           <Legend/>
           {
             (() => {
