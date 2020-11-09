@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 const defaultState = {
   stations: [],
   isReachable: {
@@ -16,7 +17,6 @@ const defaultState = {
 }
 
 export default function stationUpdates (state = defaultState, action) {
-
   const newState = Object.assign({}, state)
 
   switch (action.type) {

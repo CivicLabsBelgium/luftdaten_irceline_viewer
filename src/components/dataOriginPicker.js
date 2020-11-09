@@ -1,11 +1,12 @@
+/* eslint multiline-ternary: ["error", "always"] */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { setDataOrigin } from '../redux/appState/actions'
 
 class DataOriginPicker extends Component {
   render () {
-    const luftdaten_toggle = this.props.dataOrigin.luftdaten
-    const irceline_toggle = this.props.dataOrigin.irceline
+    const luftdatenToggle = this.props.dataOrigin.luftdaten
+    const ircelineToggle = this.props.dataOrigin.irceline
     const luftdatenIsReachable = this.props.luftdatenIsReachable
     const ircelineIsReachable = this.props.ircelineIsReachable
     const luftdatenIsUpdating = this.props.luftdatenIsUpdating
@@ -15,31 +16,43 @@ class DataOriginPicker extends Component {
       <div className="data-origin-picker">
         <span>filter</span>
         <button
-          className={luftdatenIsReachable? '' : 'unreachable'}
+          className={luftdatenIsReachable
+            ? ''
+            : 'unreachable'}
 
           onClick={() => this.props.onChangeDataOrigin({
-          luftdaten: !luftdaten_toggle,
-          irceline: irceline_toggle
-        })}>
+            luftdaten: !luftdatenToggle,
+            irceline: ircelineToggle
+          })}>
           {
-            (luftdatenIsReachable) ? (
-              (luftdatenIsUpdating) ? '\u231B' :
-              (luftdaten_toggle) ? '\u2714' : '\u2715'
-            ) : '\u2205'
+            (luftdatenIsReachable)
+              ? ((luftdatenIsUpdating)
+                  ? '\u231B'
+                  : (luftdatenToggle)
+                      ? '\u2714'
+                      : '\u2715'
+                )
+              : '\u2205'
           }
           &nbsp;Luftdaten
         </button>
         <button
-          className={ircelineIsReachable? '' : 'unreachable'}
+          className={ircelineIsReachable
+            ? ''
+            : 'unreachable'}
           onClick={() => this.props.onChangeDataOrigin({
-          luftdaten: luftdaten_toggle,
-          irceline: !irceline_toggle
-        })}>
+            luftdaten: luftdatenToggle,
+            irceline: !ircelineToggle
+          })}>
           {
-            (ircelineIsReachable) ? (
-              (ircelineIsUpdating) ? '\u231B' :
-                (irceline_toggle) ? '\u2714' : '\u2715'
-            ) : '\u2205'
+            (ircelineIsReachable)
+              ? ((ircelineIsUpdating)
+                  ? '\u231B'
+                  : (ircelineToggle)
+                      ? '\u2714'
+                      : '\u2715'
+                )
+              : '\u2205'
           }
           &nbsp;Irceline
         </button>
@@ -54,7 +67,7 @@ const mapStateToProps = state => {
     luftdatenIsReachable: state.stationUpdates.isReachable.luftdaten,
     ircelineIsReachable: state.stationUpdates.isReachable.irceline,
     luftdatenIsUpdating: state.stationUpdates.isUpdating.luftdaten,
-    ircelineIsUpdating: state.stationUpdates.isUpdating.irceline,
+    ircelineIsUpdating: state.stationUpdates.isUpdating.irceline
   }
 }
 

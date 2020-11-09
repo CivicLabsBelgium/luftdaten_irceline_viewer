@@ -21,29 +21,20 @@ export function blendColors (color1, color2, percentage) {
   percentage = percentage || 0.5
 
   // 1: validate input, make sure we have provided a valid hex
-  if (color1.length !== 4 && color1.length !== 7)
-    return color1
-  //throw new Error('colors must be provided as hexes')
-
-  if (color2.length !== 4 && color2.length !== 7)
-    return color1
+  if (color1.length !== 4 && color1.length !== 7) { return color1 }
   // throw new Error('colors must be provided as hexes')
 
-  if (percentage > 1 || percentage < 0)
-    return color1
+  if (color2.length !== 4 && color2.length !== 7) { return color1 }
+  // throw new Error('colors must be provided as hexes')
+
+  if (percentage > 1 || percentage < 0) { return color1 }
   // throw new Error('percentage must be between 0 and 1')
 
   // 2: check to see if we need to convert 3 char hex to 6 char hex, else slice off hash
   //      the three character hex is just a representation of the 6 hex where each character is repeated
   //      ie: #060 => #006600 (green)
-  if (color1.length === 4)
-    color1 = color1[1] + color1[1] + color1[2] + color1[2] + color1[3] + color1[3]
-  else
-    color1 = color1.substring(1)
-  if (color2.length === 4)
-    color2 = color2[1] + color2[1] + color2[2] + color2[2] + color2[3] + color2[3]
-  else
-    color2 = color2.substring(1)
+  if (color1.length === 4) { color1 = color1[1] + color1[1] + color1[2] + color1[2] + color1[3] + color1[3] } else { color1 = color1.substring(1) }
+  if (color2.length === 4) { color2 = color2[1] + color2[1] + color2[2] + color2[2] + color2[3] + color2[3] } else { color2 = color2.substring(1) }
 
   // console.log('valid: c1 => ' + color1 + ', c2 => ' + color2)
 
@@ -63,7 +54,7 @@ export function blendColors (color1, color2, percentage) {
   // console.log('c3 => [' + color3.join(', ') + ']')
 
   // 5: convert to hex
-  color3 = '#' + int_to_hex(color3[0]) + int_to_hex(color3[1]) + int_to_hex(color3[2])
+  color3 = '#' + intToHex(color3[0]) + intToHex(color3[1]) + intToHex(color3[2])
 
   // return hex
   return color3
@@ -76,9 +67,8 @@ export function blendColors (color1, color2, percentage) {
     @param: num         => the number to conver to hex
     @returns: string    => the hex representation of the provided number
 */
-function int_to_hex (num) {
+function intToHex (num) {
   let hex = Math.round(num).toString(16)
-  if (hex.length === 1)
-    hex = '0' + hex
+  if (hex.length === 1) { hex = '0' + hex }
   return hex
 }

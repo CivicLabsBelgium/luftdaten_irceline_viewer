@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint multiline-ternary: ["error", "always"] */
 import React from 'react'
 import { connect } from 'react-redux'
 import { setCurrentSensor, setID } from '../redux/appState/actions'
@@ -5,9 +7,7 @@ import store from '../redux/store'
 import * as genericFunctions from '../utilities/genericFunctions'
 
 class InfoTable extends React.Component {
-
   findNearestIrcelineStationForAllLuftdatenStations (data) {
-
     const ircelineStations = this.props.stations.filter(sensor => sensor.origin === 'irceline')
 
     return data.map(
@@ -51,10 +51,12 @@ class InfoTable extends React.Component {
     const nearestIrceline = ircelineStations.reduce(
       (nearest, station) => {
         const distance = genericFunctions.getDistanceFromLatLonInKm(geolocation.latitude, geolocation.longitude, station.latitude, station.longitude)
-        return distance <= nearest.distance && distance <= this.props.globalConfig.nearestIrcelineStationRange ? {
-          distance,
-          station
-        } : nearest
+        return distance <= nearest.distance && distance <= this.props.globalConfig.nearestIrcelineStationRange
+          ? {
+              distance,
+              station
+            }
+          : nearest
       },
       {
         distance: this.props.globalConfig.nearestIrcelineStationRange,
@@ -77,11 +79,12 @@ class InfoTable extends React.Component {
     let sumCol3 = 0
     let countCol3 = 0
 
-    const data = this.props.globalConfig.showNearestIrcelineStation && props.origin.irceline ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data) : props.data
+    const data = this.props.globalConfig.showNearestIrcelineStation && props.origin.irceline
+      ? this.findNearestIrcelineStationForAllLuftdatenStations(props.data)
+      : props.data
     const sensorList = data.map(
       sensor => {
-
-        //TODO Keep or not?
+        // TODO Keep or not?
         if (props.origin[sensor.origin] === false) return null
 
         let col1Value, col1Unit, col2Value, col2Unit, col3Value, col3Unit, nearestCol1Value, nearestCol2Value,
@@ -151,7 +154,9 @@ class InfoTable extends React.Component {
         return (
           <React.Fragment key={sensor.id}>
             <tr className={
-              (props.sensor === sensor.id) ? 'sensor selected' : 'sensor'
+              (props.sensor === sensor.id)
+                ? 'sensor selected'
+                : 'sensor'
             } onClick={() => props.onChangeCurrentSensor(sensor.id)}>
               <td>
                 <span className='a' onClick={() => { props.onSetID(sensor.id) }}>{sensor.id}</span>
@@ -159,11 +164,14 @@ class InfoTable extends React.Component {
               <td>{col1Value}</td>
               <td>{col2Value}</td>
               {
-                (props.type === 'tempAndHum') ? <td>{col3Value}</td> : null
+                (props.type === 'tempAndHum')
+                  ? <td>{col3Value}</td>
+                  : null
               }
             </tr>
             {
-              (props.sensor === sensor.id) ? <React.Fragment>
+              (props.sensor === sensor.id)
+                ? <React.Fragment>
                 {
                   (col1Hourly || col2Hourly || col3Hourly) &&
                   <tr className='selected'>
@@ -171,7 +179,9 @@ class InfoTable extends React.Component {
                     <td>{col1Hourly || '-'}</td>
                     <td>{col2Hourly || '-'}</td>
                     {
-                      (props.type === 'tempAndHum') ? <td>{col3Hourly || '-'}</td> : null
+                      (props.type === 'tempAndHum')
+                        ? <td>{col3Hourly || '-'}</td>
+                        : null
                     }
                   </tr>
                 }
@@ -182,18 +192,23 @@ class InfoTable extends React.Component {
                     <td>{col1Daily || '-'}</td>
                     <td>{col2Daily || '-'}</td>
                     {
-                      (props.type === 'tempAndHum') ? <td>{col3Daily || '-'}</td> : null
+                      (props.type === 'tempAndHum')
+                        ? <td>{col3Daily || '-'}</td>
+                        : null
                     }
                   </tr>
                 }
                 {
-                  sensor.nearestIrceline && props.origin.irceline ? <tr className='selected'>
+                  sensor.nearestIrceline && props.origin.irceline
+                    ? <tr className='selected'>
                       <td><span className='a' onClick={() => { props.onSetID(nearestId) }}>{this.props.lang.nearestIrcelineStation}</span>
                       </td>
                       <td>{nearestCol1Value || '-'}</td>
                       <td>{nearestCol2Value || '-'}</td>
                       {
-                        (props.type === 'tempAndHum') ? <td>{nearestCol3Value || '-'}</td> : null
+                        (props.type === 'tempAndHum')
+                          ? <td>{nearestCol3Value || '-'}</td>
+                          : null
                       }
                     </tr>
                     : null
@@ -208,8 +223,12 @@ class InfoTable extends React.Component {
                 </tr>
                 <tr className='selected'>
                   <td>{this.props.lang.source}</td>
-                  <td colSpan='3'><a target='_blank'
-                                     href={(sensor.origin === 'irceline') ? 'http://www.irceline.be/' : (sensor.origin === 'luftdaten') ? 'http://luftdaten.info/' : ''}>{sensor.origin}</a>
+                  <td colSpan='3'><a target='_blank' href={(sensor.origin === 'irceline')
+                    ? 'http://www.irceline.be/'
+                    : (sensor.origin === 'luftdaten')
+                        ? 'http://luftdaten.info/'
+                        : ''
+                        } rel="noreferrer">{sensor.origin}</a>
                   </td>
                 </tr>
                 <tr className='selected'>
@@ -218,7 +237,8 @@ class InfoTable extends React.Component {
                     <span>lat: {sensor.lat},<br/> long: {sensor.lng},<br/> alt: {sensor.alt}</span>
                   </td>
                 </tr>
-              </React.Fragment> : null
+              </React.Fragment>
+                : null
             }
 
           </React.Fragment>
@@ -241,17 +261,29 @@ class InfoTable extends React.Component {
           <tbody>
           <tr className='headers'>
             <th>Sensor&nbsp;ID</th>
-            <th style={{textDecoration: props.phenomenon === 'PM10' ? 'underline' : 'none'}}>PM10</th>
-            <th style={{textDecoration: props.phenomenon === 'PM25' ? 'underline' : 'none'}}>PM2.5</th>
+            <th style={{
+              textDecoration: props.phenomenon === 'PM10'
+                ? 'underline'
+                : 'none'
+            }
+            }>PM10</th>
+            <th style={{
+              textDecoration: props.phenomenon === 'PM25'
+                ? 'underline'
+                : 'none'
+            }
+            }>PM2.5</th>
           </tr>
           {
-            (countCol1 <= 1 && countCol2 <= 1) ? null : (
-              <tr className='mean'>
-                <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
-                <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
-                <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
-              </tr>
-            )
+            (countCol1 <= 1 && countCol2 <= 1)
+              ? null
+              : (
+                <tr className='mean'>
+                  <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
+                  <td>{meanCol1}&nbsp;µg/m<sup>3</sup></td>
+                  <td>{meanCol2}&nbsp;µg/m<sup>3</sup></td>
+                </tr>
+                )
           }
           {sensorList}
           </tbody>
@@ -264,19 +296,36 @@ class InfoTable extends React.Component {
           <tbody>
           <tr className='headers'>
             <th>Sensor&nbsp;ID</th>
-            <th style={{textDecoration: props.phenomenon === 'temperature' ? 'underline' : 'none'}}>{this.props.lang.temp}</th>
-            <th style={{textDecoration: props.phenomenon === 'humidity' ? 'underline' : 'none'}}>{this.props.lang.hum}</th>
-            <th style={{textDecoration: props.phenomenon === 'pressure' ? 'underline' : 'none'}}>{this.props.lang.pres}</th>
+            <th style={{
+              textDecoration: props.phenomenon === 'temperature'
+                ? 'underline'
+                : 'none'
+            }
+            }>{this.props.lang.temp}</th>
+            <th style={{
+              textDecoration: props.phenomenon === 'humidity'
+                ? 'underline'
+                : 'none'
+            }
+            }>{this.props.lang.hum}</th>
+            <th style={{
+              textDecoration: props.phenomenon === 'pressure'
+                ? 'underline'
+                : 'none'
+            }
+            }>{this.props.lang.pres}</th>
           </tr>
           {
-            (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1) ? null : (
-              <tr className='mean'>
-                <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
-                <td>{meanCol1}&nbsp;°C</td>
-                <td>{meanCol2}&nbsp;&#37;</td>
-                <td>{meanCol3}&nbsp;hPa</td>
-              </tr>
-            )
+            (countCol1 <= 1 && countCol2 <= 1 && countCol3 <= 1)
+              ? null
+              : (
+                <tr className='mean'>
+                  <th>{this.props.lang.mean} ({this.props.lang.selected})</th>
+                  <td>{meanCol1}&nbsp;°C</td>
+                  <td>{meanCol2}&nbsp;&#37;</td>
+                  <td>{meanCol3}&nbsp;hPa</td>
+                </tr>
+                )
           }
           {sensorList}
           </tbody>
@@ -290,7 +339,7 @@ const mapStateToProps = state => {
   return {
     phenomenon: state.appState.phenomenon,
     sensor: state.appState.sensor,
-    origin: {...state.appState.dataOrigin},
+    origin: { ...state.appState.dataOrigin },
     stations: state.stationUpdates.stations,
     globalConfig: state.globalConfig,
     lang: state.appState.lang
@@ -302,7 +351,7 @@ const mapDispatchToProps = dispatch => {
     onChangeCurrentSensor: sensor => {
       dispatch(setCurrentSensor(sensor))
     },
-    //TODO remove if unecessary
+    // TODO remove if unecessary
     // onSetMapCoords: coords => {
     //   dispatch(setMapCoords(coords))
     // },

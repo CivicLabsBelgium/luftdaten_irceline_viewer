@@ -36,23 +36,22 @@ class Map extends Component {
 
     map.addEventListener('click', () => this.props.onChangeCurrentStation(null))
     map.addEventListener('zoomstart', () => {
-        this.isZooming = true
-      }
+      this.isZooming = true
+    }
     )
     map.addEventListener('zoomend', () => {
-        this.showMarkers(this.props)
-        let params = getParams()
-        params.lat = map.getCenter().lat
-        params.lng = map.getCenter().lng
-        params.zoom = map.getZoom()
-        setParams(params)
-      }
+      this.showMarkers(this.props)
+      const params = getParams()
+      params.lat = map.getCenter().lat
+      params.lng = map.getCenter().lng
+      params.zoom = map.getZoom()
+      setParams(params)
+    }
     )
     map.addEventListener('moveend', () => {
       if (!this.isZooming && !this.isMoving) {
-        let params = getParams()
-        if (params.id)
-          delete params.id
+        const params = getParams()
+        if (params.id) { delete params.id }
         params.lat = map.getCenter().lat
         params.lng = map.getCenter().lng
         params.zoom = map.getZoom()
@@ -62,42 +61,43 @@ class Map extends Component {
       this.isMoving = false
     })
 
-    window.L.tileLayer(this.props.globalConfig.tilesURL, {
-      attribution: this.props.globalConfig.tilesAttribution,
-      maxZoom: this.props.globalConfig.maxZoom,
-      id: this.props.globalConfig.tilesID,
-      accessToken: this.props.globalConfig.tilesAccessToken
+    window.L.mapboxGL({
+      accessToken: this.props.globalConfig.tilesAccessToken,
+      style: 'mapbox://styles/appsaloon/ckhaazjul0gd519tb4316491k'
     }).addTo(map)
+
+    // window.L.tileLayer(this.props.globalConfig.tilesURL, {
+    //   attribution: this.props.globalConfig.tilesAttribution,
+    //   maxZoom: this.props.globalConfig.maxZoom,
+    //   id: this.props.globalConfig.tilesID,
+    //   accessToken: this.props.globalConfig.tilesAccessToken
+    // }).addTo(map)
 
     const layerGroup = window.L.layerGroup([]).addTo(map)
 
     this.setState({
-      map: map, //TODO refactor this.map
+      map: map, // TODO refactor this.map
       layerGroup: layerGroup
     })
   }
 
   showMarkers (nextProps) {
-
     const hexSize = 50
     this.markerLayer = []
 
-    if (this.state.layerGroup)
-      this.state.layerGroup.clearLayers()
+    if (this.state.layerGroup) { this.state.layerGroup.clearLayers() }
 
-    let stations = nextProps.stations
+    const stations = nextProps.stations
 
-    for (let k in stations) {
-
+    for (const k in stations) {
       const station = stations[k]
 
-      //station origin deselected by user
-      if (nextProps.appState.dataOrigin[station.origin] === false)
-        continue
+      // station origin deselected by user
+      if (nextProps.appState.dataOrigin[station.origin] === false) { continue }
 
       let hasSensorForCurrentPhenomenon = false
 
-      for (let i in station.sensors) {
+      for (const i in station.sensors) {
         const sensor = station.sensors[i]
         const phenomenon = nextProps.appState.phenomenon
 
@@ -119,10 +119,9 @@ class Map extends Component {
       }
     }
 
-    //REDUCES AND BUNDLES MARKERS
+    // REDUCES AND BUNDLES MARKERS
     this.markerLayer = this.markerLayer.reduce(
       (accumulator, currentMarker) => {
-
         const found = accumulator.findIndex(
           bundledStations => bundledStations.latlng.lat === currentMarker.latlng.lat &&
             bundledStations.latlng.lng === currentMarker.latlng.lng
@@ -143,17 +142,14 @@ class Map extends Component {
         let sumValues = 0
         let countValues = 0
 
-        //group and render all sensors from all stations
+        // group and render all sensors from all stations
         marker.stations.forEach(
           station => {
             station.sensors.forEach(
               sensor => {
-
-
-                //gets a shared sensor id from the url, selects this sensor and its station, and centers the map on it
+                // gets a shared sensor id from the url, selects this sensor and its station, and centers the map on it
                 const params = getParams()
                 if (params.id && params.id === sensor.id && !this.centeredOnSensorFromURL && (nextProps.appState.stationList !== [station])) {
-
                   this.isMoving = true
                   setParams(params)
                   this.centerOnCoords(
@@ -184,9 +180,9 @@ class Map extends Component {
         )
         const meanValue = (sumValues / countValues)
 
-        //ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
+        // ASSIGN MARKER COLOR BLEND BASED ON MEAN VALUE
 
-        //TODO move phenomenonmeta to separate file
+        // TODO move phenomenonmeta to separate file
 
         const phenomenonMeta = nextProps.appState.phenomenonMeta[nextProps.appState.phenomenon]
         const showSolidColor = (nextProps.appState.phenomenon.indexOf('PM') > -1)
@@ -202,26 +198,25 @@ class Map extends Component {
         const colorLower = phenomenonMeta.data[Math.max(0, valueExceedsIndex - 1)].color
         const colorUpper = phenomenonMeta.data[Math.max(0, valueExceedsIndex)].color
         const colorBlend = blendColors(colorLower, colorUpper, valuePercent)
-        
 
-        let hexagonIconOptions = {
+        const hexagonIconOptions = {
           hexagonIsSelected: false,
           size: hexSize,
           color: showSolidColor ? colorToRgba(colorUpper, 0.6) : colorToRgba(colorBlend, 0.6)
         }
 
-        //selected border on any marker containing selected stationList
+        // selected border on any marker containing selected stationList
         if (nextProps.appState.stationList && marker.stations.find(
-            station => {
-              return nextProps.appState.stationList.find(
-                selectedStation => (selectedStation.id === station.id)
-              )
-            }
-          )) {
+          station => {
+            return nextProps.appState.stationList.find(
+              selectedStation => (selectedStation.id === station.id)
+            )
+          }
+        )) {
           hexagonIconOptions.hexagonIsSelected = true
         }
 
-        let markerOptions = {
+        const markerOptions = {
           icon:
             window.L.divIcon({
               className: 'hexagonMarker',
@@ -242,27 +237,27 @@ class Map extends Component {
             if (e.originalEvent.shiftKey) {
               newStationList = newStationList.concat(this.props.selectedStations || [])
                 .reduce(
-                (accumulator, station, index) => {
-                  let arrayWithoutThisIndex = newStationList.concat([])
-                  arrayWithoutThisIndex.splice(index, 1)
-                  const duplicate = arrayWithoutThisIndex.find(findStation => findStation.id === station.id)
-                  if (!duplicate) {
-                    accumulator.push(station)
-                  } else {
-                    accumulator = accumulator.filter(filterStation => {
-                      return filterStation.id !== duplicate.id
-                    })
-                  }
-                  return accumulator
-                },
-                []
-              )
+                  (accumulator, station, index) => {
+                    const arrayWithoutThisIndex = newStationList.concat([])
+                    arrayWithoutThisIndex.splice(index, 1)
+                    const duplicate = arrayWithoutThisIndex.find(findStation => findStation.id === station.id)
+                    if (!duplicate) {
+                      accumulator.push(station)
+                    } else {
+                      accumulator = accumulator.filter(filterStation => {
+                        return filterStation.id !== duplicate.id
+                      })
+                    }
+                    return accumulator
+                  },
+                  []
+                )
             }
 
             newStationList = newStationList && newStationList.length && newStationList
             nextProps.onChangeCurrentStation(newStationList)
 
-            //center zoom on marker
+            // center zoom on marker
             const coords = marker.getLatLng()
             this.centerOnCoords(coords)
           }
@@ -276,15 +271,14 @@ class Map extends Component {
     this.state.map.setView(coords, zoom)
   }
 
-  componentWillReceiveProps (nextProps) {
-
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.appState.id !== nextProps.appState.id && nextProps.appState.id === null) {
       const params = getParams()
       delete params.id
       setParams(params)
     }
 
-    //TODO fix this mess
+    // TODO fix this mess
     if (nextProps.appState.id !== this.props.appState.id && nextProps.appState.id !== null) {
       setParams({
         id: nextProps.appState.id
@@ -293,32 +287,29 @@ class Map extends Component {
       // this.props.onSetID(null)
     }
 
-    if (this.props.appState.mapCoords !== nextProps.appState.mapCoords)
-      this.centerOnCoords(nextProps.appState.mapCoords, 14)
+    if (this.props.appState.mapCoords !== nextProps.appState.mapCoords) { this.centerOnCoords(nextProps.appState.mapCoords, 14) }
 
-    //unselect stations that have no sensors for currently selected phenomenon OR selected data origin
+    // unselect stations that have no sensors for currently selected phenomenon OR selected data origin
     if (this.props.appState.phenomenon !== nextProps.appState.phenomenon || this.props.appState.dataOrigin !== nextProps.appState.dataOrigin) {
-      let reduced_stationList = (nextProps.appState.stationList === null) ? [] : nextProps.appState.stationList.reduce(
-        (accumulator, station) => {
+      let reducedStationList = (nextProps.appState.stationList === null)
+        ? []
+        : nextProps.appState.stationList.reduce(
+          (accumulator, station) => {
+            const hasSensor = station.sensors.find(
+              (sensor) => {
+                return sensor[nextProps.appState.phenomenon] && nextProps.appState.dataOrigin[sensor.origin]
+              }
+            ) !== undefined
 
-          const hasSensor = station.sensors.find(
-            (sensor) => {
-              return sensor[nextProps.appState.phenomenon] && nextProps.appState.dataOrigin[sensor.origin]
-            }
-          ) !== undefined
+            if (hasSensor) { accumulator.push(station) }
 
-          if (hasSensor)
-            accumulator.push(station)
+            return accumulator
+          }, []
+        )
 
-          return accumulator
-        }, []
-      )
+      if (reducedStationList.length === 0) { reducedStationList = null }
 
-      if (reduced_stationList.length === 0)
-        reduced_stationList = null
-
-      if (nextProps.appState.stationList !== reduced_stationList)
-        this.props.onChangeCurrentStation(reduced_stationList)
+      if (nextProps.appState.stationList !== reducedStationList) { this.props.onChangeCurrentStation(reducedStationList) }
     }
 
     this.showMarkers(nextProps)
@@ -342,7 +333,6 @@ const mapStateToProps = state => {
     selectedStations: state.appState.stationList,
     globalConfig: state.globalConfig
   }
-
 }
 
 const mapDispatchToProps = dispatch => {

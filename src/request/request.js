@@ -1,4 +1,4 @@
-export default (options) => {
+const request = (options) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     xhr.open(options.method || 'get', options.url)
@@ -24,3 +24,5 @@ export default (options) => {
     xhr.send(JSON.stringify(options.data))
   })
 }
+
+export default request

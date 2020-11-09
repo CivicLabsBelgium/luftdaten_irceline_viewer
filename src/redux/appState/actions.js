@@ -47,7 +47,6 @@ export function setDataOrigin (dataOrigin) {
   }
 }
 
-
 export function setLang (lang) {
   return {
     type: 'APPSTATE_SET_LANG',

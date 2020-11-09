@@ -3,8 +3,7 @@ import { connect } from 'react-redux'
 import { setPhenomenon } from '../redux/appState/actions'
 
 class PhenomenonPicker extends Component {
-
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.setState(
       {
         phenomenaKeys: Object.keys(this.props.phenomenonMeta).map(key => key),
@@ -25,22 +24,22 @@ class PhenomenonPicker extends Component {
 
   changePhenomenon = (phenomenon) => {
     this.toggle()
-    this.props.onChangePhenomenon( phenomenon )
+    this.props.onChangePhenomenon(phenomenon)
   }
 
   render () {
     return (
       <div className="phenomenon-picker">
-        <ul className="dropdown" style={{display: this.state.display}}>
+        <ul className="dropdown" style={{ display: this.state.display }}>
           {
             this.state.phenomenaNames.map(
               (phenomenon, index) => {
                 return <li key={index}
                            className={this.state.phenomenaKeys[index] === this.props.phenomenon ? 'selected' : 'option'}
                            style={
-                  {display: ( this.state.phenomenaKeys[index] === this.props.phenomenon )? 'none':'flex' }
+                  { display: (this.state.phenomenaKeys[index] === this.props.phenomenon) ? 'none' : 'flex' }
                 }
-                           onClick={() => this.changePhenomenon( this.state.phenomenaKeys[index] )}>{phenomenon}</li>
+                           onClick={() => this.changePhenomenon(this.state.phenomenaKeys[index])}>{phenomenon}</li>
               }
             )
           }

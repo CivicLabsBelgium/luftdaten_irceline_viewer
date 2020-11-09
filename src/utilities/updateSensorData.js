@@ -24,29 +24,25 @@ export const updateLuftdaten = async () => {
 
     request(options)
       .then(res => {
-          console.log('Got Luftdaten data')
-          if(!res.data) {
-            throw new Error('Luftdaten data is undefined')
-          }
-          stationsBoth.luftdaten = res.data
-          combineData()
-          store.dispatch(setUpdating(false, 'luftdaten'))
+        console.log('Got Luftdaten data')
+        if (!res.data) {
+          throw new Error('Luftdaten data is undefined')
         }
+        stationsBoth.luftdaten = res.data
+        combineData()
+        store.dispatch(setUpdating(false, 'luftdaten'))
+      }
       )
       .catch(() => {
-          console.warn('Luftdaten data request has failed')
-          store.dispatch(setReachable(false, 'luftdaten'))
-
-        }
+        console.warn('Luftdaten data request has failed')
+        store.dispatch(setReachable(false, 'luftdaten'))
+      }
       )
-
-    
   }
 }
 
 export const updateIrceline = async () => {
   if (store.getState().appState.dataOrigin.irceline) {
-
     const options = {
       method: 'GET',
       url: window.origin + '/irceline'
@@ -58,30 +54,27 @@ export const updateIrceline = async () => {
 
     request(options)
       .then(res => {
-          console.log('Got IRCELINE data')
-          if(!res.data) {
-            throw new Error('IRCELINE data is undefined')
-          }
-          stationsBoth.irceline = res.data
-          combineData()
-          store.dispatch(setUpdating(false, 'irceline'))
+        console.log('Got IRCELINE data')
+        if (!res.data) {
+          throw new Error('IRCELINE data is undefined')
         }
+        stationsBoth.irceline = res.data
+        combineData()
+        store.dispatch(setUpdating(false, 'irceline'))
+      }
       )
       .catch(() => {
-          console.warn('IRCELINE data request has failed')
-          store.dispatch(setReachable(false, 'irceline'))
-
-        }
+        console.warn('IRCELINE data request has failed')
+        store.dispatch(setReachable(false, 'irceline'))
+      }
       )
-    
   }
 }
 
 export const combineData = () => {
-
   const time = new Date().toLocaleTimeString()
   store.dispatch(setTime(time))
 
-  let stations = [...stationsBoth.luftdaten, ...stationsBoth.irceline]
+  const stations = [...stationsBoth.luftdaten, ...stationsBoth.irceline]
   store.dispatch(addStations(stations))
 }

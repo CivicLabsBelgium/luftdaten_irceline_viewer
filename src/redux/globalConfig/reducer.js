@@ -1,3 +1,5 @@
+/* eslint-disable default-param-last */
+
 const defaultState = {
   zoom: 8,
   minZoom: 6,
@@ -9,9 +11,7 @@ const defaultState = {
     [40, 25]
   ],
 
-  tilesURL: 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-  tilesAttribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a>',
-  tilesID: 'mapbox.streets',
+  tilesURL: 'mapbox://styles/appsaloon/ckhaazjul0gd519tb4316491k',
   tilesAccessToken: null,
 
   luftdatenURL1: 'https://api.luftdaten.info/v1/filter/country=BE',
@@ -26,14 +26,16 @@ const defaultState = {
 export default function globalConfig (state = defaultState, action) {
   const newState = Object.assign({}, state)
   switch (action.type) {
-
     case 'GLOBALCONFIG_SET_TILES_ACCESS_TOKEN':
       newState.tilesAccessToken = action.tilesAccessToken
       return newState
 
     case 'GLOBALCONFIG_SET_CONFIG':
       Object.keys(action.config).forEach(
-        configSetting => newState[configSetting] = action.config[configSetting]
+        configSetting => {
+          newState[configSetting] = action.config[configSetting]
+          return newState
+        }
       )
       return newState
 

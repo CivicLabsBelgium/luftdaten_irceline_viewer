@@ -4,13 +4,12 @@ import { setCurrentStationList } from '../redux/appState/actions'
 import InfoTable from './infoTable'
 
 class Sidebar extends Component {
-
   getSensorList () {
-    let sensorList = {
+    const sensorList = {
       partsPerMillion: [],
       tempAndHum: []
     }
-    //TODO refactor to foreach
+    // TODO refactor to foreach
     this.props.stationList.map(
       station => {
         station.sensors.map(
@@ -35,8 +34,7 @@ class Sidebar extends Component {
   }
 
   render () {
-    if (!this.props.stationList)
-      return null
+    if (!this.props.stationList) { return null }
     const sensors = this.getSensorList()
     const count = sensors.partsPerMillion.length + sensors.tempAndHum.length
 
@@ -54,7 +52,6 @@ class Sidebar extends Component {
       </div>
     )
   }
-
 }
 
 const mapStateToProps = state => {

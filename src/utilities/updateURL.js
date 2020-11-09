@@ -23,7 +23,7 @@ export function getParams () {
   return hash.split('&').reduce((params, currentPair) => {
     const pair = currentPair.split('=')
     if (pair.length !== 2) return params
-    let newParams = params
+    const newParams = params
     newParams[pair[0]] = pair[1]
     return newParams
   }, {})
