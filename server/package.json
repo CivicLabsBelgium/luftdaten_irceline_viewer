@@ -6,6 +6,6 @@
   "dependencies": {
     "child_process": "^1.0.2",
     "express": "^4.17.1",
-    "got": "^9.6.0"
+    "got": "^11.8.5"
   }
 }
